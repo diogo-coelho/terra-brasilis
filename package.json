@@ -1,0 +1,72 @@
+{
+  "name": "terra-brasilis",
+  "version": "0.0.0-alpha.1",
+  "description": "RTS isométrico em Javascript",
+  "main": "index.js",
+  "scripts": {
+    "webpack:production:game": "webpack --config ./webpack/prod/webpack.client.js --mode production",
+    "webpack:production:server": "webpack --config ./webpack/prod/webpack.server.js --mode production",
+    "webpack:development:game": "webpack --config ./webpack/dev/webpack.client.js --mode development",
+    "webpack:development:server": "webpack --config ./webpack/dev/webpack.server.js --mode development",
+    "prebuild": "npm run lint:fix && npm run webpack:production:server && npm run webpack:production:game",
+    "build": "npm run start",
+    "predev": "npm run webpack:development:server && npm run webpack:development:game",
+    "dev": "npm run start",
+    "start": "node dist/server.js",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Diogo Coelho",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diogo-coelho/terra-brasilis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diogo-coelho/terra-brasilis/issues"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.2",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "json-loader": "^0.5.7",
+    "mini-css-extract-plugin": "^2.9.2",
+    "node-loader": "^2.1.0",
+    "node-sass": "^9.0.0",
+    "postcss-loader": "^8.1.1",
+    "prettier": "^3.5.3",
+    "sass": "^1.86.1",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "ts-loader": "^9.5.2",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
+    "typescript": "^5.8.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.1",
+    "webpack-merge": "^6.0.1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.13.1"
+  }
+}
