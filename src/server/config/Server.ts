@@ -11,7 +11,7 @@ class Server {
     this._port = this.normalizePort(process.env.PORT || 3000)
     this._server = this.configureMainApplication()
   }
-  
+
   public get port(): string | boolean | number {
     return this._port
   }

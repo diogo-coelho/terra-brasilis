@@ -1,8 +1,8 @@
-import ErrorState from "../enums/ErrorState"
-import Scene from "./Scene"
-import { Callback, NamedScene } from "../types/types"
+import ErrorState from '../enums/ErrorState'
+import Scene from './Scene'
+import { Callback, NamedScene } from '../types/types'
 
-/** 
+/**
  * Classe responsável por gerenciar a cenas
  */
 class SceneManager {
@@ -40,8 +40,8 @@ class SceneManager {
   }
 
   public handleKeyboardEvent(configs: {
-    event: KeyboardEvent,
-    callback: Callback,
+    event: KeyboardEvent
+    callback: Callback
     scene: SceneManager
   }): void {
     this._currentScene?.handleKeyboardEvent(configs)

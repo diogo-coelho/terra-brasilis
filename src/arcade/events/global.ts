@@ -1,11 +1,11 @@
-import { Game, SceneManager } from "../core"
-import { EventListenerState, KeyCodeState } from "../enums"
-import { Callback } from "../types/types"
+import { Game, SceneManager } from '../core'
+import { EventListenerState, KeyCodeState } from '../enums'
+import { Callback } from '../types/types'
 
 const globalEvents = {
   resize: (engine: Game, scenes: SceneManager): void => {
     window.addEventListener(
-      EventListenerState.RESIZE, 
+      EventListenerState.RESIZE,
       () => {
         engine.resize()
         engine.main(scenes.currentScene)
@@ -14,11 +14,8 @@ const globalEvents = {
     )
   },
   keyboardEvents: (callback: Callback): void => {
-    window.addEventListener(
-      EventListenerState.KEY_UP,
-      () => callback()
-    )
-  }
+    window.addEventListener(EventListenerState.KEY_UP, () => callback())
+  },
 }
 
 export default globalEvents

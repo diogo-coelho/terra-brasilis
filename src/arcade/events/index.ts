@@ -1,5 +1,3 @@
-import globalEvents from "./global"
+import globalEvents from './global'
 
-export {
-  globalEvents
-}
+export { globalEvents }

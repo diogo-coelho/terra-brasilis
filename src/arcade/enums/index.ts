@@ -1,7 +1,4 @@
-import EventListenerState from "./EventListenerState";
-import KeyCodeState from "./KeyCodeState";
+import EventListenerState from './EventListenerState'
+import KeyCodeState from './KeyCodeState'
 
-export {
-  EventListenerState,
-  KeyCodeState
-}
+export { EventListenerState, KeyCodeState }

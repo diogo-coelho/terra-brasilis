@@ -18,5 +18,4 @@ window.onload = (): void => {
 
   /** Função que inicializa o jogo */
   gameEngine.startGame(gameScenes.currentScene)
-
 }

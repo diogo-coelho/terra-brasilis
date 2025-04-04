@@ -1,4 +1,4 @@
-import { Callback, SceneConfig } from "../types/types";
+import { Callback, SceneConfig } from '../types/types'
 
 abstract class Scene {
   abstract drawScene(

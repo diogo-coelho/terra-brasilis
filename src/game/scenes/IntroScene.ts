@@ -1,7 +1,7 @@
-import Arcade, { KeyCodeState } from "@../../arcade";
-import { globalEvents } from "../../arcade/events";
-import { SceneManager } from "../../arcade/core";
-import { GameSceneState } from "../enums";
+import Arcade, { KeyCodeState } from '@../../arcade'
+import { globalEvents } from '../../arcade/events'
+import { SceneManager } from '../../arcade/core'
+import { GameSceneState } from '../enums'
 
 class IntroScene extends Arcade.Scene {
   private _title: string
@@ -14,7 +14,7 @@ class IntroScene extends Arcade.Scene {
   }
 
   public drawScene(
-    canvas: HTMLCanvasElement, 
+    canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
     const gradient = context.createLinearGradient(
@@ -46,7 +46,7 @@ class IntroScene extends Arcade.Scene {
   }
 
   handleKeyboardEvent(configs: {
-    event: KeyboardEvent,
+    event: KeyboardEvent
     scene: SceneManager
   }): void {
     if (configs.event.key !== KeyCodeState.ENTER) return
@@ -54,7 +54,6 @@ class IntroScene extends Arcade.Scene {
     const callback = () => configs.scene.setCurrentScene(GameSceneState.MENU)
     globalEvents.keyboardEvents(callback)
   }
-
 }
 
 export default IntroScene

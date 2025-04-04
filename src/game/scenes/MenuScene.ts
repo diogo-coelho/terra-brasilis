@@ -1,5 +1,5 @@
-import Arcade from "@/arcade";
-import { Callback, SceneConfig } from "@/arcade/types/types";
+import Arcade from '@/arcade'
+import { Callback, SceneConfig } from '@/arcade/types/types'
 
 class MenuScene extends Arcade.Scene {
   private _title: string
@@ -23,9 +23,8 @@ class MenuScene extends Arcade.Scene {
   }
 
   public handleKeyboardEvent(configs: SceneConfig): void {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.')
   }
- 
 }
 
 export default MenuScene

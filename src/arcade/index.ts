@@ -1,15 +1,12 @@
 import { Game, Scene, SceneManager } from './core'
-import { EventListenerState,KeyCodeState } from './enums'
+import { EventListenerState, KeyCodeState } from './enums'
 
 const Arcade = {
-  Game, 
+  Game,
   Scene,
-  SceneManager
+  SceneManager,
 }
 
-export {
-  EventListenerState,
-  KeyCodeState,
-}
+export { EventListenerState, KeyCodeState }
 
 export default Arcade

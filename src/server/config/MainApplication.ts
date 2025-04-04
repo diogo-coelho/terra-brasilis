@@ -20,7 +20,7 @@ class MainApplication {
   private middleware(): void {
     this._express.use(bodyParser.json())
     this._express.use(bodyParser.urlencoded({ extended: false }))
-  }  
+  }
 
   private staticFiles(): void {
     this._express.use(express.static(process.env.EXPRESS_STATIC_FILES!))
