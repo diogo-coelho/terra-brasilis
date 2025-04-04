@@ -52,8 +52,8 @@ class Game {
    * @param scene - cena que está sendo atualmente renderizada
    */
   public startGame(scene: Scene): void {
-    this.main(scene)
-    requestAnimationFrame(this.startGame as unknown as FrameRequestCallback)
+    //this.main(scene)
+    //requestAnimationFrame(this.startGame as unknown as FrameRequestCallback)
   }
 }
 

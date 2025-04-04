@@ -3,7 +3,7 @@ import Scene from './Scene'
 import { Callback, NamedScene } from '../types/types'
 
 /**
- * Classe responsável por gerenciar a cenas
+ * Classe responsável por gerenciar as cenas do jogo
  */
 class SceneManager {
   private _currentScene: Scene | undefined
@@ -39,12 +39,10 @@ class SceneManager {
     this._currentScene = scene
   }
 
-  public handleKeyboardEvent(configs: {
-    event: KeyboardEvent
-    callback: Callback
-    scene: SceneManager
-  }): void {
-    this._currentScene?.handleKeyboardEvent(configs)
+  public handleKeyboardEvent(
+    event: KeyboardEvent,
+  ): void {
+    this._currentScene?.handleKeyboardEvent(event, this)
   }
 }
 

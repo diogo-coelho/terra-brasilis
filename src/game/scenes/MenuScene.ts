@@ -1,5 +1,4 @@
-import Arcade from '@/arcade'
-import { Callback, SceneConfig } from '@/arcade/types/types'
+import Arcade, { SceneManager } from '../../arcade'
 
 class MenuScene extends Arcade.Scene {
   private _title: string
@@ -22,7 +21,11 @@ class MenuScene extends Arcade.Scene {
     context.fillText(this._title, 100, canvas.height / 2)
   }
 
-  public handleKeyboardEvent(configs: SceneConfig): void {
+  public handleKeyboardEvent(
+    event: KeyboardEvent,
+    scene: SceneManager
+  ): void {
+    console.log('MenuScene: handleKeyboardEvent', event.key)
     throw new Error('Method not implemented.')
   }
 }

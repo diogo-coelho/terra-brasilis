@@ -1,6 +1,4 @@
-import Arcade, { KeyCodeState } from '@../../arcade'
-import { globalEvents } from '../../arcade/events'
-import { SceneManager } from '../../arcade/core'
+import Arcade, { KeyCodeState, SceneManager } from '../../arcade'
 import { GameSceneState } from '../enums'
 
 class IntroScene extends Arcade.Scene {
@@ -45,14 +43,13 @@ class IntroScene extends Arcade.Scene {
     context.fillText(this._phrase, xCoord, canvas.height / 2 + 50)
   }
 
-  handleKeyboardEvent(configs: {
-    event: KeyboardEvent
+  handleKeyboardEvent(
+    event: KeyboardEvent,
     scene: SceneManager
-  }): void {
-    if (configs.event.key !== KeyCodeState.ENTER) return
+  ): void {
+    if (event.key !== KeyCodeState.ENTER) return
 
-    const callback = () => configs.scene.setCurrentScene(GameSceneState.MENU)
-    globalEvents.keyboardEvents(callback)
+    scene.setCurrentScene(GameSceneState.MENU)
   }
 }
 

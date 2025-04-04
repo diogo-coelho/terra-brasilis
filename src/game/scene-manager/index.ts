@@ -1,5 +1,4 @@
-import Arcade from '../../arcade'
-import { NamedScene } from '../../arcade/types/types'
+import Arcade, { NamedScene } from '../../arcade'
 import GameSceneState from '../enums/GameSceneState'
 import { IntroScene, MenuScene } from '../scenes'
 

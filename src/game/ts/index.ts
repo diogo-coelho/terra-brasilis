@@ -1,7 +1,10 @@
 import '../../arcade/assets/sass/styles.scss'
-import Arcade from '../../arcade'
+import Arcade, { 
+  globalEvents,
+  Game, 
+  SceneManager
+} from '../../arcade'
 import { sceneManager } from '../scene-manager'
-import { Game, SceneManager } from '../../arcade/core'
 
 window.document.title = 'Terra Brasilis'
 
@@ -15,7 +18,16 @@ window.onload = (): void => {
 
   /** Configuração das cenas que vão compor o jogo */
   const gameScenes: SceneManager = sceneManager
+  /** Ajusta o tamanho da tela */
+  globalEvents.resize(gameEngine, gameScenes)
+  /** Configura os eventos globais de teclado */
+  globalEvents.keyboard(gameScenes)
 
   /** Função que inicializa o jogo */
-  gameEngine.startGame(gameScenes.currentScene)
+  const startGame = (): void => {
+    gameEngine.main(gameScenes.currentScene)
+    requestAnimationFrame(startGame)
+  }
+
+  startGame()
 }
