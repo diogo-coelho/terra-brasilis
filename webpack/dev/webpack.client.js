@@ -53,7 +53,7 @@ const commonGameConfig = {
     plugins: [new TsconfigPathsPlugin({
       configFile: './tsconfig.json'
     })],
-    extensions: ['.js', '.jsx', 'ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   optimization: {
     moduleIds: 'named'
