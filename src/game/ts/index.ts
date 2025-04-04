@@ -10,24 +10,16 @@ window.document.title = 'Terra Brasilis'
 
 window.onload = (): void => {
   const canvas = document.getElementById('gameCanvas')! as HTMLCanvasElement
-
   /** Configuração inicial do jogo */
   const gameEngine: Game = new Arcade.Game(canvas)
   gameEngine.resize()
   gameEngine.setImageSmoothingEnabled(false)
-
   /** Configuração das cenas que vão compor o jogo */
   const gameScenes: SceneManager = sceneManager
   /** Ajusta o tamanho da tela */
   globalEvents.resize(gameEngine, gameScenes)
   /** Configura os eventos globais de teclado */
   globalEvents.keyboard(gameScenes)
-
   /** Função que inicializa o jogo */
-  const startGame = (): void => {
-    gameEngine.main(gameScenes.currentScene)
-    requestAnimationFrame(startGame)
-  }
-
-  startGame()
+  gameEngine.startGame(gameScenes)
 }

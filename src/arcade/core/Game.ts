@@ -1,4 +1,5 @@
 import Scene from './Scene'
+import SceneManager from './SceneManager'
 
 /**
  * Classe responsável pelas configurações iniciais do jogo
@@ -21,7 +22,7 @@ class Game {
   }
 
   /**
-   * Configura o tamanho da tela do jogo
+   * Método que configura o tamanho da tela do jogo
    * @param width - largura do quadro do canvas
    * @param height - altura do quadro do canvas
    */
@@ -31,7 +32,7 @@ class Game {
   }
 
   /**
-   * Determina se imagens redimensionadas são suavizadas
+   * Método que determina se imagens redimensionadas são suavizadas
    * @param active - boolean
    */
   public setImageSmoothingEnabled(active: boolean): void {
@@ -39,7 +40,7 @@ class Game {
   }
 
   /**
-   * Função principal que renderiza a cena atual que será exibida na tela
+   * Método principal que renderiza a cena atual que será exibida na tela
    * @param scene - cena que será desenhada
    */
   public main(scene: Scene): void {
@@ -48,12 +49,16 @@ class Game {
   }
 
   /**
-   * Função funciona em looping para renderizar o jogo
-   * @param scene - cena que está sendo atualmente renderizada
+   * Método que recebe o gerenciador de cena e inicia o loop de renderização do jogo
+   * @param sceneManager - gerenciador de cena que controla as cenas do jogo
+   * @returns void
    */
-  public startGame(scene: Scene): void {
-    //this.main(scene)
-    //requestAnimationFrame(this.startGame as unknown as FrameRequestCallback)
+  public startGame(sceneManager: SceneManager): void {
+    const gameLoop = (): void => {
+      this.main(sceneManager.currentScene)
+      requestAnimationFrame(gameLoop)
+    }
+    gameLoop()
   }
 }
 
