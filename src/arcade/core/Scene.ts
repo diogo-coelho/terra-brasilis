@@ -9,8 +9,8 @@ abstract class Scene {
   /**
    * Método que renderiza a cena
    * @abstract
-   * @param canvas 
-   * @param context 
+   * @param canvas
+   * @param context
    */
   abstract drawScene(
     canvas: HTMLCanvasElement,
@@ -20,13 +20,18 @@ abstract class Scene {
   /**
    * Método que lida com os eventos de teclado
    * @abstract
-   * @param event 
-   * @param scene 
+   * @param event
+   * @param scene
    */
-  abstract handleKeyboardEvent(
-    event: KeyboardEvent,
-    scene?: SceneManager,
-  ): void
+  abstract handleKeyboardEvent(event: KeyboardEvent, scene?: SceneManager): void
+
+  /**
+   * Método que lida com os eventos de clique
+   * @abstract
+   * @param event
+   * @param scene
+   */
+  abstract handleClickEvent(event: MouseEvent, scene?: SceneManager): void
 }
 
 export default Scene

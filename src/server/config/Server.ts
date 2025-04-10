@@ -31,9 +31,9 @@ class Server {
     return new Promise((resolve, reject) => {
       //Database.connection()
       //  .then(async () => {
-          MainApplication.set('port', this._port)
+      MainApplication.set('port', this._port)
       //    MainApplication.set('database', await Database.database)
-          resolve(http.createServer(MainApplication))
+      resolve(http.createServer(MainApplication))
       //  })
       //  .catch((error: unknown | Error) => reject(error))
     })

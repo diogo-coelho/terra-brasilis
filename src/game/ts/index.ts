@@ -1,9 +1,5 @@
 import '../../arcade/assets/sass/styles.scss'
-import Arcade, { 
-  globalEvents,
-  Game, 
-  SceneManager
-} from '../../arcade'
+import Arcade, { globalEvents, Game, SceneManager } from '../../arcade'
 import { sceneManager } from '../scene-manager'
 
 window.document.title = 'Terra Brasilis'

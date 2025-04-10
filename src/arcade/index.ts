@@ -1,26 +1,43 @@
-import { Game, Scene, SceneManager } from './core'
+import { Game, Scene, SceneManager, Sprite, Text, Timer } from './core'
+import { Button, StandardButton } from './components'
+import { IsometricTileMap } from './system'
+import { IButtonClickEvent } from './interfaces'
+
 import { EventListenerState, KeyCodeState } from './enums'
+
 import { globalEvents } from './events'
+
 import { Callback, NamedScene } from './types/types'
 
 const Arcade = {
   Game,
   Scene,
   SceneManager,
+  Sprite,
+  Text,
+  Timer,
+  /** system */
+  IsometricTileMap,
+  /** components */
+  Button,
+  StandardButton,
 }
 
-export { 
-  EventListenerState, 
-  KeyCodeState,
-  globalEvents,
-}
+export { IButtonClickEvent }
 
-export type {
-  Game,
-  Scene,
-  SceneManager,
-  NamedScene,
-  Callback,
+export { EventListenerState, KeyCodeState, globalEvents }
+
+export type { 
+  Game, 
+  Scene, 
+  SceneManager, 
+  NamedScene, 
+  Callback, 
+  Sprite, 
+  Text, 
+  Timer, 
+  Button,
+  StandardButton,
 }
 
 export default Arcade

@@ -70,3 +70,5 @@ const commonGameConfig = {
     new MiniCssExtractPlugin({ linkType: 'text/css' })
   ]
 }
+
+module.exports = commonGameConfig

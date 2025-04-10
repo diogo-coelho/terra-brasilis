@@ -4,3 +4,10 @@ export type NamedScene = {
 }
 
 export type Callback = <T>(...args: T[]) => T | void
+
+export type ButtonPosition = {
+  canvas: HTMLCanvasElement,
+  x?: number,
+  y?: number,
+  align?: 'vertical' | 'horizontal'
+}

@@ -13,7 +13,8 @@ const globalEvents = {
     )
   },
   keyboard: (sceneManager: SceneManager): void => {
-    window.addEventListener(EventListenerState.KEY_UP, 
+    window.addEventListener(
+      EventListenerState.KEY_UP,
       (event: KeyboardEvent) => {
         sceneManager.handleKeyboardEvent(event)
       },

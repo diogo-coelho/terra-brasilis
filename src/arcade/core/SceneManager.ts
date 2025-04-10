@@ -1,6 +1,6 @@
 import ErrorState from '../enums/ErrorState'
 import Scene from './Scene'
-import { Callback, NamedScene } from '../types/types'
+import { NamedScene } from '../types/types'
 
 /**
  * Classe responsável por gerenciar as cenas do jogo
@@ -39,10 +39,12 @@ class SceneManager {
     this._currentScene = scene
   }
 
-  public handleKeyboardEvent(
-    event: KeyboardEvent,
-  ): void {
+  public handleKeyboardEvent(event: KeyboardEvent): void {
     this._currentScene?.handleKeyboardEvent(event, this)
+  }
+
+  public handleClickEvent(event: MouseEvent): void {
+    this._currentScene?.handleClickEvent(event, this)
   }
 }
 
