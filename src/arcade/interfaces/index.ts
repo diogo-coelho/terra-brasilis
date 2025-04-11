@@ -1,5 +1,5 @@
-import IButtonClickEvent from './IButtonClickEvent'
+import IButtonClickEvent from './button/IButtonClickEvent'
 
 export {
-  IButtonClickEvent
+  IButtonClickEvent,
 }

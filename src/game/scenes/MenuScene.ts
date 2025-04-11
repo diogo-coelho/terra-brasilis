@@ -10,7 +10,7 @@ class MenuScene extends Arcade.Scene {
     this._title = 'Menu'
     this._buttons = [
       new NewGameButton(150, 80, 'Novo jogo', '#008000', '#016501', 'white', 'white'), 
-      new ContinueGameButton(150, 80, 'Continuar jogo', '#008000', '#016501', 'white', 'white')     
+      new ContinueGameButton(150, 80, 'Continuar jogo', '#008000', '#016501', 'white', 'white'),    
     ]
   }
 
@@ -36,11 +36,6 @@ class MenuScene extends Arcade.Scene {
       btn.setPosition({ canvas, align: 'vertical', y: (((i * btn.height) + margin) + initialPosition) })
       btn.renderButton(context)
     })
-  }
-
-  public handleKeyboardEvent(event: KeyboardEvent, scene: SceneManager): void {
-    console.log('MenuScene: handleKeyboardEvent', event.key)
-    throw new Error('Method not implemented.')
   }
 
   public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {

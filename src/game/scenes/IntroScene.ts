@@ -48,9 +48,6 @@ class IntroScene extends Arcade.Scene {
     scene.setCurrentScene(GameSceneState.MENU)
   }
 
-  handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
-    throw new Error('Method not implemented.')
-  }
 }
 
 export default IntroScene

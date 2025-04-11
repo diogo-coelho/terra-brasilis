@@ -66,17 +66,6 @@ class StandardButton extends Button {
     this.x = x
   }
 
-  public renderButton(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.backgroundColor || '#ccc'
-    context.fillRect(this.x, this.y, this.width, this.height)
-
-    context.fillStyle = this.color || 'white'
-    context.font = `${this.fontSize} ${this.font}`
-    context.textAlign = this.textAlign
-    context.textBaseline = this.textBaseLine
-    context.fillText(this.label, this.x + this.width / 2, this.y + this.height / 2)
-  }
-
   public isMouseOverButton(xCoord: number, yCoord: number): boolean {
     return (
       xCoord >= this.x &&
@@ -103,6 +92,17 @@ class StandardButton extends Button {
   ): void {
     this.applyHoverOnButton(event)
     callback
+  }
+  
+  public renderButton(context: CanvasRenderingContext2D): void {
+    context.fillStyle = this.backgroundColor || '#ccc'
+    context.fillRect(this.x, this.y, this.width, this.height)
+
+    context.fillStyle = this.color || 'white'
+    context.font = `${this.fontSize} ${this.font}`
+    context.textAlign = this.textAlign
+    context.textBaseline = this.textBaseLine
+    context.fillText(this.label, this.x + this.width / 2, this.y + this.height / 2)
   }
   
 }

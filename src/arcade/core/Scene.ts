@@ -19,19 +19,19 @@ abstract class Scene {
 
   /**
    * Método que lida com os eventos de teclado
-   * @abstract
-   * @param event
-   * @param scene
+   * @param event - Evento de teclado
+   * @param scene - Gerenciador de cenas
    */
-  abstract handleKeyboardEvent(event: KeyboardEvent, scene?: SceneManager): void
+  public handleKeyboardEvent(event: KeyboardEvent, scene?: SceneManager): void { 
+  }
 
   /**
    * Método que lida com os eventos de clique
-   * @abstract
-   * @param event
-   * @param scene
+   * @param event - Evento do mouse
+   * @param scene - Gerenciador de cenas
    */
-  abstract handleMouseEvent(event: MouseEvent, scene?: SceneManager): void
+  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
+  }
 }
 
 export default Scene
