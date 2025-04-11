@@ -15,7 +15,9 @@ window.onload = (): void => {
   /** Ajusta o tamanho da tela */
   globalEvents.resize(gameEngine, gameScenes)
   /** Configura os eventos globais de teclado */
-  globalEvents.keyboard(gameScenes)
+  globalEvents.keyboard.keyUp(gameScenes)
+  /** Configura os eventos globais de mouse */
+  globalEvents.mouse.mouseMove(gameScenes)
   /** Função que inicializa o jogo */
   gameEngine.startGame(gameScenes)
 }

@@ -7,7 +7,7 @@ import { EventListenerState, KeyCodeState } from './enums'
 
 import { globalEvents } from './events'
 
-import { Callback, NamedScene } from './types/types'
+import { Callback, NamedScene, ButtonColorOnHover } from './types/types'
 
 const Arcade = {
   Game,
@@ -38,6 +38,7 @@ export type {
   Timer, 
   Button,
   StandardButton,
+  ButtonColorOnHover,
 }
 
 export default Arcade

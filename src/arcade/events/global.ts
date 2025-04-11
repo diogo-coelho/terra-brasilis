@@ -12,15 +12,28 @@ const globalEvents = {
       false
     )
   },
-  keyboard: (sceneManager: SceneManager): void => {
-    window.addEventListener(
-      EventListenerState.KEY_UP,
-      (event: KeyboardEvent) => {
-        sceneManager.handleKeyboardEvent(event)
-      },
-      false
-    )
+  keyboard: {
+    keyUp: (sceneManager: SceneManager): void => {
+      window.addEventListener(
+        EventListenerState.KEY_UP,
+        (event: KeyboardEvent) => {
+          sceneManager.handleKeyboardEvent(event)
+        },
+        false
+      )
+    }
   },
+  mouse: {
+    mouseMove: (sceneManager: SceneManager): void => {
+      window.addEventListener(
+        EventListenerState.MOUSE_MOVE,
+        (event: MouseEvent) => {
+          sceneManager.handleMouseEvent(event)
+        },
+        false
+      )
+    }
+  }
 }
 
 export default globalEvents

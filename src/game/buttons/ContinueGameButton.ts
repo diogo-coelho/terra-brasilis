@@ -1,8 +1,25 @@
-import Arcade, { IButtonClickEvent } from "../../arcade";
+import Arcade, { Callback, IButtonClickEvent } from "../../arcade";
 
 class ContinueGameButton extends Arcade.StandardButton implements IButtonClickEvent {
 
-  public handleOnClick(event: MouseEvent, callback?: <T>(...args: any) => T | void): void {
+  constructor(
+    width: number, 
+    height: number, 
+    label: string, 
+    backgroundColor: string, 
+    backgroundColorOnHover: string,
+    color: string,
+    colorOnHover: string
+  ) {
+    super(width, height, label)
+
+    this.backgroundColor = backgroundColor
+    this.backgroundColorOnHover = backgroundColorOnHover
+    this.color = color
+    this.colorOnHover = colorOnHover
+  }
+
+  public handleOnClick(event: MouseEvent, callback?: Callback): void {
     throw new Error("Method not implemented.");
   }
 

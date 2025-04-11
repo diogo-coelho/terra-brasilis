@@ -43,8 +43,8 @@ class SceneManager {
     this._currentScene?.handleKeyboardEvent(event, this)
   }
 
-  public handleClickEvent(event: MouseEvent): void {
-    this._currentScene?.handleClickEvent(event, this)
+  public handleMouseEvent(event: MouseEvent): void {
+    this._currentScene?.handleMouseEvent(event, this)
   }
 }
 

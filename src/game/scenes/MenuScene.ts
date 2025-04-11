@@ -1,4 +1,4 @@
-import Arcade, { SceneManager, StandardButton } from '../../arcade'
+import Arcade, { EventListenerState, SceneManager, StandardButton } from '../../arcade'
 import { NewGameButton, ContinueGameButton } from '../buttons'
 
 class MenuScene extends Arcade.Scene {
@@ -9,8 +9,8 @@ class MenuScene extends Arcade.Scene {
     super()
     this._title = 'Menu'
     this._buttons = [
-      new NewGameButton(150, 80, 'Novo jogo'), 
-      new ContinueGameButton(150, 80, 'Continuar jogo')     
+      new NewGameButton(150, 80, 'Novo jogo', '#008000', '#016501', 'white', 'white'), 
+      new ContinueGameButton(150, 80, 'Continuar jogo', '#008000', '#016501', 'white', 'white')     
     ]
   }
 
@@ -33,7 +33,6 @@ class MenuScene extends Arcade.Scene {
 
     this._buttons.forEach((btn, i) => {
       const margin = i === 0 ? 0 : 20
-      btn.backgroundColor = 'green'
       btn.setPosition({ canvas, align: 'vertical', y: (((i * btn.height) + margin) + initialPosition) })
       btn.renderButton(context)
     })
@@ -44,8 +43,16 @@ class MenuScene extends Arcade.Scene {
     throw new Error('Method not implemented.')
   }
 
-  public handleClickEvent(event: MouseEvent, scene?: SceneManager): void {
-    throw new Error('Method not implemented.')
+  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
+    switch(event.type) {
+      case EventListenerState.MOUSE_MOVE:
+        this._buttons.forEach((btn) => {
+          btn.handleMouseMove(event, () => {
+            scene?.currentScene.drawScene
+          })
+        })
+        break
+    }   
   }
 }
 

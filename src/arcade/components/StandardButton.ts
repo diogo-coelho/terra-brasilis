@@ -1,7 +1,39 @@
-import { ButtonPosition } from "../types/types";
+import { ButtonPosition, Callback } from "../types/types";
 import Button from "./Button";
 
 class StandardButton extends Button {
+  private _font: string = 'Arial'
+  private _fontSize: string = '16px'
+  private _textAlign: CanvasTextAlign = 'center'
+  private _textBaseLine: CanvasTextBaseline = 'middle'
+
+  public get font(): string {
+    return this._font
+  }
+
+  public get fontSize(): string {
+    return this._fontSize
+  }
+
+  public get textAlign(): CanvasTextAlign {
+    return this._textAlign
+  }
+
+  public get textBaseLine(): CanvasTextBaseline {
+    return this._textBaseLine
+  }
+
+  public set font(font: string) {
+    this._font = font
+  }
+
+  public set textAlign(textAlign: CanvasTextAlign) {
+    this._textAlign = textAlign
+  }
+
+  public set textBaseLine(textBaseLine: CanvasTextBaseline) {
+    this._textBaseLine = textBaseLine
+  }
 
   public setPosition(data: ButtonPosition) {
     if (data.align) {
@@ -39,10 +71,38 @@ class StandardButton extends Button {
     context.fillRect(this.x, this.y, this.width, this.height)
 
     context.fillStyle = this.color || 'white'
-    context.font = '16px Arial'
-    context.textAlign = 'center'
-    context.textBaseline = 'middle'
+    context.font = `${this.fontSize} ${this.font}`
+    context.textAlign = this.textAlign
+    context.textBaseline = this.textBaseLine
     context.fillText(this.label, this.x + this.width / 2, this.y + this.height / 2)
+  }
+
+  public isMouseOverButton(xCoord: number, yCoord: number): boolean {
+    return (
+      xCoord >= this.x &&
+      xCoord <= this.x + this.width &&
+      yCoord >= this.y &&
+      yCoord <= this.y + this.height
+    )
+  }
+
+  public applyHoverOnButton(event: MouseEvent) {
+    const hovering = this.isMouseOverButton(event.x, event.y)
+    if (hovering) {
+      this.backgroundColor = this.backgroundColorOnHover.hover
+      this.color = this.colorOnHover.hover
+    } else {
+      this.backgroundColor = this.backgroundColorOnHover.default
+      this.color = this.colorOnHover.default
+    }
+  }
+
+  public handleMouseMove(
+    event: MouseEvent, 
+    callback?: Callback
+  ): void {
+    this.applyHoverOnButton(event)
+    callback
   }
   
 }

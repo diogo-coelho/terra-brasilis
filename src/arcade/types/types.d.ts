@@ -11,3 +11,8 @@ export type ButtonPosition = {
   y?: number,
   align?: 'vertical' | 'horizontal'
 }
+
+export type ButtonColorOnHover = {
+  default: string,
+  hover: string
+}

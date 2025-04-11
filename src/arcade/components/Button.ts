@@ -1,3 +1,5 @@
+import { ButtonColorOnHover } from "../types/types"
+
 abstract class Button {
   private _x: number = 0
   private _y: number = 0
@@ -5,6 +7,8 @@ abstract class Button {
   private _height: number
   private _backgroundColor: string = ''
   private _color: string = ''
+  private _backgroundColorOnHover: ButtonColorOnHover = { default: '', hover: '' }
+  private _colorOnHover: ButtonColorOnHover = { default: '', hover: '' }
   private _label: string
 
   constructor(width: number, height: number, label: string) {
@@ -45,12 +49,34 @@ abstract class Button {
     return this._backgroundColor
   }
 
+  public set backgroundColorOnHover(backgroundColorOnHover: string) {
+    this._backgroundColorOnHover = {
+      default: this.backgroundColor,
+      hover: backgroundColorOnHover
+    }
+  }
+
+  public get backgroundColorOnHover(): ButtonColorOnHover {
+    return this._backgroundColorOnHover
+  }
+
   public set color(color: string) {
     this._color = color
   }
 
   public get color(): string {
     return this._color
+  }
+
+  public set colorOnHover(colorOnHover: string) {
+    this._colorOnHover = {
+      default: this.color,
+      hover: colorOnHover
+    }
+  }
+
+  public get colorOnHover(): ButtonColorOnHover {
+    return this._colorOnHover
   }
 
   public get label(): string {

@@ -45,11 +45,10 @@ class IntroScene extends Arcade.Scene {
 
   handleKeyboardEvent(event: KeyboardEvent, scene: SceneManager): void {
     if (event.key !== KeyCodeState.ENTER) return
-
     scene.setCurrentScene(GameSceneState.MENU)
   }
 
-  handleClickEvent(event: MouseEvent, scene?: SceneManager): void {
+  handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
     throw new Error('Method not implemented.')
   }
 }

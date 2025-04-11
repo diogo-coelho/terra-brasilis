@@ -31,7 +31,7 @@ abstract class Scene {
    * @param event
    * @param scene
    */
-  abstract handleClickEvent(event: MouseEvent, scene?: SceneManager): void
+  abstract handleMouseEvent(event: MouseEvent, scene?: SceneManager): void
 }
 
 export default Scene
