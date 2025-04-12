@@ -1,7 +1,4 @@
-import NewGameButton from "./NewGameButton"
-import ContinueGameButton from "./ContinueGameButton"
+import NewGameButton from './NewGameButton'
+import ContinueGameButton from './ContinueGameButton'
 
-export {
-  NewGameButton,
-  ContinueGameButton,
-}
+export { NewGameButton, ContinueGameButton }

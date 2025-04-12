@@ -1,5 +1,3 @@
-import IsometricTileMap from "./IsometricTileMap"
+import IsometricTileMap from './IsometricTileMap'
 
-export {
-  IsometricTileMap
-}
+export { IsometricTileMap }

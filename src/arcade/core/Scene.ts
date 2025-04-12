@@ -22,16 +22,17 @@ abstract class Scene {
    * @param event - Evento de teclado
    * @param scene - Gerenciador de cenas
    */
-  public handleKeyboardEvent(event: KeyboardEvent, scene?: SceneManager): void { 
-  }
+  public handleKeyboardEvent(
+    event: KeyboardEvent,
+    scene?: SceneManager
+  ): void {}
 
   /**
    * Método que lida com os eventos de clique
    * @param event - Evento do mouse
    * @param scene - Gerenciador de cenas
    */
-  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
-  }
+  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {}
 }
 
 export default Scene

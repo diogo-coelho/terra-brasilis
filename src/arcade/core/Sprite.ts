@@ -13,7 +13,7 @@ class Sprite {
   private _zoomLevel: number = 1
 
   constructor(
-    src: HTMLImageElement | string, 
+    src: HTMLImageElement | string,
     width: number,
     height: number,
     offsetX: number,
@@ -131,7 +131,6 @@ class Sprite {
       this._height * this._zoomLevel
     )
   }
-
 }
 
 export default Sprite

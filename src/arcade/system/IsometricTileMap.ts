@@ -1,5 +1,3 @@
-class IsometricTileMap {
-
-}
+class IsometricTileMap {}
 
 export default IsometricTileMap

@@ -21,7 +21,7 @@ const globalEvents = {
         },
         false
       )
-    }
+    },
   },
   mouse: {
     mouseMove: (sceneManager: SceneManager): void => {
@@ -32,8 +32,17 @@ const globalEvents = {
         },
         false
       )
-    }
-  }
+    },
+    click: (sceneManager: SceneManager): void => {
+      window.addEventListener(
+        EventListenerState.CLICK,
+        (event: MouseEvent) => {
+          sceneManager.handleMouseEvent(event)
+        },
+        false
+      )
+    },
+  },
 }
 
 export default globalEvents

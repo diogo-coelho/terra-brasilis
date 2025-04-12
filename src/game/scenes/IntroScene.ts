@@ -47,7 +47,6 @@ class IntroScene extends Arcade.Scene {
     if (event.key !== KeyCodeState.ENTER) return
     scene.setCurrentScene(GameSceneState.MENU)
   }
-
 }
 
 export default IntroScene

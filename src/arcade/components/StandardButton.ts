@@ -1,5 +1,5 @@
-import { ButtonPosition, Callback } from "../types/types";
-import Button from "./Button";
+import { ButtonPosition, Callback } from '../types/types'
+import Button from './Button'
 
 class StandardButton extends Button {
   private _font: string = 'Arial'
@@ -37,20 +37,24 @@ class StandardButton extends Button {
 
   public setPosition(data: ButtonPosition) {
     if (data.align) {
-      switch(data.align) {
+      switch (data.align) {
         case 'vertical':
-          if (!data.y) throw new Error(`É necessário informar o valor da variável y`)
+          if (!data.y)
+            throw new Error(`É necessário informar o valor da variável y`)
           this.setVerticalAlign(data.canvas, data.y)
           break
         case 'horizontal':
-          if (!data.x) throw new Error(`É necessário informar o valor da variável x`)
+          if (!data.x)
+            throw new Error(`É necessário informar o valor da variável x`)
           this.setHorizontalAlign(data.canvas, data.x)
           break
       }
       return
     } else {
-      if (!data.x && !data.y) 
-        throw new Error(`Botões sem alinhamento precisam das variáveis x e y para serem posicionados em tela`)
+      if (!data.x && !data.y)
+        throw new Error(
+          `Botões sem alinhamento precisam das variáveis x e y para serem posicionados em tela`
+        )
       this.x = data.x as number
       this.y = data.y as number
     }
@@ -86,14 +90,11 @@ class StandardButton extends Button {
     }
   }
 
-  public handleMouseMove(
-    event: MouseEvent, 
-    callback?: Callback
-  ): void {
+  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnButton(event)
     callback
   }
-  
+
   public renderButton(context: CanvasRenderingContext2D): void {
     context.fillStyle = this.backgroundColor || '#ccc'
     context.fillRect(this.x, this.y, this.width, this.height)
@@ -102,9 +103,12 @@ class StandardButton extends Button {
     context.font = `${this.fontSize} ${this.font}`
     context.textAlign = this.textAlign
     context.textBaseline = this.textBaseLine
-    context.fillText(this.label, this.x + this.width / 2, this.y + this.height / 2)
+    context.fillText(
+      this.label,
+      this.x + this.width / 2,
+      this.y + this.height / 2
+    )
   }
-  
 }
 
 export default StandardButton

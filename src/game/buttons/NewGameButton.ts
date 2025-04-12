@@ -1,12 +1,12 @@
-import Arcade, { Callback, IButtonClickEvent } from '../../arcade'
+import Arcade, { ButtonClickHandle } from '../../arcade'
+import { GameSceneState } from '../enums'
 
-class NewGameButton extends Arcade.StandardButton implements IButtonClickEvent {
-
+class NewGameButton extends Arcade.StandardButton {
   constructor(
-    width: number, 
-    height: number, 
-    label: string, 
-    backgroundColor: string, 
+    width: number,
+    height: number,
+    label: string,
+    backgroundColor: string,
     backgroundColorOnHover: string,
     color: string,
     colorOnHover: string
@@ -18,11 +18,11 @@ class NewGameButton extends Arcade.StandardButton implements IButtonClickEvent {
     this.color = color
     this.colorOnHover = colorOnHover
   }
- 
-  public handleOnClick(event: MouseEvent, callback?: Callback): void {
-    throw new Error('Method not implemented.')
+
+  public handleOnClick({ event, scene }: ButtonClickHandle): void {
+    if (!this.isMouseOverButton(event?.x as number, event?.y as number)) return
+    scene?.setCurrentScene(GameSceneState.INSERT_NAME)
   }
-  
 }
 
 export default NewGameButton

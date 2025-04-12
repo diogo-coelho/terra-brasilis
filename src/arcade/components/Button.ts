@@ -1,4 +1,4 @@
-import { ButtonColorOnHover } from "../types/types"
+import { ButtonClickHandle, ButtonColorOnHover } from '../types/types'
 
 abstract class Button {
   private _x: number = 0
@@ -7,7 +7,10 @@ abstract class Button {
   private _height: number
   private _backgroundColor: string = ''
   private _color: string = ''
-  private _backgroundColorOnHover: ButtonColorOnHover = { default: '', hover: '' }
+  private _backgroundColorOnHover: ButtonColorOnHover = {
+    default: '',
+    hover: '',
+  }
   private _colorOnHover: ButtonColorOnHover = { default: '', hover: '' }
   private _label: string
 
@@ -52,7 +55,7 @@ abstract class Button {
   public set backgroundColorOnHover(backgroundColorOnHover: string) {
     this._backgroundColorOnHover = {
       default: this.backgroundColor,
-      hover: backgroundColorOnHover
+      hover: backgroundColorOnHover,
     }
   }
 
@@ -71,7 +74,7 @@ abstract class Button {
   public set colorOnHover(colorOnHover: string) {
     this._colorOnHover = {
       default: this.color,
-      hover: colorOnHover
+      hover: colorOnHover,
     }
   }
 
@@ -85,6 +88,7 @@ abstract class Button {
 
   abstract renderButton(context: CanvasRenderingContext2D): void
 
+  public handleOnClick({ ...buttonClickHandle }: ButtonClickHandle): void {}
 }
 
 export default Button

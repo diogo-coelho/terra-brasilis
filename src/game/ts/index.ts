@@ -18,6 +18,7 @@ window.onload = (): void => {
   globalEvents.keyboard.keyUp(gameScenes)
   /** Configura os eventos globais de mouse */
   globalEvents.mouse.mouseMove(gameScenes)
+  globalEvents.mouse.click(gameScenes)
   /** Função que inicializa o jogo */
   gameEngine.startGame(gameScenes)
 }
