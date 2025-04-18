@@ -1,5 +1,5 @@
 import { Game, Scene, SceneManager, Sprite, Text, Timer } from './core'
-import { Button, StandardButton } from './components'
+import { Button, StandardButton, InputBox, StandardInputBox } from './components'
 import { IsometricTileMap } from './system'
 
 import { EventListenerState, KeyCodeState } from './enums'
@@ -9,7 +9,7 @@ import { globalEvents } from './events'
 import {
   Callback,
   NamedScene,
-  ButtonColorOnHover,
+  ColorOnHover,
   ButtonClickHandle,
 } from './types/types'
 
@@ -25,6 +25,8 @@ const Arcade = {
   /** components */
   Button,
   StandardButton,
+  InputBox,
+  StandardInputBox,
 }
 
 export { EventListenerState, KeyCodeState, globalEvents }
@@ -40,8 +42,10 @@ export type {
   Timer,
   Button,
   StandardButton,
-  ButtonColorOnHover,
+  ColorOnHover,
   ButtonClickHandle,
+  InputBox,
+  StandardInputBox,
 }
 
 export default Arcade

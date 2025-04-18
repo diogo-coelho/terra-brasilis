@@ -22,6 +22,15 @@ const globalEvents = {
         false
       )
     },
+    keydown: (sceneManager: SceneManager): void => {
+      window.addEventListener(
+        EventListenerState.KEY_DOWN,
+        (event: KeyboardEvent) => {
+          sceneManager.handleKeyboardEvent(event)
+        },
+        false
+      )
+    }
   },
   mouse: {
     mouseMove: (sceneManager: SceneManager): void => {

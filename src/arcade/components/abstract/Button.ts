@@ -1,4 +1,4 @@
-import { ButtonClickHandle, ButtonColorOnHover } from '../types/types'
+import { ButtonClickHandle, Position, Callback, ColorOnHover } from '../../types/types'
 
 abstract class Button {
   private _x: number = 0
@@ -7,11 +7,11 @@ abstract class Button {
   private _height: number
   private _backgroundColor: string = ''
   private _color: string = ''
-  private _backgroundColorOnHover: ButtonColorOnHover = {
+  private _backgroundColorOnHover: ColorOnHover = {
     default: '',
     hover: '',
   }
-  private _colorOnHover: ButtonColorOnHover = { default: '', hover: '' }
+  private _colorOnHover: ColorOnHover = { default: '', hover: '' }
   private _label: string
 
   constructor(width: number, height: number, label: string) {
@@ -59,7 +59,7 @@ abstract class Button {
     }
   }
 
-  public get backgroundColorOnHover(): ButtonColorOnHover {
+  public get backgroundColorOnHover(): ColorOnHover {
     return this._backgroundColorOnHover
   }
 
@@ -78,7 +78,7 @@ abstract class Button {
     }
   }
 
-  public get colorOnHover(): ButtonColorOnHover {
+  public get colorOnHover(): ColorOnHover {
     return this._colorOnHover
   }
 
@@ -88,7 +88,13 @@ abstract class Button {
 
   abstract renderButton(context: CanvasRenderingContext2D): void
 
-  public handleOnClick({ ...buttonClickHandle }: ButtonClickHandle): void {}
+  abstract setPosition({ canvas, x, y }: Position): void
+
+  abstract isMouseOverButton(xCoord: number, yCoord: number): boolean
+
+  abstract handleMouseMove(event: MouseEvent, callback?: Callback): void
+
+  public handleOnClick({ event, scene, callback }: ButtonClickHandle): void {}
 }
 
 export default Button

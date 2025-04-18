@@ -3,7 +3,7 @@ import Arcade, {
   SceneManager,
   StandardButton,
 } from '../../arcade'
-import { NewGameButton, ContinueGameButton } from '../buttons'
+import { NewGameButton, ContinueGameButton } from '../components/buttons'
 
 class MenuScene extends Arcade.Scene {
   private _title: string
@@ -45,7 +45,7 @@ class MenuScene extends Arcade.Scene {
     context.font = 'bold 16px Arial, sans-serif'
 
     const titleSize = context.measureText(this._title)
-    const xCoord = canvas.width / 2 - titleSize.width / 2
+    const xCoord = (canvas.width / 2) - (titleSize.width / 2)
 
     context.fillText(this._title, xCoord, 50)
 

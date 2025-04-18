@@ -1,7 +1,7 @@
-import Arcade, { ButtonClickHandle } from '../../arcade'
-import { GameSceneState } from '../enums'
+import Arcade, { ButtonClickHandle } from '../../../arcade'
+import { GameSceneState } from '../../enums'
 
-class NewGameButton extends Arcade.StandardButton {
+class ContinueGameButton extends Arcade.StandardButton {
   constructor(
     width: number,
     height: number,
@@ -21,8 +21,8 @@ class NewGameButton extends Arcade.StandardButton {
 
   public handleOnClick({ event, scene }: ButtonClickHandle): void {
     if (!this.isMouseOverButton(event?.x as number, event?.y as number)) return
-    scene?.setCurrentScene(GameSceneState.INSERT_NAME)
+    scene?.setCurrentScene(GameSceneState.GAME_SCENE)
   }
 }
 
-export default NewGameButton
+export default ContinueGameButton

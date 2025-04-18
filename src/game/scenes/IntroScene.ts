@@ -31,7 +31,7 @@ class IntroScene extends Arcade.Scene {
     context.font = 'bold 40px Arial, sans-serif'
 
     const titleSize = context.measureText(this._title)
-    let xCoord = canvas.width / 2 - titleSize.width / 2
+    let xCoord = (canvas.width / 2) - (titleSize.width / 2)
 
     context.fillText(this._title, xCoord, canvas.height / 2)
 

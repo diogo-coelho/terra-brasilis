@@ -1,18 +1,24 @@
-import { ButtonPosition, Callback } from '../types/types'
-import Button from './Button'
+import { Callback, InputBoxClickHandle, Position } from "@/arcade/types/types";
+import InputBox from "../abstract/InputBox";
+import { KeyCodeState } from "@/arcade/enums";
 
-class StandardButton extends Button {
+class StandardInputBox extends InputBox {
   private _font: string = 'Arial'
-  private _fontSize: string = '16px'
+  private _fontSize: number = 14
   private _textAlign: CanvasTextAlign = 'center'
   private _textBaseLine: CanvasTextBaseline = 'middle'
+  private _blinkingTimer: NodeJS.Timeout | undefined = undefined
 
   public get font(): string {
     return this._font
   }
 
-  public get fontSize(): string {
+  public get fontSize(): number {
     return this._fontSize
+  }
+
+  public set fontSize(fontSize: number) {
+    this._fontSize = fontSize
   }
 
   public get textAlign(): CanvasTextAlign {
@@ -35,7 +41,15 @@ class StandardButton extends Button {
     this._textBaseLine = textBaseLine
   }
 
-  public setPosition(data: ButtonPosition) {
+  public set blinkingTimer(blinkingTimer: NodeJS.Timeout) {
+    this._blinkingTimer = blinkingTimer
+  }
+
+  public get blinkingTimer(): NodeJS.Timeout {
+    return this._blinkingTimer as NodeJS.Timeout
+  }
+
+  public setPosition(data: Position) {
     if (data.align) {
       switch (data.align) {
         case 'vertical':
@@ -59,12 +73,12 @@ class StandardButton extends Button {
       this.y = data.y as number
     }
   }
-
+  
   private setVerticalAlign(canvas: HTMLCanvasElement, y: number): void {
     this.x = canvas.width / 2 - this.width / 2
     this.y = y
   }
-
+  
   private setHorizontalAlign(canvas: HTMLCanvasElement, x: number): void {
     this.y = canvas.height / 2 - this.height / 2
     this.x = x
@@ -95,20 +109,68 @@ class StandardButton extends Button {
     callback
   }
 
-  public renderButton(context: CanvasRenderingContext2D): void {
-    context.fillStyle = this.backgroundColor || '#ccc'
-    context.fillRect(this.x, this.y, this.width, this.height)
+  public renderInputBox(context: CanvasRenderingContext2D): void {
+    context.strokeStyle = this.backgroundColor || '#ccc'
+    context.strokeRect(this.x, this.y, this.width, this.height)
 
     context.fillStyle = this.color || 'white'
-    context.font = `${this.fontSize} ${this.font}`
+    context.font = `${this.fontSize}px ${this.font}`
     context.textAlign = this.textAlign
     context.textBaseline = this.textBaseLine
     context.fillText(
-      this.label,
+      this.inputText,
       this.x + this.width / 2,
       this.y + this.height / 2
     )
+
+    if (this.isTyping && this.cursorVisible) {
+      const textWidth = context.measureText(this.inputText).width;
+      const cursorX = (this.x + this.width / 2) + (textWidth / 2);
+      context.beginPath();
+      context.moveTo(cursorX, (this.y + 12));
+      context.lineTo(cursorX, (this.y + this.height - 12));
+      context.strokeStyle = this.color;
+      context.stroke();
+    }
   }
+
+  private blinkingCursor(): void {
+    this.blinkingTimer = setInterval(() => {
+      if (this.isTyping) {
+        this.cursorVisible = !this.cursorVisible
+      }
+    }, 500)
+  }
+
+  private disableBlinkingCursor(): void {
+    clearInterval(this.blinkingTimer)
+  }
+
+  public handleOnClick(event: MouseEvent, callback?: Callback): void {
+    this.applyHoverOnButton(event)
+    const isOnHover = this.isMouseOverButton(event.x, event.y)
+    if (isOnHover) {
+      this.isTyping = true
+      this.cursorVisible = true 
+      this.blinkingCursor()     
+      callback
+    } 
+  }
+
+  public handleOnKeydown(event: KeyboardEvent, callback?: Callback ): void {
+    if (!this.isTyping) return
+    if (event?.key === KeyCodeState.BACKSPACE) {
+      this.inputText = this.inputText.slice(0, -1)
+    } else if (event?.key.length === 1) {
+      this.inputText += event?.key
+    } else if (event?.key === KeyCodeState.ENTER) {
+      console.log(event?.key)
+      this.isTyping = false
+      this.disableBlinkingCursor()
+      callback
+    }
+  }
+
 }
 
-export default StandardButton
+export default StandardInputBox
