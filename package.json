@@ -6,6 +6,8 @@
   "scripts": {
     "webpack:dev:game": "webpack --config ./webpack/dev/webpack.client.js --mode development",
     "webpack:dev:server": "webpack --config ./webpack/dev/webpack.server.js --mode development",
+    "webpack:prod:game": "webpack --config ./webpack/prod/webpack.client.js --mode production",
+    "webpack:prod:server": "webpack --config ./webpack/prod/webpack.server.js --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -42,6 +44,7 @@
     "prettier": "^3.7.4",
     "sass": "^1.97.2",
     "sass-loader": "^16.0.6",
+    "terser-webpack-plugin": "^5.3.16",
     "ts-loader": "^9.5.4",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.9.3",
@@ -53,6 +56,7 @@
   },
   "dependencies": {
     "body-parser": "^2.2.2",
+    "css-minimizer-webpack-plugin": "^7.0.4",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "mongodb": "^7.0.0",
