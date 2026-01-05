@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "webpack:dev:game": "webpack --config ./webpack/dev/webpack.client.js --mode development",
+    "webpack:dev:server": "webpack --config ./webpack/dev/webpack.server.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
