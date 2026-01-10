@@ -4,18 +4,18 @@ import FormattedDate from '@/server/utils/FormattedDate'
 
 /**
  * Classe que representa a conexão ao banco de dados mongoDB
- * 
+ *
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-10
- * 
+ *
  * A classe Database é responsável por estabelecer a conexão com o banco de dados
  * mongoDB utilizando o mongoose. Ela também gerencia eventos de conexão,
  * desconexão e erros, além de fornecer um método para fechar a conexão
  * de forma adequada quando o processo é encerrado.
- * 
+ *
  * @example new Database().connection()
- * 
+ *
  */
 export default class Database {
   private _database: Promise<Mongoose>
@@ -38,7 +38,7 @@ export default class Database {
 
   /**
    * Método assíncrono que estabelece a conexão com o banco de dados
-   * 
+   *
    * @async
    */
   public async connection(): Promise<void> {
@@ -58,11 +58,11 @@ export default class Database {
 
   /**
    * Método que desconecta do banco de dados
-   * 
+   *
    */
   public closeConnection(): void {
     process.on('SIGINT', async () => {
-      await this.database.then(d => d.connection.close())
+      await this.database.then((d) => d.connection.close())
       console.log(`[ ${this.date} ] : Mongoose encerrado`)
       process.exit(0)
     })

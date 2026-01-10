@@ -4,9 +4,7 @@ const SERVER = {
   ERROR: 'error',
   LISTENING: 'listening',
   EACCESS: 'EACCESS',
-  EADDRESS: 'EADDRESS'
+  EADDRESS: 'EADDRESS',
 }
 
-export {
-  SERVER
-}
+export { SERVER }

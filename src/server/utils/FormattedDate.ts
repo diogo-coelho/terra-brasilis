@@ -1,15 +1,15 @@
 /**
  * Classe responsável por formatar a data atual em uma string legível
- * 
+ *
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-10
- * 
+ *
  * A classe FormattedDate pega o valor corrente da classe Date do JavaScript
  * e a transforma em uma string formatada no padrão dd/mm/YYYY - hh:mm:ss
- * 
+ *
  * @example new FormattedDate().formatted
- * 
+ *
  * @returns {string} Data formatada no padrão dd/mm/YYYY - hh:mm:ss *
  */
 export default class FormattedDate {
@@ -34,7 +34,7 @@ export default class FormattedDate {
   }
 
   /**
-   * 
+   *
    * @returns {string} Retorna a data formatada no padrão dd/mm/YYY - hh:mm:ss
    */
   public get formatted(): string {

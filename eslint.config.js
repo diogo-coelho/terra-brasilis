@@ -29,7 +29,8 @@ module.exports = [
       ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'prettier/prettier': 'error'
+      'prettier/prettier': 'error',
+      'no-undef': 'off'
     }
   }
 ];

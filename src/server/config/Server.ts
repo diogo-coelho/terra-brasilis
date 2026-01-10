@@ -8,17 +8,17 @@ import { SERVER } from '../consts/constants'
 
 /**
  * Classe que representa o servidor principal
- * 
+ *
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10  
- * 
+ * @since 2024-06-10
+ *
  *  A classe Server é responsável por configurar e iniciar o servidor HTTP
  *  utilizando a aplicação Express e a conexão com o banco de dados.
- * 
+ *
  * @example new Server().server
  * @returns {Promise<http.Server>} O servidor HTTP configurado
- * 
+ *
  */
 export default class Server {
   private _application: ExpressApplication
@@ -43,7 +43,7 @@ export default class Server {
 
   /**
    * Método que fecha a conexão com o banco de dados
-   * 
+   *
    */
   public closeDatabase(): void {
     this._application.get('database').closeConnection()
@@ -51,7 +51,7 @@ export default class Server {
 
   /**
    *  Método privado que normaliza a porta do servidor
-   * 
+   *
    * @param {string, boolean, number} val - A porta a ser normalizada
    * @returns {string, boolean, number} A porta normalizada
    */
@@ -64,20 +64,20 @@ export default class Server {
 
   /**
    *  Método privado que configura a aplicação principal do servidor
-   * 
+   *
    * @returns {Promise<http.Server>} O servidor HTTP configurado
    */
   private async configureMainApplication(): Promise<http.Server> {
-    return new Promise(async (resolve) => {
-      try {
-        await this._database.connection()
-        this._application.set(SERVER.PORT, this.port)
-        this._application.set(SERVER.DATABASE, this._database)
-        resolve(http.createServer(this._application))
-      } catch (error: unknown) {
-        new ServerError(`Erro ao configurar o servidor: ${(error as Error).message}`)
-      }
-    })
-  }
+    try {
+      await this._database.connection()
+      this._application.set(SERVER.PORT, this.port)
+      this._application.set(SERVER.DATABASE, this._database)
+    } catch (error: unknown) {
+      new ServerError(
+        `Erro ao configurar o servidor: ${(error as Error).message}`
+      )
+    }
 
+    return http.createServer(this._application)
+  }
 }
