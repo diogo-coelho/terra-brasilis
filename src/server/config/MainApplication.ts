@@ -3,6 +3,7 @@ import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import { ExpressApplication, IMainApplication } from '../types/types'
+import GameRouter from '@/server/routes/GameRouter'
 
 /**
  * Classe que representa a aplicação principal do servidor Express
@@ -11,6 +12,7 @@ import { ExpressApplication, IMainApplication } from '../types/types'
  * @version 1.0.0
  * @since 2024-06-10
  *
+ * @description
  * A classe MainApplication é responsável por configurar a aplicação Express,
  * incluindo middlewares, arquivos estáticos e rotas.
  *
@@ -62,8 +64,6 @@ export default class MainApplication implements IMainApplication {
    *
    */
   private routes(): void {
-    this._express.get('/', (req, res) => {
-      console.log('Servidor rodando!')
-    })
+    this._express.use('/', new GameRouter().router)
   }
 }

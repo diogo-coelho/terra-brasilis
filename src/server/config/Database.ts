@@ -9,6 +9,7 @@ import FormattedDate from '@/server/utils/FormattedDate'
  * @version 1.0.0
  * @since 2024-06-10
  *
+ * @description
  * A classe Database é responsável por estabelecer a conexão com o banco de dados
  * mongoDB utilizando o mongoose. Ela também gerencia eventos de conexão,
  * desconexão e erros, além de fornecer um método para fechar a conexão

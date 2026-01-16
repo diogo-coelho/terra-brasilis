@@ -4,6 +4,24 @@ import Server from '@/server/config/Server'
 import ServerError from './error/ServerError'
 import { SERVER } from './consts/constants'
 
+/**
+ * Instância do servidor HTTP.
+ * 
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-15
+ * 
+ * @description
+ * Este módulo inicializa e configura o servidor HTTP, lidando com eventos
+ * de erro e de escuta. Utiliza a classe Server para configurar o servidor
+ * e gerenciar conexões.
+ * 
+ * @example
+ * ```ts
+ * import './src/server/index.ts'
+ * ``` 
+ * 
+ */
 const serverInstance: Server = new Server()
 
 serverInstance.server

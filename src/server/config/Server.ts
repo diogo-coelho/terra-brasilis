@@ -13,6 +13,7 @@ import { SERVER } from '../consts/constants'
  * @version 1.0.0
  * @since 2024-06-10
  *
+ * @description
  *  A classe Server é responsável por configurar e iniciar o servidor HTTP
  *  utilizando a aplicação Express e a conexão com o banco de dados.
  *
