@@ -7,4 +7,8 @@ const SERVER = {
   EADDRESS: 'EADDRESS',
 }
 
-export { SERVER }
+const VIEW_PATH = {
+  GAME: '../dist/game/',
+}
+
+export { SERVER, VIEW_PATH }

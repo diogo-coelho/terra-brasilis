@@ -1,6 +1,7 @@
 import path from 'path'
 import { Request, Response } from 'express'
 import FormattedDate from '@/server/utils/FormattedDate'
+import { VIEW_PATH } from '../consts/constants'
 
 /**
  * Classe que representa o controlador do jogo
@@ -20,6 +21,6 @@ export default class GameController {
     console.log(`[ ${new FormattedDate().formatted} ] : Novo jogo iniciado`)
 
     // Redireciona para a view onde o game vai rodar
-    res.sendFile(path.join(__dirname, '../dist/game/index.html'))
+    res.sendFile(path.join(__dirname, `${VIEW_PATH.GAME}/index.html`))
   }
 }
