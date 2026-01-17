@@ -46,7 +46,7 @@ export default class MainApplication implements IMainApplication {
    */
   private middlewares(): void {
     this._express.use(bodyParser.json())
-    this._express.use(bodyParser.urlencoded({ extended: true }))
+    this._express.use(bodyParser.urlencoded({ extended: false }))
   }
 
   /**

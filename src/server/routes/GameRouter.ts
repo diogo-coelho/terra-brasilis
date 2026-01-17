@@ -3,18 +3,18 @@ import GameController from '@/server/controllers/GameController'
 
 /**
  * Classe que representa as rotas relacionadas ao jogo
- * 
+ *
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
- * 
+ *
  * @description
  * A classe GameRouter é responsável por definir as rotas
  * relacionadas ao jogo, utilizando o Express Router.
  * Ela mapeia as requisições HTTP para os métodos
  * do GameController.
- * 
- * 
+ *
+ *
  */
 export default class GameRouter {
   private _router: Router
