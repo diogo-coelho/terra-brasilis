@@ -1,5 +1,6 @@
 import { Game, SceneManager } from './core'
 import { GlobalEvents } from './events'
+import { Sound } from './sounds'
 
 /**
  * Módulo principal do Arcade, que agrupa as principais classes do motor de jogo.
@@ -22,4 +23,6 @@ export const Arcade = {
   SceneManager: SceneManager,
   /** events */
   GlobalEvents: GlobalEvents,
+  /** sounds */
+  Sound: Sound,
 }

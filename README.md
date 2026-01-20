@@ -11,5 +11,5 @@ npm run dev
 ## Buildando para produção
 
 ```bash
-npm run prod
+npm run build
 ```

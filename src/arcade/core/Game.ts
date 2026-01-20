@@ -55,7 +55,7 @@ export default class Game {
 
   /**
    * Método principal do jogo que desenha a cena atual
-   * @param {Scene} scene- cena a ser desenhada
+   * @param {Scene} scene - cena a ser desenhada
    */
   public main(scene: Scene): void {
     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)

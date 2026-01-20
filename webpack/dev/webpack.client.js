@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 const PATHS = {
@@ -27,7 +28,7 @@ const commonGameConfig = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'file-loader',
         options: {
-          name: '/images/[name.[ext]'
+          name: '/images/[name].[ext]'
         }
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -43,7 +44,13 @@ const commonGameConfig = {
       },{
         test: /\.ts?$/,
         use: 'ts-loader',
-        exclude: /node-modules/
+        exclude: /node_modules/
+      },{
+        test: /\.(mp3|wav)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/sounds/[name].[ext]'
+        }
       }
     ]
   },
@@ -62,7 +69,21 @@ const commonGameConfig = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, `${PATHS.entry}/views/index.html`)
     }),
-    new MiniCssExtractPlugin({ linkType: 'text/css' })
+    new MiniCssExtractPlugin({ linkType: 'text/css' }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../../src/game/sounds'),
+          to: path.resolve(__dirname, `${PATHS.build}/assets/sounds`),
+          noErrorOnMissing: true
+        },
+        {
+          from: path.resolve(__dirname, '../../src/arcade/assets/sounds'),
+          to: path.resolve(__dirname, `${PATHS.build}/assets/sounds`),
+          noErrorOnMissing: true
+        }
+      ]
+    })
   ]
 }
 

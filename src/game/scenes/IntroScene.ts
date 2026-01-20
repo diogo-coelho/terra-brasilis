@@ -2,8 +2,10 @@ import { Scene } from '@/arcade/interfaces'
 import { SceneEvent, SceneManager } from '@/arcade/core'
 import { EventPayload } from '@/arcade/types'
 import { EventListenerState, KeyboardKey } from '@/arcade/enums'
+import { Sound } from '@/arcade/sounds'
 
 import { GameSceneState } from '@/game/enums'
+import bkgSound from '@/game/assets/sounds/intro_theme.mp3'
 
 /**
  * A classe IntroScene representa a cena de introdução do jogo.
@@ -27,17 +29,25 @@ import { GameSceneState } from '@/game/enums'
 export default class IntroScene extends SceneEvent implements Scene {
   private _title: string
   private _phrase: string
+  private _backgroundSound: Sound
 
   constructor() {
     super()
     this._title = 'Terra Brasilis'
     this._phrase = 'Pressione Enter para iniciar'
+    this._backgroundSound = new Sound(bkgSound);
   }
 
+  /**
+   * Desenha a cena de introdução no canvas.
+   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena será desenhada.
+   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas. 
+   */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
+    // TODO: Melhorar o design da tela de introdução
     const gradient = context.createLinearGradient(
       0,
       canvas.width,
@@ -45,7 +55,7 @@ export default class IntroScene extends SceneEvent implements Scene {
       0
     )
     gradient.addColorStop(0, '#CCEFFF')
-    gradient.addColorStop(0, '#52bcff')
+    gradient.addColorStop(1, '#52bcff')
 
     context.fillStyle = gradient
     context.fillRect(0, 0, canvas.width, canvas.height)
@@ -77,6 +87,7 @@ export default class IntroScene extends SceneEvent implements Scene {
   ): void {
     var payload = () => sceneManager.setCurrentScene(GameSceneState.MENU)
     this.onKeyboardEvent(event, this.getEventPayload(payload))
+    this.startBackgroundSound()
   }
 
   /**
@@ -91,4 +102,14 @@ export default class IntroScene extends SceneEvent implements Scene {
       action: payload,
     }
   }
+
+  /**
+   * Inicia a reprodução do som de fundo da cena de introdução.
+   * @private
+   * @returns {void}
+   */
+  private startBackgroundSound(): void {
+    this._backgroundSound.play();
+  }
+
 }
