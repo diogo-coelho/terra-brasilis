@@ -5,7 +5,7 @@ import { EventListenerState, KeyboardKey } from '@/arcade/enums'
 import { Sound } from '@/arcade/sounds'
 
 import { GameSceneState } from '@/game/enums'
-import bkgSound from '@/game/assets/sounds/intro_theme.mp3'
+import bkgSound from '@/arcade/assets/sounds/intro_theme.mp3'
 
 /**
  * A classe IntroScene representa a cena de introdução do jogo.
@@ -24,6 +24,7 @@ import bkgSound from '@/game/assets/sounds/intro_theme.mp3'
  * @see SceneEvent
  * @see SceneManager
  * @see GameSceneState
+ * @see Sound
  *
  */
 export default class IntroScene extends SceneEvent implements Scene {
@@ -85,7 +86,10 @@ export default class IntroScene extends SceneEvent implements Scene {
     event: KeyboardEvent,
     sceneManager: SceneManager
   ): void {
-    var payload = () => sceneManager.setCurrentScene(GameSceneState.MENU)
+    var payload = () => {
+      sceneManager.setCurrentScene(GameSceneState.MENU)
+      this._backgroundSound.stop()
+    }
     this.onKeyboardEvent(event, this.getEventPayload(payload))
     this.startBackgroundSound()
   }
@@ -110,6 +114,8 @@ export default class IntroScene extends SceneEvent implements Scene {
    */
   private startBackgroundSound(): void {
     this._backgroundSound.play();
+    this._backgroundSound.loop(true);
+    this._backgroundSound.setVolume(0.5);
   }
 
 }
