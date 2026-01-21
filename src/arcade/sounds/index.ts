@@ -1,3 +1,3 @@
-import Sound from './Sound';
+import Sound from './Sound'
 
-export { Sound };
+export { Sound }

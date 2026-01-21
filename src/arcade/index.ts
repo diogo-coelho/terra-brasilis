@@ -25,4 +25,6 @@ export const Arcade = {
   GlobalEvents: GlobalEvents,
   /** sounds */
   Sound: Sound,
+  /** images */
+  Image: Image,
 }

@@ -28,7 +28,7 @@ const commonGameConfig = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'file-loader',
         options: {
-          name: '/images/[name].[ext]'
+          name: 'assets/images/[name].[ext]'
         }
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/i,

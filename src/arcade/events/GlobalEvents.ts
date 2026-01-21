@@ -77,12 +77,18 @@ export default class GlobalEvents {
     )
   }
 
-  private static dispatchMouseMoveEvent(event: MouseEvent, sceneManager: SceneManager) {
+  private static dispatchMouseMoveEvent(
+    event: MouseEvent,
+    sceneManager: SceneManager
+  ) {
     if (!sceneManager.currentScene.handleMouseEvent) return
     sceneManager.currentScene.handleMouseEvent(event, sceneManager)
   }
 
-  private static dispatchClickEvent(event: MouseEvent, sceneManager: SceneManager) {
+  private static dispatchClickEvent(
+    event: MouseEvent,
+    sceneManager: SceneManager
+  ) {
     if (!sceneManager.currentScene.handleMouseEvent) return
     sceneManager.currentScene.handleMouseEvent(event, sceneManager)
   }

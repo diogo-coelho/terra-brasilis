@@ -23,9 +23,9 @@ import { EventPayload } from '@/arcade/types'
  *   }
  *
  *   public handleKeyboardEvent(event: KeyboardEvent): void {
- *    this.onKeyboardEvent(event, { 
+ *    this.onKeyboardEvent(event, {
  *      eventType: EventListenerState.KEY_DOWN,
- *      eventKey: 'Enter',  
+ *      eventKey: 'Enter',
  *      action: () => { console.log('Enter key pressed'); }
  *     });
  *   }
