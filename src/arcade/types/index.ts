@@ -9,3 +9,12 @@ export type EventPayload = {
   eventKey?: string
   action: (...args: any[]) => any
 }
+export type ImageResizePayload = {
+  targetWidth?: number
+  targetHeight?: number
+  option?: 'cover' | 'contain'
+}
+export type Position = {
+  x: number
+  y: number
+}

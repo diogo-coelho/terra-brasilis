@@ -1,4 +1,4 @@
-import { EventListenerState } from '@/arcade/enums'
+import { EventListenerState, KeyboardKey } from '@/arcade/enums'
 import { EventPayload } from '@/arcade/types'
 
 /**
@@ -46,7 +46,7 @@ export default class SceneEvent {
       case EventListenerState.KEY_DOWN:
         if (
           callback.eventType === EventListenerState.KEY_DOWN &&
-          event.key === callback.eventKey
+          (event.key === callback.eventKey || callback.eventKey === KeyboardKey.ANY)
         ) {
           this.dispatchAction(callback.action)
         }
@@ -54,7 +54,7 @@ export default class SceneEvent {
       case EventListenerState.KEY_UP:
         if (
           callback.eventType === EventListenerState.KEY_UP &&
-          event.key === callback.eventKey
+          (event.key === callback.eventKey || callback.eventKey === KeyboardKey.ANY)
         ) {
           this.dispatchAction(callback.action)
         }

@@ -5,10 +5,11 @@ import { EventListenerState, KeyboardKey } from '@/arcade/enums'
 import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
 
-import { GameSceneState } from '@/game/enums'
-import themeSound from '@/arcade/assets/sounds/intro_theme.wav'
+import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 import backgroundImage from '@/arcade/assets/images/terra_brasilis_intro_background.png'
 import logoImage from '@/arcade/assets/images/terra_brasilis_logo.png'
+
+import { GameSceneState } from '@/game/enums'
 
 /**
  * A classe IntroScene representa a cena de introdução do jogo.
@@ -35,6 +36,8 @@ export default class IntroScene extends SceneEvent implements Scene {
   private _backgroundSound: Sound
   private _backgroundImage!: Image
   private _logoImage!: Image
+  private _initializedLogoSetup: boolean = false
+  private _initializedSoundSetup: boolean = false
 
   constructor() {
     super()
@@ -51,12 +54,15 @@ export default class IntroScene extends SceneEvent implements Scene {
    */
   public drawScene(
     canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D
+    context: CanvasRenderingContext2D,
+    deltaTime: number
   ): void {
-    /** Setando o tamanho da imagem de fundo */
+    /** Inicia a reprodução do som de fundo */
+    this.startBackgroundSound()
+
+    /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
-    this._backgroundImage.width = canvas.width
-    this._backgroundImage.height = canvas.height
+    this._backgroundImage.setImageAsCover(canvas)
     context.save()
     context.globalAlpha = 0.6
     /** Desenhando a imagem de fundo */
@@ -69,30 +75,29 @@ export default class IntroScene extends SceneEvent implements Scene {
     )
     context.restore()
 
-    /** Setando o tamanho da imagem do logo */
+    /** Ajusta a imagem do logo */
     if (!this._logoImage.isLoaded()) return
-    this._logoImage.width = 636
-    this._logoImage.height = 274
-    const logoX = canvas.width / 2 - this._logoImage.width / 2
-    const logoY = canvas.height / 2 - this._logoImage.height / 2 - 100
+    this.setImageLogoSetup(canvas)
+    this._logoImage.updatePosition(deltaTime)
     /** Desenhando a imagem do logo */
     context.drawImage(
       this._logoImage.image as CanvasImageSource,
-      logoX,
-      logoY,
-      this._logoImage.width,
-      this._logoImage.height
-    )
+      this._logoImage.positionX,
+      this._logoImage.positionY,
+      this._logoImage.image!.width,
+      this._logoImage.image!.height
+    ) 
 
-    let xCoord = canvas.width / 2 - this._logoImage.width / 2
-    const phraseSize = context.measureText(this._phrase)
-    xCoord = canvas.width / 2 - phraseSize.width / 2
-
+    /** Escreve a frase centralizada */
     context.fillStyle = '#ffffff'
     context.font = '30px "Jersey 15", sans-serif'
-    context.lineWidth = 4
+    context.lineWidth = 3
     context.strokeStyle = '#000000'
     context.fillStyle = '#ffffff'
+
+    let xCoord = canvas.width / 2 - this._logoImage.image!.width / 2
+    const phraseSize = context.measureText(this._phrase)
+    xCoord = canvas.width / 2 - phraseSize.width / 2
 
     context.strokeText(this._phrase, xCoord, canvas.height / 2 + 100)
     context.fillText(this._phrase, xCoord, canvas.height / 2 + 100)
@@ -108,11 +113,10 @@ export default class IntroScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var payload = () => {
-      sceneManager.setCurrentScene(GameSceneState.MENU)
       this._backgroundSound.stop()
+      sceneManager.setCurrentScene(GameSceneState.MENU)
     }
     this.onKeyboardEvent(event, this.getEventPayload(payload))
-    this.startBackgroundSound()
   }
 
   /**
@@ -134,8 +138,34 @@ export default class IntroScene extends SceneEvent implements Scene {
    * @returns {void}
    */
   private startBackgroundSound(): void {
+    if (this._initializedSoundSetup) return
     this._backgroundSound.play()
     this._backgroundSound.loop(true)
     this._backgroundSound.setVolume(0.5)
+    this._initializedSoundSetup = true
   }
+
+  /**
+   * Configura a imagem do logo na cena de introdução.
+   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena é desenhada.
+   * @private
+   * @returns {void}
+   */
+  private setImageLogoSetup(canvas: HTMLCanvasElement): void {
+    if (!this._initializedLogoSetup) {
+      this._logoImage.resizeProportionally({ targetWidth: 500 })
+
+      const logoX = canvas.width / 2 - this._logoImage.image!.width / 2
+      const logoY = -this._logoImage.image!.height
+
+      const targetLogoX = canvas.width / 2 - this._logoImage.image!.width / 2
+      const targetLogoY = canvas.height / 2 - this._logoImage.image!.height / 2 - 100
+
+      this._logoImage.initialPosition(logoX, logoY)
+      this._logoImage.setTargetPosition(targetLogoX, targetLogoY)
+      this._logoImage.speed = 100
+      this._initializedLogoSetup = true
+    }
+  }
+
 }

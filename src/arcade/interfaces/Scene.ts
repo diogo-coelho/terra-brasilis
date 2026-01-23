@@ -15,7 +15,7 @@ import { SceneManager } from '@/arcade/types'
  *
  */
 export default interface Scene {
-  drawScene(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void
+  drawScene(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, deltaTime: number): void
 
   handleKeyboardEvent?(event: KeyboardEvent, sceneManager: SceneManager): void
 

@@ -1,4 +1,5 @@
 enum GameSceneState {
+  BOOT = 'BOOT',
   INTRO = 'INTRO',
   MENU = 'MENU',
 }

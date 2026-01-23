@@ -19,10 +19,14 @@ import { SceneManager } from '@/arcade/core'
 export default class Game {
   private _canvas: HTMLCanvasElement
   private _context: CanvasRenderingContext2D
+  private _lastTime: number
+  private _currentTime: number = 0
+  private _deltaTime: number = 0
 
   constructor(canvas: HTMLCanvasElement) {
     this._canvas = canvas
     this._context = this._canvas.getContext('2d') as CanvasRenderingContext2D
+    this._lastTime = performance.now()
   }
 
   public get canvas(): HTMLCanvasElement {
@@ -59,7 +63,7 @@ export default class Game {
    */
   public main(scene: Scene): void {
     this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
-    scene.drawScene(this._canvas, this._context)
+    scene.drawScene(this._canvas, this._context, this._deltaTime)
   }
 
   /**
@@ -69,9 +73,22 @@ export default class Game {
    */
   public startGame(sceneManager: SceneManager): void {
     const gameLoop = (): void => {
+      this.updateTime()
       this.main(sceneManager.currentScene)
       requestAnimationFrame(gameLoop)
     }
     gameLoop()
+  }
+
+  /**
+   * Método que atualiza o tempo do jogo
+   *  
+   * @private
+   * @returns {void}
+   */
+  private updateTime(): void {
+    this._currentTime = performance.now()
+    this._deltaTime = (this._currentTime - this._lastTime) / 1000
+    this._lastTime = this._currentTime
   }
 }
