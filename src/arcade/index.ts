@@ -1,7 +1,7 @@
 import { Game, SceneManager } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
-import { GameObject, ButtonStandard } from './components'
+import { GameObject, ButtonStandard, ButtonStandardGroup } from './components'
 
 /**
  * Módulo principal do Arcade, que agrupa as principais classes do motor de jogo.
@@ -33,5 +33,6 @@ export const Arcade = {
   Components: {
     GameObject: GameObject,
     ButtonStandard: ButtonStandard,
+    ButtonStandardGroup: ButtonStandardGroup,
   },
 }

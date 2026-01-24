@@ -45,7 +45,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     this._backgroundSound = new Sound(themeSound)
     this._backgroundImage = new Image(backgroundImage)
     this._logoImage = new Image(logoImage)
-    this.onEnter()
   }
 
   /**
@@ -131,8 +130,7 @@ export default class IntroScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var payload = () => {
-      this.onExit()
-      sceneManager.setCurrentScene(GameSceneState.MENU)
+       sceneManager.setCurrentScene(GameSceneState.MENU)
     }
     this.onKeyboardEvent(event, this.getEventPayload(payload))
   }
@@ -157,9 +155,9 @@ export default class IntroScene extends SceneEvent implements Scene {
    */
   private startBackgroundSound(): void {
     if (this._initializedSoundSetup) return
-    this._backgroundSound.play()
     this._backgroundSound.loop(true)
     this._backgroundSound.setVolume(0.5)
+    this._backgroundSound.play()
     this._initializedSoundSetup = true
   }
 

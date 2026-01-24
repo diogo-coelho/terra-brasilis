@@ -62,6 +62,14 @@ export default class GameObject {
     return this._height
   }
 
+  public set width(value: number) {
+    this._width = value
+  }
+
+  public set height(value: number) {
+    this._height = value
+  }
+  
   public set color(color: string) {
     this._color = color
   }

@@ -36,17 +36,31 @@ export default class BootScene extends SceneEvent implements Scene {
     super()
     this._phrase = 'Pressione qualquer tecla'
     this._backgroundSound = new Sound(themeSound)
-    this.onEnter()
   }
 
+  /**
+   * Método chamado ao entrar na cena.
+   * Inicia a reprodução do som de fundo.
+   * @returns {void}
+   */
   public onEnter(): void {
     this.startBackgroundSound()
   }
 
+  /**
+   * Método chamado ao sair da cena.
+   * Para a reprodução do som de fundo.
+   * @returns {void}
+   */
   public onExit(): void {
     this._backgroundSound.stop()
   }
 
+  /**
+   * Desenha a cena no canvas.
+   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena será desenhada.
+   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
+   */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
@@ -76,7 +90,6 @@ export default class BootScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var action = () => {
-      this.onExit()
       sceneManager.setCurrentScene(GameSceneState.INTRO)
     }
     this.onKeyboardEvent(event, {
@@ -84,7 +97,6 @@ export default class BootScene extends SceneEvent implements Scene {
       eventKey: KeyboardKey.ANY,
       action,
     })
-    this.startBackgroundSound()
   }
 
   /**
@@ -97,7 +109,6 @@ export default class BootScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var action = () => {
-      this.onExit()
       sceneManager.setCurrentScene(GameSceneState.INTRO)
     }
     this.onMouseEvent(event, {
@@ -105,7 +116,6 @@ export default class BootScene extends SceneEvent implements Scene {
       eventKey: KeyboardKey.ANY,
       action,
     })
-    this.startBackgroundSound()
   }
 
   /**
@@ -114,8 +124,8 @@ export default class BootScene extends SceneEvent implements Scene {
    * @returns {void}
    */
   private startBackgroundSound(): void {
-    this._backgroundSound.play()
     this._backgroundSound.loop(true)
     this._backgroundSound.setVolume(0.5)
+    this._backgroundSound.play()
   }
 }

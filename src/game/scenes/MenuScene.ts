@@ -1,6 +1,6 @@
 import Scene from '@/arcade/interfaces/Scene'
-import { SceneEvent, SceneManager } from '@/arcade/core'
-import { ButtonStandard } from '@/arcade/components'
+import { SceneEvent } from '@/arcade/core'
+import { ButtonStandardGroup } from '@/arcade/components'
 import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
 
@@ -8,7 +8,6 @@ import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 import backgroundImage from '@/arcade/assets/images/terra_brasilis_intro_background.png'
 
 import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
-import EventListenerState from '@/arcade/enums/EventListenerState'
 
 /**
  * A classe MenuScene representa a cena do menu principal do jogo.
@@ -29,14 +28,14 @@ import EventListenerState from '@/arcade/enums/EventListenerState'
  */
 export default class MenuScene extends SceneEvent implements Scene {
   private _title: string
-  private _buttons: ButtonStandard[] = []
+  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(130, 25)
   private _backgroundSound: Sound
   private _initializedSoundSetup: boolean = false
   private _backgroundImage!: Image
 
   constructor() {
     super()
-    this._title = 'Menu'
+    this._title = 'Selecione uma opção'
     this._backgroundSound = new Sound(themeSound)
     this._backgroundImage = new Image(backgroundImage)
     this.initializeButtons()
@@ -86,46 +85,20 @@ export default class MenuScene extends SceneEvent implements Scene {
     context.restore()
 
     context.fillStyle = '#FFFFFF'
-    context.font = '25px "Jersey 15", sans-serif'
+    context.font = '30px "Jersey 15", sans-serif'
     context.textAlign = 'center'
     context.textBaseline = 'top'
     context.lineWidth = 3
-    context.strokeStyle = '#000000'
+    context.strokeStyle = '#37598b'
 
-    context.fillText(this._title, canvas.width / 2, 50)
     context.strokeText(this._title, canvas.width / 2, 50)
+    context.fillText(this._title, canvas.width / 2, 50)
 
-    const initialPosition = 120
-
-    this._buttons.forEach((btn, i) => {
-      const margin = i === 0 ? 0 : 20
-      btn.setPosition({
-        canvas,
-        align: 'vertical',
-        y: i * btn.height + margin + initialPosition,
-      })
-      btn.renderButton(context)
-    })
+    this._listButtons.renderButtons(canvas, context)
   }
 
-  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
-    const canvas = window.document.querySelector('canvas')
-    if (!canvas) return
-
-    switch (event.type) {
-      case EventListenerState.MOUSE_MOVE:
-        this._buttons.forEach((btn) => {
-          btn.handleMouseMove(event, canvas, () => {
-            scene?.currentScene.drawScene(canvas, canvas.getContext('2d')!, 0)
-          })
-        })
-        this.setCursorWhenAnyButtonIsHovered(event, canvas)
-        break
-      case EventListenerState.CLICK:
-        this._buttons.forEach((btn) => {
-          btn.handleOnClick({ event, scene, callback: () => this.onExit() })
-        })
-    }
+  public handleMouseEvent(event: MouseEvent): void {
+    this._listButtons.handleMouseEvent(event)
   }
 
   /**
@@ -133,31 +106,21 @@ export default class MenuScene extends SceneEvent implements Scene {
    * @private
    * @returns {void}
    */
-  private initializeButtons() {
-    this._buttons = []
-    /** Botão de Novo Jogo */
-    const newGameButton = new NewGameButton(
-      450,
-      60,
-      'Novo jogo',
-      '#008000',
-      '#016501',
-      'white',
-      'white'
-    )
-    this._buttons.push(newGameButton)
+  private initializeButtons() {    
+    this._listButtons.setButtonsConfigurations({
+      width: 450,
+      height: 60,
+      backgroundColor: '#84310a',
+      backgroundColorOnHover: '#692303',
+      color: '#FFFFFF',
+      colorOnHover: '#D7D7D7',
+    })
 
-    /** Botão de Continuar Jogo */
-    const continueGameButton = new ContinueGameButton(
-      450,
-      60,
-      'Continuar jogo',
-      '#008000',
-      '#016501',
-      'white',
-      'white'
-    )
-    this._buttons.push(continueGameButton)
+    const newGameButton = new NewGameButton('Novo jogo')
+    const continueGameButton = new ContinueGameButton('Continuar jogo')
+
+    this._listButtons.addButton(newGameButton)
+    this._listButtons.addButton(continueGameButton)
   }
 
   /**
@@ -167,28 +130,10 @@ export default class MenuScene extends SceneEvent implements Scene {
    */
   private startBackgroundSound(): void {
     if (this._initializedSoundSetup) return
-    this._backgroundSound.play()
     this._backgroundSound.loop(true)
     this._backgroundSound.setVolume(0.5)
+    this._backgroundSound.play()
     this._initializedSoundSetup = true
   }
 
-  /**
-   * Define o cursor do mouse quando algum botão está sendo hover.
-   * @private
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde os botões estão desenhados.
-   */
-  private setCursorWhenAnyButtonIsHovered(
-    event: MouseEvent,
-    canvas: HTMLCanvasElement
-  ): void {
-    const anyButtonIsHovered = this._buttons.some((btn) =>
-      btn.isMouseOverButton(event.x, event.y)
-    )
-    if (anyButtonIsHovered) {
-      canvas.style.cursor = 'pointer'
-    } else {
-      canvas.style.cursor = 'default'
-    }
-  }
 }

@@ -34,3 +34,11 @@ export type ButtonPosition = {
   y?: number
   align?: 'vertical' | 'horizontal' | 'center'
 }
+export type ButtonStandardGroupConfig = {
+  width: number
+  height: number
+  backgroundColor: string
+  color: string
+  backgroundColorOnHover: string
+  colorOnHover: string
+}

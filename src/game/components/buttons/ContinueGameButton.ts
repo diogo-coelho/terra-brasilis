@@ -30,13 +30,7 @@ import { GameSceneState } from '@/game/enums'
  *
  * @example
  * const continueButton = new ContinueGameButton(
- *  200,
- *  50,
  * 'Continue Game',
- * '#000000',
- * '#333333',
- * '#FFFFFF',
- * '#FFFF00'
  * );
  */
 export default class ContinueGameButton
@@ -44,24 +38,9 @@ export default class ContinueGameButton
   implements ButtonEvent
 {
   constructor(
-    width: number,
-    height: number,
     label: string,
-    backgroundColor: string,
-    backgroundColorOnHover: string,
-    color: string,
-    colorOnHover: string
   ) {
-    super(width, height, label)
-
-    this.backgroundColor = backgroundColor
-    this.backgroundColorOnHover = backgroundColorOnHover
-    this.color = color
-    this.colorOnHover = colorOnHover
-    this.font = '"Jersey 15"'
-    this.fontSize = 30
-    this.textAlign = 'center'
-    this.textBaseline = 'middle'
+    super(0, 0, label)
   }
 
   public handleOnClick({ event, scene }: ButtonClickHandle): void {

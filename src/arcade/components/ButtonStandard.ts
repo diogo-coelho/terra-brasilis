@@ -44,7 +44,7 @@ export default class ButtonStandard extends Button implements ButtonEvent {
   private _textAlign: CanvasTextAlign
   private _textBaseline: CanvasTextBaseline
 
-  constructor(x: number, y: number, label: string) {
+  constructor(x: number = 0, y: number = 0, label: string = '') {
     super(x, y, label)
     this._font = 'Arial'
     this._fontSize = 16
