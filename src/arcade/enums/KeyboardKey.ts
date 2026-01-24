@@ -1,7 +1,7 @@
 enum KeyboardKey {
   ENTER = 'Enter',
   SPACE = ' ',
-  ANY = 'any'
+  ANY = 'any',
 }
 
 export default KeyboardKey

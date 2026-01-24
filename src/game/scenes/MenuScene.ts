@@ -1,5 +1,8 @@
 import { SceneEvent } from '@/arcade/core'
 import Scene from '@/arcade/interfaces/Scene'
+import { ButtonStandard } from '@/arcade/components'
+
+import { ContinueGameButton, NewGameButton } from '../components/buttons'
 
 /**
  * A classe MenuScene representa a cena do menu principal do jogo.
@@ -20,25 +23,71 @@ import Scene from '@/arcade/interfaces/Scene'
  */
 export default class MenuScene extends SceneEvent implements Scene {
   private _title: string
+  private _buttons: ButtonStandard[] = []
 
   constructor() {
     super()
-    this._title = 'Menu Principal'
+    this._title = 'Menu'
+    this.initializeButtons()
   }
 
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
+    context.fillStyle = '#CCCCCC'
+    context.fillRect(0, 0, canvas.width, canvas.height)
+
     context.fillStyle = '#000000'
-    context.font = 'bold 40px Arial, sans-serif'
+    context.font = 'bold 16px Arial, sans-serif'
 
     const titleSize = context.measureText(this._title)
-    let xCoord = canvas.width / 2 - titleSize.width / 2
+    const xCoord = canvas.width / 2 - titleSize.width / 2
 
-    context.fillText(this._title, xCoord, canvas.height / 2)
+    context.fillText(this._title, xCoord, 50)
 
-    context.fillStyle = '#FF0000'
-    context.font = '20px Arial, sans-serif'
+    const initialPosition = 80
+
+    this._buttons.forEach((btn, i) => {
+      const margin = i === 0 ? 0 : 20
+      btn.setPosition({
+        canvas,
+        align: 'vertical',
+        y: i * btn.height + margin + initialPosition,
+      })
+      btn.renderButton(context)
+    })
+  }
+
+  private initializeButtons() {
+    this._buttons = []
+    const newGameButton = new NewGameButton(
+      150,
+      80,
+      'Novo jogo',
+      '"Jersey 15"',
+      20,
+      'center',
+      'middle',
+      '#008000',
+      '#016501',
+      'white',
+      'white'
+    )
+    this._buttons.push(newGameButton)
+    const continueGameButton = new ContinueGameButton(
+      150,
+      80,
+      'Continuar jogo',
+      '"Jersey 15"',
+      20,
+      'center',
+      'middle',
+      '#008000',
+      '#016501',
+      'white',
+      'white'
+    )
+    this._buttons.push(continueGameButton)
   }
 }

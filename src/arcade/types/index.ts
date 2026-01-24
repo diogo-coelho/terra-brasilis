@@ -18,3 +18,19 @@ export type Position = {
   x: number
   y: number
 }
+export type ColorOnHover = {
+  default: string
+  hover: string
+}
+export type Callback = <T>(...args: T[]) => T | void
+export type ButtonClickHandle = {
+  event: MouseEvent
+  scene?: SceneManager
+  callback?: Callback
+}
+export type ButtonPosition = {
+  canvas: HTMLCanvasElement
+  x?: number
+  y?: number
+  align?: 'vertical' | 'horizontal' | 'center'
+}

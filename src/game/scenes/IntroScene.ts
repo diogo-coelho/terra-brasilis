@@ -86,7 +86,7 @@ export default class IntroScene extends SceneEvent implements Scene {
       this._logoImage.positionY,
       this._logoImage.image!.width,
       this._logoImage.image!.height
-    ) 
+    )
 
     /** Escreve a frase centralizada */
     context.fillStyle = '#ffffff'
@@ -159,7 +159,8 @@ export default class IntroScene extends SceneEvent implements Scene {
       const logoY = -this._logoImage.image!.height
 
       const targetLogoX = canvas.width / 2 - this._logoImage.image!.width / 2
-      const targetLogoY = canvas.height / 2 - this._logoImage.image!.height / 2 - 100
+      const targetLogoY =
+        canvas.height / 2 - this._logoImage.image!.height / 2 - 100
 
       this._logoImage.initialPosition(logoX, logoY)
       this._logoImage.setTargetPosition(targetLogoX, targetLogoY)
@@ -167,5 +168,4 @@ export default class IntroScene extends SceneEvent implements Scene {
       this._initializedLogoSetup = true
     }
   }
-
 }

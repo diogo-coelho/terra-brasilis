@@ -82,7 +82,7 @@ export default class Game {
 
   /**
    * Método que atualiza o tempo do jogo
-   *  
+   *
    * @private
    * @returns {void}
    */

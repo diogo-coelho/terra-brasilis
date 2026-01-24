@@ -1,5 +1,5 @@
-import ImageError from "../errors/ImageError"
-import { ImageResizePayload, Position } from "../types"
+import ImageError from '../errors/ImageError'
+import { ImageResizePayload, Position } from '../types'
 
 /**
  * Classe que representa uma imagem carregada no navegador.
@@ -88,29 +88,37 @@ export default class Image {
    * @param {ImageResizePayload} params - Objeto contendo as propriedades de redimensionamento.
    * @returns {void}
    */
-  public resizeProportionally({ targetWidth, targetHeight, option = 'cover' }: ImageResizePayload): void {
+  public resizeProportionally({
+    targetWidth,
+    targetHeight,
+    option = 'cover',
+  }: ImageResizePayload): void {
     if (this._image === null || !this.isLoaded()) return
     if (!targetWidth && !targetHeight) {
-      throw new ImageError('Either targetWidth or targetHeight must be provided.')
+      throw new ImageError(
+        'Either targetWidth or targetHeight must be provided.'
+      )
     }
 
     switch (option) {
-      case 'cover':
-        if (!targetWidth) 
+      case 'cover': {
+        if (!targetWidth)
           throw new ImageError('targetWidth is required for cover option.')
 
         const ratioWidth = this._image.naturalHeight / this._image.naturalWidth
         this._image.width = targetWidth
         this._image.height = targetWidth * ratioWidth
-        break;
-      case 'contain':
+        break
+      }
+      case 'contain': {
         if (!targetHeight)
           throw new ImageError('targetHeight is required for contain option.')
 
         const ratioHeight = this._image.naturalWidth / this._image.naturalHeight
         this._image.height = targetHeight
         this._image.width = targetHeight * ratioHeight
-        break;
+        break
+      }
     }
   }
 
@@ -132,7 +140,7 @@ export default class Image {
 
     return {
       x: this._positionX,
-      y: this._positionY
+      y: this._positionY,
     }
   }
 
@@ -155,8 +163,14 @@ export default class Image {
    */
   public updatePosition(deltaTime: number, speed?: number): void {
     if (this._initialized) {
-      this._positionX += this._speed * deltaTime * Math.sign(this._positionTargetX - this._positionX)
-      this._positionY += this._speed * deltaTime * Math.sign(this._positionTargetY - this._positionY)
+      this._positionX +=
+        this._speed *
+        deltaTime *
+        Math.sign(this._positionTargetX - this._positionX)
+      this._positionY +=
+        this._speed *
+        deltaTime *
+        Math.sign(this._positionTargetY - this._positionY)
 
       if (this._positionX > this._positionTargetX) {
         this._positionX = this._positionTargetX
