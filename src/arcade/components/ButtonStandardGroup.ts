@@ -1,28 +1,28 @@
-import { EventListenerState } from "../enums"
-import ButtonStandard from "./ButtonStandard"
-import { ButtonStandardGroupConfig, Callback } from "../types"
+import ButtonStandard from './ButtonStandard'
+import { EventListenerState } from '../enums'
+import { ButtonStandardGroupConfig, Callback, SceneManager } from '../types'
 
 /**
  * A classe ButtonStandardGroup gerencia um grupo de botões padrão (ButtonStandard).
- *  
+ *
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
- * 
+ *
  * @description
  * A classe ButtonStandardGroup é responsável por gerenciar um grupo de botões padrão (ButtonStandard).
  * Ela permite adicionar botões ao grupo, renderizá-los em um canvas HTML e manipular eventos de mouse,
  * como movimento do mouse e cliques, para interagir com os botões.
- * 
+ *
  * @class ButtonStandardGroup
- * 
+ *
  * @example
  * const buttonGroup = new ButtonStandardGroup(200, 20);
- * 
+ *
  * @see ButtonStandard
  * @see EventListenerState
- * 
- * 
+ *
+ *
  */
 export default class ButtonStandardGroup {
   private _buttons: ButtonStandard[] = []
@@ -54,7 +54,7 @@ export default class ButtonStandardGroup {
     button.color = this._color
     button.backgroundColorOnHover = this._backgroundColorOnHover
     button.colorOnHover = this._colorOnHover
-    
+
     this._buttons.push(button)
   }
 
@@ -62,7 +62,7 @@ export default class ButtonStandardGroup {
     this._buttons = []
   }
 
-  public set alignement(value: 'horizontal' | 'vertical') { 
+  public set alignement(value: 'horizontal' | 'vertical') {
     this._alignement = value
   }
 
@@ -73,7 +73,7 @@ export default class ButtonStandardGroup {
   /**
    * Define as configurações padrão para todos os botões do grupo.
    * @param {ButtonStandardGroupConfig} config - As configurações padrão para os botões.
-   * @returns {void} 
+   * @returns {void}
    */
   public setButtonsConfigurations({
     width,
@@ -102,7 +102,7 @@ export default class ButtonStandardGroup {
   ): void {
     this._buttons.forEach((button, i) => {
       const margin = i === 0 ? 0 : this._spacing
-      
+
       button.setPosition({
         canvas,
         align: this._alignement,
@@ -120,6 +120,7 @@ export default class ButtonStandardGroup {
    */
   public handleMouseEvent(
     event: MouseEvent,
+    scene: SceneManager,
     sceneCallback?: Callback
   ): void {
     const canvas = this._canvas
@@ -134,7 +135,7 @@ export default class ButtonStandardGroup {
         break
       case EventListenerState.CLICK:
         this._buttons.forEach((btn) => {
-          btn.handleOnClick({ event, callback: sceneCallback })
+          btn.handleOnClick({ event, scene, callback: sceneCallback })
         })
     }
   }
@@ -157,5 +158,4 @@ export default class ButtonStandardGroup {
       canvas.style.cursor = 'default'
     }
   }
-  
 }

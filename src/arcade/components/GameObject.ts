@@ -69,7 +69,7 @@ export default class GameObject {
   public set height(value: number) {
     this._height = value
   }
-  
+
   public set color(color: string) {
     this._color = color
   }

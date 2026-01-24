@@ -37,9 +37,7 @@ export default class ContinueGameButton
   extends Arcade.Components.ButtonStandard
   implements ButtonEvent
 {
-  constructor(
-    label: string,
-  ) {
+  constructor(label: string) {
     super(0, 0, label)
   }
 

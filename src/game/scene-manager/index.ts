@@ -3,7 +3,12 @@ import { SceneManager } from '@/arcade/core'
 import { NamedScene } from '@/arcade/types'
 
 import { GameSceneState } from '@/game/enums'
-import { IntroScene, MenuScene, BootScene, InsertNameScene } from '@/game/scenes'
+import {
+  IntroScene,
+  MenuScene,
+  BootScene,
+  InsertNameScene,
+} from '@/game/scenes'
 
 /**
  * O módulo de cenas do jogo é responsável por gerenciar as diferentes cenas que compõem o jogo.

@@ -1,5 +1,5 @@
 import Scene from '@/arcade/interfaces/Scene'
-import { SceneEvent } from '@/arcade/core'
+import { SceneEvent, SceneManager } from '@/arcade/core'
 import { ButtonStandardGroup } from '@/arcade/components'
 import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
@@ -97,8 +97,8 @@ export default class MenuScene extends SceneEvent implements Scene {
     this._listButtons.renderButtons(canvas, context)
   }
 
-  public handleMouseEvent(event: MouseEvent): void {
-    this._listButtons.handleMouseEvent(event)
+  public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
+    this._listButtons.handleMouseEvent(event, scene as SceneManager)
   }
 
   /**
@@ -106,7 +106,7 @@ export default class MenuScene extends SceneEvent implements Scene {
    * @private
    * @returns {void}
    */
-  private initializeButtons() {    
+  private initializeButtons() {
     this._listButtons.setButtonsConfigurations({
       width: 450,
       height: 60,
@@ -135,5 +135,4 @@ export default class MenuScene extends SceneEvent implements Scene {
     this._backgroundSound.play()
     this._initializedSoundSetup = true
   }
-
 }
