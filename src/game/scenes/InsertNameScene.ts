@@ -3,7 +3,15 @@ import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 
 export default class InsertNameScene extends SceneEvent implements Scene {
-  drawScene(
+  public onEnter(): void {
+    throw new Error('Method not implemented.')
+  }
+
+  public onExit(): void {
+    throw new Error('Method not implemented.')
+  }
+
+  public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     deltaTime: number
@@ -11,11 +19,17 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     throw new Error('Method not implemented.')
   }
 
-  handleKeyboardEvent?(event: KeyboardEvent, sceneManager: SceneManager): void {
+  public handleKeyboardEvent?(
+    event: KeyboardEvent,
+    sceneManager: SceneManager
+  ): void {
     throw new Error('Method not implemented.')
   }
 
-  handleMouseEvent?(event: MouseEvent, sceneManager: SceneManager): void {
+  public handleMouseEvent?(
+    event: MouseEvent,
+    sceneManager: SceneManager
+  ): void {
     throw new Error('Method not implemented.')
   }
 }

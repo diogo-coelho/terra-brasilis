@@ -17,9 +17,11 @@ import { ButtonClickHandle, Callback } from '../types'
 export default interface ButtonEvent {
   isMouseOverButton(xCoord: number, yCoord: number): boolean
 
-  handleMouseMove(event: MouseEvent, callback?: Callback): void
+  handleMouseMove(
+    event: MouseEvent,
+    canvas: HTMLCanvasElement,
+    callback?: Callback
+  ): void
 
-  handleOnClick({ event, scene, callback }: ButtonClickHandle): void
-
-  applyHoverOnButton(event: MouseEvent): void
+  applyHoverOnButton(event: MouseEvent, context: HTMLCanvasElement): void
 }

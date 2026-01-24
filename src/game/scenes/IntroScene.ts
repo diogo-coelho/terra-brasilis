@@ -34,10 +34,10 @@ import { GameSceneState } from '@/game/enums'
 export default class IntroScene extends SceneEvent implements Scene {
   private _phrase: string
   private _backgroundSound: Sound
+  private _initializedSoundSetup: boolean = false
   private _backgroundImage!: Image
   private _logoImage!: Image
   private _initializedLogoSetup: boolean = false
-  private _initializedSoundSetup: boolean = false
 
   constructor() {
     super()
@@ -45,6 +45,27 @@ export default class IntroScene extends SceneEvent implements Scene {
     this._backgroundSound = new Sound(themeSound)
     this._backgroundImage = new Image(backgroundImage)
     this._logoImage = new Image(logoImage)
+    this.onEnter()
+  }
+
+  /**
+   * Método chamado ao entrar na cena.
+   * Inicia a reprodução do som de fundo.
+   * @returns {void}
+   */
+  public onEnter(): void {
+    /** Inicia a reprodução do som de fundo */
+    this.startBackgroundSound()
+  }
+
+  /**
+   * Método chamado ao sair da cena.
+   * Para a reprodução do som de fundo.
+   * @returns {void}
+   */
+  public onExit(): void {
+    /** Para a reprodução do som de fundo */
+    this._backgroundSound.stop()
   }
 
   /**
@@ -57,9 +78,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    /** Inicia a reprodução do som de fundo */
-    this.startBackgroundSound()
-
     /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
     this._backgroundImage.setImageAsCover(canvas)
@@ -113,7 +131,7 @@ export default class IntroScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var payload = () => {
-      this._backgroundSound.stop()
+      this.onExit()
       sceneManager.setCurrentScene(GameSceneState.MENU)
     }
     this.onKeyboardEvent(event, this.getEventPayload(payload))

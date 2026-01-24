@@ -15,6 +15,10 @@ import { SceneManager } from '@/arcade/types'
  *
  */
 export default interface Scene {
+  onEnter(): void
+
+  onExit(): void
+
   drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,

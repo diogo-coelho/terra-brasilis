@@ -1,5 +1,7 @@
 import { Arcade } from '@/arcade'
+import ButtonEvent from '@/arcade/interfaces/ButtonEvent'
 import { ButtonClickHandle } from '@/arcade/types'
+
 import { GameSceneState } from '@/game/enums'
 
 /**
@@ -21,10 +23,6 @@ import { GameSceneState } from '@/game/enums'
  * @param {number} width - A largura do botão.
  * @param {number} height - A altura do botão.
  * @param {string} label - O rótulo do botão.
- * @param {string} font - A fonte do texto do botão.
- * @param {number} fontSize - O tamanho da fonte do texto do botão.
- * @param {CanvasTextAlign} textAlign - O alinhamento do texto do botão.
- * @param {CanvasTextBaseline} textBaseline - A linha de base do texto do botão.
  * @param {string} backgroundColor - A cor de fundo do botão.
  * @param {string} backgroundColorOnHover - A cor de fundo do botão ao passar o mouse.
  * @param {string} color - A cor do texto do botão.
@@ -35,10 +33,6 @@ import { GameSceneState } from '@/game/enums'
  *  200,
  *  50,
  * 'Continue Game',
- * 'Arial',
- *  20,
- * 'center',
- * 'middle',
  * '#000000',
  * '#333333',
  * '#FFFFFF',
@@ -47,26 +41,27 @@ import { GameSceneState } from '@/game/enums'
  */
 export default class ContinueGameButton
   extends Arcade.Components.ButtonStandard
+  implements ButtonEvent
 {
   constructor(
     width: number,
     height: number,
     label: string,
-    font: string,
-    fontSize: number,
-    textAlign: CanvasTextAlign,
-    textBaseline: CanvasTextBaseline,
     backgroundColor: string,
     backgroundColorOnHover: string,
     color: string,
     colorOnHover: string
   ) {
-    super(width, height, label, font, fontSize, textAlign, textBaseline)
+    super(width, height, label)
 
     this.backgroundColor = backgroundColor
     this.backgroundColorOnHover = backgroundColorOnHover
     this.color = color
     this.colorOnHover = colorOnHover
+    this.font = '"Jersey 15"'
+    this.fontSize = 30
+    this.textAlign = 'center'
+    this.textBaseline = 'middle'
   }
 
   public handleOnClick({ event, scene }: ButtonClickHandle): void {

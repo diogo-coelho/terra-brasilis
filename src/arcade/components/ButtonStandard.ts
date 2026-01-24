@@ -1,6 +1,7 @@
 import ButtonError from '../errors/ButtonError'
+import ButtonEvent from '../interfaces/ButtonEvent'
 import { ButtonPosition, Callback } from '../types'
-import Button from './Button'
+import Button from './abstract/Button'
 
 /**
  * Classe que representa um botão padrão no jogo.
@@ -37,26 +38,18 @@ import Button from './Button'
  *  'middle'
  * );
  */
-export default class ButtonStandard extends Button {
+export default class ButtonStandard extends Button implements ButtonEvent {
   private _font: string
   private _fontSize: number
   private _textAlign: CanvasTextAlign
   private _textBaseline: CanvasTextBaseline
 
-  constructor(
-    x: number,
-    y: number,
-    label: string,
-    font: string,
-    fontSize: number,
-    textAlign: CanvasTextAlign,
-    textBaseline: CanvasTextBaseline
-  ) {
+  constructor(x: number, y: number, label: string) {
     super(x, y, label)
-    this._font = font
-    this._fontSize = fontSize
-    this._textAlign = textAlign
-    this._textBaseline = textBaseline
+    this._font = 'Arial'
+    this._fontSize = 16
+    this._textAlign = 'center'
+    this._textBaseline = 'middle'
   }
 
   public get font(): string {
@@ -125,12 +118,17 @@ export default class ButtonStandard extends Button {
     )
   }
 
-  public applyHoverOnButton(event: MouseEvent) {
+  public applyHoverOnButton(
+    event: MouseEvent,
+    canvas: HTMLCanvasElement
+  ): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
+      canvas.style.cursor = 'pointer'
       this.backgroundColor = this.backgroundColorOnHover.hover
       this.color = this.colorOnHover.hover
     } else {
+      canvas.style.cursor = 'default'
       this.backgroundColor = this.backgroundColorOnHover.default
       this.color = this.colorOnHover.default
     }
@@ -151,8 +149,12 @@ export default class ButtonStandard extends Button {
     )
   }
 
-  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
-    this.applyHoverOnButton(event)
+  public handleMouseMove(
+    event: MouseEvent,
+    canvas: HTMLCanvasElement,
+    callback?: Callback
+  ): void {
+    this.applyHoverOnButton(event, canvas)
     callback?.()
   }
 

@@ -36,6 +36,15 @@ export default class BootScene extends SceneEvent implements Scene {
     super()
     this._phrase = 'Pressione qualquer tecla'
     this._backgroundSound = new Sound(themeSound)
+    this.onEnter()
+  }
+
+  public onEnter(): void {
+    this.startBackgroundSound()
+  }
+
+  public onExit(): void {
+    this._backgroundSound.stop()
   }
 
   public drawScene(
@@ -67,7 +76,7 @@ export default class BootScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var action = () => {
-      this._backgroundSound.stop()
+      this.onExit()
       sceneManager.setCurrentScene(GameSceneState.INTRO)
     }
     this.onKeyboardEvent(event, {
@@ -88,7 +97,7 @@ export default class BootScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var action = () => {
-      this._backgroundSound.stop()
+      this.onExit()
       sceneManager.setCurrentScene(GameSceneState.INTRO)
     }
     this.onMouseEvent(event, {
