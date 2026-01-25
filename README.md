@@ -8,30 +8,31 @@
 
 ## 📋 Sobre o Projeto
 
-Terra Brasilis é um jogo de estratégia em tempo real (RTS) com perspectiva isométrica, desenvolvido do zero utilizando tecnologias web modernas. O projeto combina um **engine de jogo customizado** (Arcade Framework) com uma **arquitetura cliente-servidor** completa.
+Terra Brasilis é um jogo de estratégia em tempo real (RTS) com perspectiva isométrica, desenvolvido do zero utilizando tecnologias web modernas. O projeto combina um **engine de jogo customizado** (Arcade Framework) com uma **arquitetura cliente-servidor** completa, sem dependência de engines ou frameworks de terceiros para o jogo.
 
 ### ✨ Características Principais
 
-- 🎮 **Engine de Jogo Customizado**: Framework arcade completo construído em TypeScript
-- 🖼️ **Renderização Canvas**: Gráficos 2D utilizando Canvas API nativa
-- 🎵 **Sistema de Áudio**: Gerenciamento de sons e música com Tone.js
-- 🎨 **Sistema de Cenas**: Gerenciador robusto de cenas com eventos e transições
-- 🔘 **Sistema de UI**: Componentes reutilizáveis de interface (botões, inputs)
+- 🎮 **Engine de Jogo Customizado**: Framework arcade completo construído em TypeScript puro
+- 🖼️ **Renderização Canvas**: Gráficos 2D utilizando Canvas API nativa com suporte a suavização de imagem
+- 🎵 **Sistema de Áudio Nativo**: Gerenciamento de sons e música usando HTML5 Audio API
+- 🎨 **Sistema de Cenas**: Gerenciador robusto com ciclo de vida completo e eventos personalizados
+- 🔘 **Sistema de UI**: Componentes reutilizáveis de interface (botões, grupos de botões)
 - 🗄️ **Backend Express**: Servidor Node.js com Express e MongoDB
 - 📦 **Build System**: Webpack configurado para desenvolvimento e produção
-- 🎯 **TypeScript**: Tipagem estática em todo o projeto
+- 🎯 **TypeScript**: Tipagem estática em todo o projeto com path aliases
 
 ## 🏗️ Arquitetura do Projeto
 
 O projeto está organizado em três módulos principais:
 
 ### 1. **Arcade Framework** (`src/arcade/`)
-Engine de jogo customizado com:
-- **Core**: Classe `Game` principal e `SceneManager` para gerenciamento de cenas
-- **Components**: Componentes reutilizáveis (GameObject, Button, ButtonGroup)
-- **Events**: Sistema de eventos globais e de cena
-- **Images/Sounds**: Gerenciadores de recursos multimídia
-- **Enums/Interfaces**: Tipos e contratos do framework
+Engine de jogo customizado construído do zero:
+- **Core**: Classe `Game` com game loop baseado em `requestAnimationFrame` e delta time, `SceneManager` para gerenciamento de cenas
+- **Components**: Componentes reutilizáveis (GameObject, Button abstrato, ButtonStandard, ButtonStandardGroup)
+- **Events**: Sistema de eventos globais (`GlobalEvents`) e eventos de cena (`SceneEvent`)
+- **Images**: Gerenciador de imagens com redimensionamento proporcional e cover
+- **Sounds**: Sistema de áudio usando HTMLAudioElement com controle de volume, loop e fade
+- **Enums/Interfaces/Types**: Contratos TypeScript para todo o framework
 
 ### 2. **Game Logic** (`src/game/`)
 Implementação do jogo Terra Brasilis:
@@ -108,42 +109,46 @@ Este comando irá:
 
 ## 🎮 Sistema de Cenas
 
-O jogo utiliza um sistema de gerenciamento de cenas que permite:
+O jogo utiliza um sistema de gerenciamento de cenas customizado que permite:
 
 - **Transições suaves** entre diferentes estados do jogo
-- **Ciclo de vida completo**: `onEnter()`, `update()`, `render()`, `onExit()`
-- **Eventos customizados** para cada cena
-- **Carregamento de recursos** específicos por cena
+- **Ciclo de vida completo**: `onEnter()`, `drawScene()`, `handleMouseEvent()`, `onExit()`
+- **Eventos customizados** através da classe `SceneEvent`
+- **Carregamento de recursos** específicos por cena (imagens, sons)
+- **Mapeamento de cenas** via `Map<string, Scene>` para acesso rápido
+- **Delta time** para animações consistentes independente do framerate
 
 ### Cenas Implementadas
 
-1. **BootScene**: Inicialização e carregamento inicial
-2. **IntroScene**: Tela de introdução do jogo
-3. **MenuScene**: Menu principal com opções de jogo
-4. **InsertNameScene**: Tela para inserir nome do jogador
-5. **LoadGame**: Carregamento de jogo salvo
+1. **BootScene**: Inicialização e carregamento inicial do jogo
+2. **IntroScene**: Tela de introdução com animações e transições
+3. **MenuScene**: Menu principal com botões interativos e música de fundo
+4. **InsertNameScene**: Interface para inserir nome do jogador
+5. **LoadGame**: Carregamento de partidas salvas
 
 ## 🛠️ Tecnologias Utilizadas
-
-### Frontend
-- **TypeScript**: Linguagem principal
-- **Canvas API**: Renderização gráfica
-- **Tone.js**: Sistema de áudio
+ 5.9.3**: Linguagem principal com configuração strict
+- **Canvas API**: Renderização gráfica 2D com controle de image smoothing
+- **HTML5 Audio API**: Sistema de áudio nativo do navegador
+- **SASS**: Pré-processador CSS com Webpack
+- **Webpack 5**: Bundler com configurações separadas dev/prod
 - **SASS**: Pré-processador CSS
 - **Webpack**: Bundler e build tool
 
 ### Backend
-- **Node.js**: Runtime JavaScript
-- **Express**: Framework web
-- **MongoDB**: Banco de dados NoSQL
-- **Mongoose**: ODM para MongoDB
+- **Node.js 25+**: Runtime JavaScript
+- **Express 5**: Framework web moderno
+- **MongoDB 7**: Banco de dados NoSQL
+- **Mongoose 9**: ODM para MongoDB
 - **body-parser**: Middleware para parsing de requisições
+- **dotenv**: Gerenciamento de variáveis de ambiente
 
 ### DevOps & Qualidade
-- **ESLint**: Linter de código
-- **Prettier**: Formatação de código
-- **TypeScript**: Verificação de tipos
-- **Webpack Dev Server**: Servidor de desenvolvimento
+- **ESLint 9**: Linter com plugin TypeScript e Prettier
+- **Prettier**: Formatação de código consistente
+- **TypeScript**: Verificação de tipos em modo strict
+- **TerserPlugin**: Minificação de código em produção
+- **CSS Minimizer**: Otimização de CSS
 
 ## 📁 Estrutura de Diretórios
 
@@ -199,16 +204,59 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 - Descrição do bug
 - Passos para reproduzir
 - Comportamento esperado
-- Screenshots (se aplicável)
+- S🎯 Funcionalidades Implementadas
+
+### Framework Arcade
+- ✅ Game loop com delta time
+- ✅ Sistema de cenas com ciclo de vida
+- ✅ Gerenciamento de imagens (carregamento, redimensionamento)
+- ✅ Sistema de áudio (play, pause, stop, volume, loop, fade)
+- ✅ Componentes de UI (botões com hover e click)
+- ✅ Sistema de eventos customizados
+- ✅ Tratamento de erros específicos (ImageError, SoundError, ButtonError)
+
+### Jogo
+- ✅ Telas de boot, intro e menu
+- ✅ Interface para novo jogo e continuar
+- ✅ Sistema de música de fundo
+- ✅ Botões interativos com efeitos visuais
+
+### Backend
+- ✅ Servidor Express configurado
+- ✅ Conexão com MongoDB
+- ✅ Rotas de API (GameRouter)
+- ✅ Servir arquivos estáticos
 
 ## 🗺️ Roadmap
 
-- [ ] Sistema de mapas isométricos
+### Próximos Passos
+- [ ] Implementar sistema de tiles isométricos
 - [ ] Sistema de unidades e movimentação
 - [ ] Sistema de recursos e economia
+- [ ] Persistência de dados (salvamento de jogo)
+- [ ] Sistema de input de teclado completo
+
+### Futuro
 - [ ] IA para oponentes
-- [ ] Multiplayer online
-- [ ] Sistema de salvamento de jogo
+- [ ] Multiplayer online via WebSockets
+- [ ] Tutorial interativo
+- [ ] Campanha single-player
+- [ ] Editor de mapas
+- [ ] Sistema de fog of war
+
+## 🧪 Tecnologias e Padrões
+
+### Padrões de Código
+- **POO**: Arquitetura orientada a objetos com herança e abstração
+- **Path Aliases**: Imports limpos usando `@/` via tsconfig
+- **Error Handling**: Classes de erro customizadas para cada domínio
+- **Type Safety**: Interfaces e tipos para todos os contratos
+
+### Performance
+- **Game Loop**: Baseado em `requestAnimationFrame` para 60 FPS
+- **Delta Time**: Animações independentes do framerate
+- **Asset Preloading**: Carregamento assíncrono de recursos
+- **Code Splitting**: Webpack otimizado para produçãode jogo
 - [ ] Tutorial interativo
 - [ ] Campanha single-player
 
