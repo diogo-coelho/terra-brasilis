@@ -1,6 +1,7 @@
 import { Sound } from '../../sounds'
 import GameObject from '../GameObject'
 import { ButtonClickHandle, ButtonPosition, ColorOnHover } from '../../types'
+import { SceneManager } from '@/arcade/core'
 
 /**
  * Classe abstrata que representa um botão interativo no jogo.
@@ -88,5 +89,7 @@ export default abstract class Button extends GameObject {
 
   abstract setPosition({ canvas, x, y }: ButtonPosition): void
 
-  public handleOnClick({ event, scene, callback }: ButtonClickHandle): void {}
+  abstract handleOnClick({ event, scene, callback }: ButtonClickHandle): void
+
+  public onClick(scene: SceneManager): void {}
 }

@@ -135,7 +135,11 @@ export default class ButtonStandardGroup {
         break
       case EventListenerState.CLICK:
         this._buttons.forEach((btn) => {
-          btn.handleOnClick({ event, scene, callback: sceneCallback })
+          btn.handleOnClick({
+            event,
+            scene,
+            callback: () => btn.onClick(scene),
+          })
         })
     }
   }

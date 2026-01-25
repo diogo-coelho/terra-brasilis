@@ -5,7 +5,7 @@ import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
 
 import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
-import backgroundImage from '@/arcade/assets/images/terra_brasilis_intro_background.png'
+import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
 
 import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
 

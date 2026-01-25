@@ -1,6 +1,6 @@
 import { Arcade } from '@/arcade'
 import ButtonEvent from '@/arcade/interfaces/ButtonEvent'
-import { ButtonClickHandle } from '@/arcade/types'
+import { ButtonClickHandle, SceneManager } from '@/arcade/types'
 
 import { GameSceneState } from '@/game/enums'
 
@@ -41,9 +41,14 @@ export default class ContinueGameButton
     super(0, 0, label)
   }
 
+  /**
   public handleOnClick({ event, scene }: ButtonClickHandle): void {
     if (!event) return
     if (!this.isMouseOverButton(event.x as number, event.y as number)) return
+    scene?.setCurrentScene(GameSceneState.INSERT_NAME)
+  } */
+
+  public onClick(scene: SceneManager): void {
     scene?.setCurrentScene(GameSceneState.INSERT_NAME)
   }
 }

@@ -1,7 +1,12 @@
-import ButtonError from '../errors/ButtonError'
-import ButtonEvent from '../interfaces/ButtonEvent'
-import { ButtonPosition, Callback } from '../types'
 import Button from './abstract/Button'
+import { ButtonEvent } from '../interfaces'
+import { Sound } from '../sounds'
+import { ButtonClickHandle, ButtonPosition, Callback } from '../types'
+import { SoundError, ButtonError } from '../errors'
+import { ErrorState } from '../enums'
+
+import hoverSound from '../assets/sounds/sfx/btn_hover.ogg'
+import clickSound from '../assets/sounds/sfx/btn_click.wav'
 
 /**
  * Classe que representa um botão padrão no jogo.
@@ -43,6 +48,9 @@ export default class ButtonStandard extends Button implements ButtonEvent {
   private _fontSize: number
   private _textAlign: CanvasTextAlign
   private _textBaseline: CanvasTextBaseline
+  private _isHovered: boolean = false
+  private _hoverSound: Sound | null = null
+  private _clickSound: Sound | null = null
 
   constructor(x: number = 0, y: number = 0, label: string = '') {
     super(x, y, label)
@@ -50,6 +58,8 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     this._fontSize = 16
     this._textAlign = 'center'
     this._textBaseline = 'middle'
+    this._hoverSound = new Sound(hoverSound)
+    this._clickSound = new Sound(clickSound)
   }
 
   public get font(): string {
@@ -82,6 +92,22 @@ export default class ButtonStandard extends Button implements ButtonEvent {
 
   public set textBaseline(textBaseline: CanvasTextBaseline) {
     this._textBaseline = textBaseline
+  }
+
+  public set hoverSound(sound: Sound) {
+    this._hoverSound = sound
+  }
+
+  public get hoverSound(): Sound | null {
+    return this._hoverSound
+  }
+
+  public set clickSound(sound: Sound) {
+    this._clickSound = sound
+  }
+
+  public get clickSound(): Sound | null {
+    return this._clickSound
   }
 
   public setPosition({ canvas, x, y, align }: ButtonPosition): void {
@@ -124,13 +150,16 @@ export default class ButtonStandard extends Button implements ButtonEvent {
   ): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
+      if (!this._isHovered) this.playSound(this._hoverSound as Sound)
       canvas.style.cursor = 'pointer'
       this.backgroundColor = this.backgroundColorOnHover.hover
       this.color = this.colorOnHover.hover
+      this._isHovered = true
     } else {
       canvas.style.cursor = 'default'
       this.backgroundColor = this.backgroundColorOnHover.default
       this.color = this.colorOnHover.default
+      this._isHovered = false
     }
   }
 
@@ -158,6 +187,14 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     callback?.()
   }
 
+  public handleOnClick({ event, callback }: ButtonClickHandle): void {
+    const hovering = this.isMouseOverButton(event.x, event.y)
+    if (hovering) {
+      this.playSound(this._clickSound as Sound)
+      callback?.()
+    }
+  }
+
   private setVerticalAlign(canvas: HTMLCanvasElement, y: number): void {
     this.positionX = canvas.width / 2 - this.width / 2
     this.positionY = y
@@ -166,5 +203,13 @@ export default class ButtonStandard extends Button implements ButtonEvent {
   private setHorizontalAlign(canvas: HTMLCanvasElement, x: number): void {
     this.positionY = canvas.height / 2 - this.height / 2
     this.positionX = x
+  }
+
+  private playSound(sound: Sound): void {
+    if (!sound.isPlaying()) {
+      sound.play().catch((error) => {
+        throw new SoundError(ErrorState.AUDIO_FAILED_TO_LOAD, error)
+      })
+    }
   }
 }

@@ -8,6 +8,7 @@ import {
   MenuScene,
   BootScene,
   InsertNameScene,
+  LoadGame,
 } from '@/game/scenes'
 
 /**
@@ -21,6 +22,7 @@ import {
  * @see MenuScene
  * @see BootScene
  * @see InsertNameScene
+ * @see LoadGame
  *
  * @example
  * import { sceneManager } from '@/game/scenes'
@@ -33,6 +35,7 @@ const sceneSettings: NamedScene[] = [
   { name: GameSceneState.INTRO, scene: new IntroScene() },
   { name: GameSceneState.MENU, scene: new MenuScene() },
   { name: GameSceneState.INSERT_NAME, scene: new InsertNameScene() },
+  { name: GameSceneState.LOADED_GAME, scene: new LoadGame() },
 ]
 sceneManager.setScenesMap(sceneSettings)
 sceneManager.setCurrentScene(GameSceneState.BOOT)

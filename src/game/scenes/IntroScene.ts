@@ -6,8 +6,8 @@ import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
 
 import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
-import backgroundImage from '@/arcade/assets/images/terra_brasilis_intro_background.png'
-import logoImage from '@/arcade/assets/images/terra_brasilis_logo.png'
+import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
+import logoImage from '@/arcade/assets/images/tb_logo.png'
 
 import { GameSceneState } from '@/game/enums'
 

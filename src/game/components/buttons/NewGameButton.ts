@@ -1,4 +1,5 @@
 import { Arcade } from '@/arcade'
+import { SceneManager } from '@/arcade/core'
 import ButtonEvent from '@/arcade/interfaces/ButtonEvent'
 import { ButtonClickHandle } from '@/arcade/types'
 
@@ -41,8 +42,7 @@ export default class NewGameButton
     super(0, 0, label)
   }
 
-  public handleOnClick({ event, scene }: ButtonClickHandle): void {
-    if (!this.isMouseOverButton(event?.x as number, event?.y as number)) return
+  public onClick(scene: SceneManager): void {
     scene?.setCurrentScene(GameSceneState.INSERT_NAME)
   }
 }
