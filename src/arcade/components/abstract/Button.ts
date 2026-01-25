@@ -1,6 +1,6 @@
 import { Sound } from '../../sounds'
 import GameObject from '../GameObject'
-import { ButtonClickHandle, ButtonPosition, ColorOnHover } from '../../types'
+import { ButtonClickHandle, AlignedPosition, ColorOnHover } from '../../types'
 import { SceneManager } from '@/arcade/core'
 
 /**
@@ -29,7 +29,7 @@ import { SceneManager } from '@/arcade/core'
  *   renderButton(context: CanvasRenderingContext2D): void {
  *     // Implementação da renderização do botão
  *   }
- *  setPosition({ canvas, x, y }: ButtonPosition): void {
+ *  setPosition({ canvas, x, y }: AlignedPosition): void {
  *    // Implementação do posicionamento do botão
  *  }
  * }
@@ -87,7 +87,7 @@ export default abstract class Button extends GameObject {
 
   abstract renderButton(context: CanvasRenderingContext2D): void
 
-  abstract setPosition({ canvas, x, y }: ButtonPosition): void
+  abstract setPosition({ canvas, x, y, align }: AlignedPosition): void
 
   abstract handleOnClick({ event, scene, callback }: ButtonClickHandle): void
 

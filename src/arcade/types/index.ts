@@ -15,8 +15,8 @@ export type ImageResizePayload = {
   option?: 'cover' | 'contain'
 }
 export type Position = {
-  x: number
-  y: number
+  x?: number
+  y?: number
 }
 export type ColorOnHover = {
   default: string
@@ -28,7 +28,7 @@ export type ButtonClickHandle = {
   scene?: SceneManager
   callback?: Callback
 }
-export type ButtonPosition = {
+export type AlignedPosition = {
   canvas: HTMLCanvasElement
   x?: number
   y?: number

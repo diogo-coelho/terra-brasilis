@@ -1,7 +1,7 @@
 import Button from './abstract/Button'
 import { ButtonEvent } from '../interfaces'
 import { Sound } from '../sounds'
-import { ButtonClickHandle, ButtonPosition, Callback } from '../types'
+import { ButtonClickHandle, AlignedPosition, Callback } from '../types'
 import { SoundError, ButtonError } from '../errors'
 import { ErrorState } from '../enums'
 
@@ -110,7 +110,7 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     return this._clickSound
   }
 
-  public setPosition({ canvas, x, y, align }: ButtonPosition): void {
+  public setPosition({ canvas, x, y, align }: AlignedPosition): void {
     if (!align) {
       if (!x && !y)
         throw new ButtonError(
