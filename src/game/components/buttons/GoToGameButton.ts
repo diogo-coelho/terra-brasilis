@@ -26,11 +26,33 @@ import GameSceneState from '@/game/enums/GameSceneState'
  * );
  */
 export default class GoToGameButton extends Arcade.Components.ButtonStandard {
+  private _userName: string = ''
+
   constructor(label: string) {
     super(0, 0, label)
   }
 
-  public onClick(scene: SceneManager): void {
-    scene?.setCurrentScene(GameSceneState.NEW_GAME)
+  public set userName(name: string) {
+    this._userName = name
   }
+
+  public get userName(): string {
+    return this._userName
+  }
+
+  public onClick(scene: SceneManager): void {
+    this.saveUserNameInDataBase()
+      .then(() => {
+        scene?.setCurrentScene(GameSceneState.NEW_GAME)
+      })
+  }
+
+  private saveUserNameInDataBase(): Promise<void> {
+    return new Promise((resolve) => {
+      // TODO: fazer o fetch e passar o nome do usuário para o backend
+      console.log(`Saving user name: ${this._userName}`)
+      resolve()
+    })
+  }
+ 
 }

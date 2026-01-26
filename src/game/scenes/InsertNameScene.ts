@@ -2,10 +2,11 @@ import { SceneEvent } from '@/arcade/core'
 import { Image } from '@/arcade/images'
 import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
-
-import backgroundImage from '@/arcade/assets/images/tb_insert_name_background.png'
 import { ButtonStandardGroup, InputStandard } from '@/arcade/components'
 import { EventListenerState, PositionState } from '@/arcade/enums'
+
+import backgroundImage from '@/arcade/assets/images/tb_insert_name_background.png'
+
 import { GovernorGeneralNameInput } from '../components/inputs'
 import { BackToMenuButton, GoToGameButton } from '../components/buttons'
 
@@ -118,7 +119,13 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   ): void {
     switch (event.type) {
       case EventListenerState.KEY_DOWN:
-        this._input.handleKeyboardEvent(event)
+        this._input.handleKeyboardEvent(event) 
+
+        /** Atualiza o nome do usuário no botão GoToGameButton */
+        const goToGameButton = this._listButtons.buttons.find(
+          (btn) => btn instanceof GoToGameButton
+        ) as GoToGameButton
+        goToGameButton.userName = this._input.inputText       
         break
     }
   }

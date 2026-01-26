@@ -1,6 +1,6 @@
 import { Sound } from '../../sounds'
 import GameObject from '../GameObject'
-import { ButtonClickHandle, AlignedPosition, ColorOnHover } from '../../types'
+import { ButtonClickHandle, AlignedPosition, ColorOnHover, Callback } from '../../types'
 import { SceneManager } from '@/arcade/core'
 
 /**
