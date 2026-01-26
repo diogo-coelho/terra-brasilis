@@ -24,6 +24,10 @@ export * as core from './core'
 export * as types from './types'
 export * as interfaces from './interfaces'
 export * as components from './components'
+export * as enums from './enums'
+export * as events from './events'
+export * as sounds from './sounds'
+export * as images from './images'
 
 export const Arcade = {
   Game: Game,

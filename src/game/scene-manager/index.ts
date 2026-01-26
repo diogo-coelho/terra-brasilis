@@ -5,11 +5,12 @@ import { NamedScene } from '@/arcade/types'
 import { GameSceneState } from '@/game/enums'
 import {
   IntroScene,
-  MenuScene,
   BootScene,
   InsertNameScene,
   LoadGame,
+  NewGameScene,
 } from '@/game/scenes'
+import MainMenuScene from '../scenes/MainMenuScene'
 
 /**
  * O módulo de cenas do jogo é responsável por gerenciar as diferentes cenas que compõem o jogo.
@@ -23,6 +24,7 @@ import {
  * @see BootScene
  * @see InsertNameScene
  * @see LoadGame
+ * @see NewGameScene
  *
  * @example
  * import { sceneManager } from '@/game/scenes'
@@ -33,9 +35,10 @@ const sceneManager: SceneManager = new Arcade.SceneManager()
 const sceneSettings: NamedScene[] = [
   { name: GameSceneState.BOOT, scene: new BootScene() },
   { name: GameSceneState.INTRO, scene: new IntroScene() },
-  { name: GameSceneState.MENU, scene: new MenuScene() },
+  { name: GameSceneState.MAIN_MENU, scene: new MainMenuScene() },
   { name: GameSceneState.INSERT_NAME, scene: new InsertNameScene() },
   { name: GameSceneState.LOADED_GAME, scene: new LoadGame() },
+  { name: GameSceneState.NEW_GAME, scene: new NewGameScene() },
 ]
 sceneManager.setScenesMap(sceneSettings)
 sceneManager.setCurrentScene(GameSceneState.BOOT)

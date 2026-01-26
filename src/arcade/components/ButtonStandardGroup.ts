@@ -1,5 +1,5 @@
 import ButtonStandard from './ButtonStandard'
-import { EventListenerState } from '../enums'
+import { EventListenerState, PositionState } from '../enums'
 import { ButtonStandardGroupConfig, Callback, SceneManager } from '../types'
 
 /**
@@ -26,9 +26,8 @@ import { ButtonStandardGroupConfig, Callback, SceneManager } from '../types'
  */
 export default class ButtonStandardGroup {
   private _buttons: ButtonStandard[] = []
-  private _initialPosition: number
   private _spacing: number
-  private _alignement: 'horizontal' | 'vertical' = 'vertical'
+  private _alignement: PositionState = PositionState.VERTICAL
   private _canvas!: HTMLCanvasElement
   private _buttonsHeight!: number
   private _buttonsWidth!: number
@@ -36,9 +35,12 @@ export default class ButtonStandardGroup {
   private _color!: string
   private _backgroundColorOnHover!: string
   private _colorOnHover!: string
+  private _positionX: number = 0
+  private _positionY: number = 0
 
-  constructor(initialPosition: number = 200, spacing: number = 20) {
-    this._initialPosition = initialPosition
+  constructor(positionX: number, positionY: number, spacing: number = 20) {
+    this._positionX = positionX
+    this._positionY = positionY
     this._spacing = spacing
     this._canvas = window.document.querySelector('canvas') as HTMLCanvasElement
   }
@@ -62,12 +64,24 @@ export default class ButtonStandardGroup {
     this._buttons = []
   }
 
-  public set alignement(value: 'horizontal' | 'vertical') {
+  public set positionX(value: number) {
+    this._positionX = value
+  }
+
+  public set positionY(value: number) {
+    this._positionY = value
+  }
+
+  public set alignement(value: PositionState) {
     this._alignement = value
   }
 
-  public get alignement(): 'horizontal' | 'vertical' {
+  public get alignement(): PositionState {
     return this._alignement
+  }
+
+  public get spacing(): number {  
+    return this._spacing
   }
 
   /**
@@ -106,10 +120,35 @@ export default class ButtonStandardGroup {
       button.setPosition({
         canvas,
         align: this._alignement,
-        y: i * button.height + margin + this._initialPosition,
+        y: this._alignement === PositionState.VERTICAL ? i * button.height + margin + this._positionY : this._positionY,
+        x: this._alignement === PositionState.HORIZONTAL ? i * button.width + margin + this._positionX : this._positionX,
       })
       button.renderButton(context)
     })
+  }
+
+  /**
+   * Calcula a posição X para centralizar os botões no canvas.
+   * @param {HTMLCanvasElement} canvas - O elemento canvas onde os botões estão desenhados.
+   * @returns {number} - A posição X centralizada.
+   */
+  public getCenteredPositionX(canvas: HTMLCanvasElement): number {
+    const totalWidth = this._buttons[0].width * this._buttons.length
+    const totalSpacing =
+      this._spacing * (this._buttons.length - 1)
+    return  canvas.width / 2 - ((totalWidth + totalSpacing) / 2)
+  }
+
+  /**
+   * Calcula a posição Y para centralizar os botões no canvas.
+   * @param {HTMLCanvasElement} canvas - O elemento canvas onde os botões estão desenhados.
+   * @returns {number} - A posição Y centralizada.
+   */
+  public getCenteredPositionY(canvas: HTMLCanvasElement): number {
+    const totalHeight = this._buttons[0].height * this._buttons.length
+    const totalSpacing =
+      this._spacing * (this._buttons.length - 1)
+    return  canvas.height / 2 - ((totalHeight + totalSpacing) / 2)
   }
 
   /**

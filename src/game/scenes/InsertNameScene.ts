@@ -4,9 +4,10 @@ import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 
 import backgroundImage from '@/arcade/assets/images/tb_insert_name_background.png'
-import { InputStandard } from '@/arcade/components'
-import { EventListenerState } from '@/arcade/enums'
+import { ButtonStandardGroup, InputStandard } from '@/arcade/components'
+import { EventListenerState, PositionState } from '@/arcade/enums'
 import { GovernorGeneralNameInput } from '../components/inputs'
+import { BackToMenuButton, GoToGameButton } from '../components/buttons'
 
 /**
  * Cena para inserção do nome do Governador-Geral.
@@ -33,6 +34,7 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   private _backgroundImage: Image
   private _input: InputStandard
   private _canvas: HTMLCanvasElement
+  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(0, 520, 30)
 
   constructor() {
     super()
@@ -40,14 +42,17 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     this._input = new GovernorGeneralNameInput(450, 40)
     this._backgroundImage = new Image(backgroundImage)
     this._canvas = window.document.querySelector('canvas') as HTMLCanvasElement
+    this.initializeButtons()
   }
 
   public onEnter(): void {
-    throw new Error('Method not implemented.')
+    //throw new Error('Method not implemented.')
+    console.log('Entered InsertNameScene')
   }
 
   public onExit(): void {
-    throw new Error('Method not implemented.')
+    //throw new Error('Method not implemented.')
+    console.log('Exited InsertNameScene')
   }
 
   /**
@@ -60,7 +65,6 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
-    deltaTime: number
   ): void {
     /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
@@ -91,11 +95,15 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     /** Ajusta a posição do campo de entrada */
     this._input.setPosition({
       canvas,
-      align: 'vertical',
+      align: PositionState.VERTICAL,
       y: this._input.height + 150,
     })
     /** Renderiza o campo de entrada */
     this._input.renderInputBox(context)
+
+    this._listButtons.alignement = PositionState.HORIZONTAL
+    this._listButtons.positionX = this._listButtons.getCenteredPositionX(canvas)
+    this._listButtons.renderButtons(canvas, context)
   }
 
   /**
@@ -132,10 +140,34 @@ export default class InsertNameScene extends SceneEvent implements Scene {
             0
           )
         })
+        this._listButtons.handleMouseEvent(event, scene as SceneManager)
         break
       case EventListenerState.CLICK:
         this._input.handleMouseClick(event, canvas)
+        this._listButtons.handleMouseEvent(event, scene as SceneManager)
         break
     }
   }
+
+  /**
+   * Inicializa os botões da cena.
+   * @returns {void}
+   */
+  private initializeButtons(): void {
+    this._listButtons.setButtonsConfigurations({
+      width: 210,
+      height: 50,
+      backgroundColor: '#84310a',
+      backgroundColorOnHover: '#692303',
+      color: '#FFFFFF',
+      colorOnHover: '#D7D7D7',
+    })
+    
+    const backToMenuButton = new BackToMenuButton('Voltar ao Menu')
+    const goToGameButton = new GoToGameButton('Iniciar Jogo')
+    
+    this._listButtons.addButton(backToMenuButton)
+    this._listButtons.addButton(goToGameButton)
+  }
+
 }

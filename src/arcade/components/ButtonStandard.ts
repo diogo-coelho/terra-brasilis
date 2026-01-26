@@ -3,7 +3,7 @@ import { ButtonEvent } from '../interfaces'
 import { Sound } from '../sounds'
 import { ButtonClickHandle, AlignedPosition, Callback } from '../types'
 import { SoundError, ButtonError } from '../errors'
-import { ErrorState } from '../enums'
+import { ErrorState, PositionState } from '../enums'
 
 import hoverSound from '../assets/sounds/sfx/btn_hover.ogg'
 import clickSound from '../assets/sounds/sfx/btn_click.wav'
@@ -120,12 +120,12 @@ export default class ButtonStandard extends Button implements ButtonEvent {
       this.positionY = y as number
     } else {
       switch (align) {
-        case 'vertical':
+        case PositionState.VERTICAL:
           if (!y)
             throw new ButtonError(`É necessário informar o valor da variável y`)
           this.setVerticalAlign(canvas, y)
           break
-        case 'horizontal':
+        case PositionState.HORIZONTAL:
           if (!x)
             throw new ButtonError(`É necessário informar o valor da variável x`)
           this.setHorizontalAlign(canvas, x)

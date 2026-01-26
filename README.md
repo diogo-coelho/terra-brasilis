@@ -36,7 +36,7 @@ Engine de jogo customizado construído do zero:
 
 ### 2. **Game Logic** (`src/game/`)
 Implementação do jogo Terra Brasilis:
-- **Scenes**: Cenas do jogo (Boot, Menu, Intro, InsertName, LoadGame)
+- **Scenes**: Cenas do jogo (Boot, MainMenu, Intro, InsertName, LoadGame)
 - **Components**: Componentes específicos do jogo (botões, inputs)
 - **Scene Manager**: Gerenciador customizado para cenas do jogo
 - **Enums**: Estados e configurações específicas do jogo
@@ -122,7 +122,7 @@ O jogo utiliza um sistema de gerenciamento de cenas customizado que permite:
 
 1. **BootScene**: Inicialização e carregamento inicial do jogo
 2. **IntroScene**: Tela de introdução com animações e transições
-3. **MenuScene**: Menu principal com botões interativos e música de fundo
+3. **MainMenuScene**: Menu principal com botões interativos e música de fundo
 4. **InsertNameScene**: Interface para inserir nome do jogador
 5. **LoadGame**: Carregamento de partidas salvas
 
@@ -216,7 +216,7 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 - ✅ Tratamento de erros específicos (ImageError, SoundError, ButtonError)
 
 ### Jogo
-- ✅ Telas de boot, intro e menu
+- ✅ Telas de boot, intro e menu principal
 - ✅ Interface para novo jogo e continuar
 - ✅ Sistema de música de fundo
 - ✅ Botões interativos com efeitos visuais

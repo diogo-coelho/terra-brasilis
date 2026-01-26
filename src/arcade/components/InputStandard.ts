@@ -2,7 +2,7 @@ import Input from './abstract/Input'
 import { InputEvent } from '../interfaces'
 import { AlignedPosition, Callback } from '../types'
 import InputError from '../errors/InputError'
-import { ErrorState, KeyCodeState } from '../enums'
+import { ErrorState, KeyCodeState, PositionState } from '../enums'
 import { Sound } from '../sounds'
 
 import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
@@ -118,12 +118,12 @@ export default class InputStandard extends Input implements InputEvent {
   public setPosition({ canvas, x, y, align }: AlignedPosition): void {
     if (align) {
       switch (align) {
-        case 'vertical':
+        case PositionState.VERTICAL:
           if (!y)
             throw new InputError(`É necessário informar o valor da variável y`)
           this.setVerticalAlign(canvas, y)
           break
-        case 'horizontal':
+        case PositionState.HORIZONTAL:
           if (!x)
             throw new InputError(`É necessário informar o valor da variável x`)
           this.setHorizontalAlign(canvas, x)

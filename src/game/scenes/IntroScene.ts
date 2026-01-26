@@ -130,7 +130,7 @@ export default class IntroScene extends SceneEvent implements Scene {
     sceneManager: SceneManager
   ): void {
     var payload = () => {
-      sceneManager.setCurrentScene(GameSceneState.MENU)
+      sceneManager.setCurrentScene(GameSceneState.MAIN_MENU)
     }
     this.onKeyboardEvent(event, this.getEventPayload(payload))
   }

@@ -1,4 +1,5 @@
 import { Scene } from '@/arcade/interfaces'
+import { PositionState } from '../enums';
 
 export type SceneManager = import('../core/SceneManager').default
 export type Game = import('../core/Game').default
@@ -32,7 +33,7 @@ export type AlignedPosition = {
   canvas: HTMLCanvasElement
   x?: number
   y?: number
-  align?: 'vertical' | 'horizontal' | 'center'
+  align?: PositionState | undefined
 }
 export type ButtonStandardGroupConfig = {
   width: number

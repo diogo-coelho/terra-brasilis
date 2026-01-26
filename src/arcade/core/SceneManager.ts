@@ -57,8 +57,8 @@ export default class SceneManager {
     if (!scene) throw new SceneManagerError(ErrorState.NO_MAPPED_SCENES)
 
     this._gameSceneState = name as string
-    this._currentScene?.onExit()
+    this._currentScene?.onExit?.()
     this._currentScene = scene
-    this._currentScene.onEnter()
+    this._currentScene.onEnter?.()
   }
 }

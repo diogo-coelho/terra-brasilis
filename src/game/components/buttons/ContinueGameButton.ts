@@ -1,6 +1,5 @@
 import { Arcade } from '@/arcade'
-import ButtonEvent from '@/arcade/interfaces/ButtonEvent'
-import { ButtonClickHandle, SceneManager } from '@/arcade/types'
+import { SceneManager } from '@/arcade/types'
 
 import { GameSceneState } from '@/game/enums'
 
@@ -34,7 +33,11 @@ export default class ContinueGameButton
     super(0, 0, label)
   }
 
+  /**
+   * Método chamado ao clicar no botão.
+   * @param {SceneManager} scene - O gerenciador de cenas.
+   */
   public onClick(scene: SceneManager): void {
-    scene?.setCurrentScene(GameSceneState.INSERT_NAME)
+    scene?.setCurrentScene(GameSceneState.LOADED_GAME)
   }
 }

@@ -10,25 +10,25 @@ import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
 import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
 
 /**
- * A classe MenuScene representa a cena do menu principal do jogo.
+ * A classe MainMenuScene representa a cena do menu principal do jogo.
  * Ela implementa a interface Scene e estende a classe SceneEvent.
  * Esta cena é responsável por exibir o título do jogo e pode ser expandida
  * no futuro para incluir opções de menu, configurações e outras funcionalidades relacionadas
  * ao menu principal.
  *
- * @class MenuScene
+ * @class MainMenuScene
  * @extends SceneEvent
  * @implements Scene
  *
  * @example
- * const menuScene = new MenuScene();
+ * const mainMenuScene = new MainMenuScene();
  *
  * @see Scene
  *
  */
-export default class MenuScene extends SceneEvent implements Scene {
+export default class MainMenuScene extends SceneEvent implements Scene {
   private _title: string
-  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(130, 25)
+  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(0, 130, 25)
   private _backgroundSound: Sound
   private _initializedSoundSetup: boolean = false
   private _backgroundImage!: Image
@@ -97,6 +97,11 @@ export default class MenuScene extends SceneEvent implements Scene {
     this._listButtons.renderButtons(canvas, context)
   }
 
+  /**
+   * Manipula eventos de mouse na cena.
+   * @param {MouseEvent} event - O evento de mouse.
+   * @param {SceneManager} scene - O gerenciador de cenas.
+   */
   public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
     this._listButtons.handleMouseEvent(event, scene as SceneManager)
   }
