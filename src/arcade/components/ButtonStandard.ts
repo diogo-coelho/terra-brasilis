@@ -146,17 +146,16 @@ export default class ButtonStandard extends Button implements ButtonEvent {
 
   public applyHoverOnButton(
     event: MouseEvent,
-    canvas: HTMLCanvasElement
   ): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
       if (!this._isHovered) this.playSound(this._hoverSound as Sound)
-      canvas.style.cursor = 'pointer'
+      this.shouldUsePointerCursor = true
       this.backgroundColor = this.backgroundColorOnHover.hover
       this.color = this.colorOnHover.hover
       this._isHovered = true
     } else {
-      canvas.style.cursor = 'default'
+      this.shouldUsePointerCursor = false
       this.backgroundColor = this.backgroundColorOnHover.default
       this.color = this.colorOnHover.default
       this._isHovered = false
@@ -180,10 +179,9 @@ export default class ButtonStandard extends Button implements ButtonEvent {
 
   public handleMouseMove(
     event: MouseEvent,
-    canvas: HTMLCanvasElement,
     callback?: Callback
   ): void {
-    this.applyHoverOnButton(event, canvas)
+    this.applyHoverOnButton(event)
     callback?.()
   }
 

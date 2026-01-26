@@ -4,9 +4,9 @@ import { AlignedPosition, Callback } from '../types'
 import InputError from '../errors/InputError'
 import { ErrorState, KeyCodeState, PositionState } from '../enums'
 import { Sound } from '../sounds'
+import { SoundError } from '../errors'
 
 import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
-import { SoundError } from '../errors'
 
 /**
  * Classe que representa um campo de entrada de texto padrão no jogo.
@@ -37,6 +37,7 @@ export default class InputStandard extends Input implements InputEvent {
   private _textBaseLine: CanvasTextBaseline
   private _blinkingTimer: NodeJS.Timeout | undefined
   private _keyDownSound: Sound | null = null
+  private _maxCharInput = 0
 
   constructor(width: number, height: number) {
     super(width, height)
@@ -46,6 +47,7 @@ export default class InputStandard extends Input implements InputEvent {
     this._textBaseLine = 'middle'
     this._blinkingTimer = undefined
     this._keyDownSound = new Sound(inputScribbleSound)
+    this._maxCharInput = Math.floor(width / 11.25)
   }
 
   public get font(): string {
@@ -88,6 +90,10 @@ export default class InputStandard extends Input implements InputEvent {
     return this._blinkingTimer as NodeJS.Timeout
   }
 
+  /**
+   * Renderiza o campo de entrada na tela.
+   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
+   */
   public renderInputBox(context: CanvasRenderingContext2D): void {
     context.fillStyle = this.backgroundColor || '#000'
     context.fillRect(this.positionX, this.positionY, this.width, this.height)
@@ -106,7 +112,7 @@ export default class InputStandard extends Input implements InputEvent {
 
     if (this.isTyping && this.cursorVisible) {
       const textWidth = context.measureText(this.inputText).width
-      const cursorX = this.positionX + this.width / 2 + textWidth / 2
+      const cursorX = this.positionX + (this.width / 2) + (textWidth / 2)
       context.beginPath()
       context.moveTo(cursorX, this.positionY + 12)
       context.lineTo(cursorX, this.positionY + this.height - 12)
@@ -115,6 +121,11 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
+  /**
+   * Define a posição do campo de entrada na tela.
+   * @param {AlignedPosition} param0 - Objeto contendo as propriedades para posicionamento alinhado.
+   * @returns {void}
+   */
   public setPosition({ canvas, x, y, align }: AlignedPosition): void {
     if (align) {
       switch (align) {
@@ -140,6 +151,12 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
+  /**
+   * Verifica se o mouse está sobre o campo de entrada.
+   * @param {number} xCoords - Coordenada X do mouse.
+   * @param {number} yCoords - Coordenada Y do mouse.
+   * @returns {boolean} - Retorna true se o mouse estiver sobre o campo de entrada, caso contrário, false.
+   */
   public isMouseOverInput(xCoords: number, yCoords: number): boolean {
     return (
       xCoords >= this.positionX &&
@@ -149,36 +166,56 @@ export default class InputStandard extends Input implements InputEvent {
     )
   }
 
+  /**
+   * Manipula o evento de movimento do mouse.
+   * @param {MouseEvent} event - O evento de movimento do mouse.
+   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o evento ocorreu.
+   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
+   */
   public handleMouseMove(
     event: MouseEvent,
-    canvas: HTMLCanvasElement,
     callback?: Callback
   ): void {
-    this.applyHoverOnInput(event, canvas)
+    this.applyHoverOnInput(event)
     callback?.()
   }
 
+  /**
+   * Manipula o evento de clique do mouse.
+   * @param {MouseEvent} event - O evento de clique do mouse.
+   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
+   */
   public handleMouseClick(
     event: MouseEvent,
-    canvas: HTMLCanvasElement,
     callback?: Callback
   ): void {
-    this.applyHoverOnInput(event, canvas)
+    this.applyHoverOnInput(event)
     const isOnHover = this.isMouseOverInput(event.x, event.y)
-    if (isOnHover) {
+    if (isOnHover && !this.cursorVisible) {
       this.isTyping = true
       this.cursorVisible = true
       this.blinkingCursor()
       callback?.()
+    } else {
+      this.isTyping = false
+      this.cursorVisible = false
+      this.disableBlinkingCursor()
     }
   }
 
+  /**
+   * Manipula o evento de teclado.
+   * @param {KeyboardEvent} event - O evento de teclado.
+   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
+   * @returns {void}
+   */
   public handleKeyboardEvent(event: KeyboardEvent, callback?: Callback): void {
     if (!this.isTyping) return
     if (event?.key === KeyCodeState.BACKSPACE) {
       this.inputText = this.inputText.slice(0, -1)
     } else if (event?.key.length === 1) {
-      this.inputText += event?.key
+      if (this.inputText.length >= this._maxCharInput) return
+      this.inputText += event?.key      
       this.playSound(this._keyDownSound as Sound)
     } else if (event?.key === KeyCodeState.ENTER) {
       this.isTyping = false
@@ -187,44 +224,68 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
+  /**
+   * Define o alinhamento vertical do campo de entrada.
+   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o campo de entrada está sendo posicionado.
+   * @param {number} y - A coordenada Y para o alinhamento vertical.
+   */
   private setVerticalAlign(canvas: HTMLCanvasElement, y: number): void {
     this.positionX = canvas.width / 2 - this.width / 2
     this.positionY = y
   }
 
+  /**
+   * Define o alinhamento horizontal do campo de entrada.
+   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o campo de entrada está sendo posicionado.
+   * @param {number} x - A coordenada X para o alinhamento horizontal.
+   */
   private setHorizontalAlign(canvas: HTMLCanvasElement, x: number): void {
     this.positionY = canvas.height / 2 - this.height / 2
     this.positionX = x
   }
 
+  /**
+   * Aplica o efeito de hover no campo de entrada.
+   * @param {MouseEvent} event - O evento de mouse.
+   * 
+   */
   private applyHoverOnInput(
     event: MouseEvent,
-    canvas: HTMLCanvasElement
   ): void {
     const hovering = this.isMouseOverInput(event.x, event.y)
     if (hovering) {
-      canvas.style.cursor = 'pointer'
+      this.shouldUsePointerCursor = true
       this.backgroundColor = this.backgroundColorOnHover.hover
       this.color = this.colorOnHover.hover
     } else {
-      canvas.style.cursor = 'default'
+      this.shouldUsePointerCursor = false
       this.backgroundColor = this.backgroundColorOnHover.default
       this.color = this.colorOnHover.default
     }
   }
 
+  /**
+   * Inicia o cursor piscante.
+   * @returns {void}
+   */
   private blinkingCursor(): void {
     this.blinkingTimer = setInterval(() => {
-      if (this.isTyping) {
-        this.cursorVisible = !this.cursorVisible
-      }
+      this.cursorVisible = !this.cursorVisible
     }, 500)
   }
 
+  /**
+   * Desativa o cursor piscante.
+   * @returns {void}
+   */
   private disableBlinkingCursor(): void {
     clearInterval(this.blinkingTimer)
   }
 
+  /**
+   * Toca um som, se não estiver já tocando.
+   * @param {Sound} sound - O objeto de som a ser reproduzido.
+   */
   private playSound(sound: Sound): void {
     if (!sound.isPlaying()) {
       sound.play().catch((error) => {

@@ -19,7 +19,6 @@ export default interface ButtonEvent {
 
   handleMouseMove(
     event: MouseEvent,
-    canvas: HTMLCanvasElement,
     callback?: Callback
   ): void
 

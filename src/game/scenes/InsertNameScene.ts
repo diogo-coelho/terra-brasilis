@@ -35,6 +35,7 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   private _input: InputStandard
   private _canvas: HTMLCanvasElement
   private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(0, 520, 30)
+  private _shouldUsePointerCursor: boolean = false
 
   constructor() {
     super()
@@ -43,16 +44,6 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     this._backgroundImage = new Image(backgroundImage)
     this._canvas = window.document.querySelector('canvas') as HTMLCanvasElement
     this.initializeButtons()
-  }
-
-  public onEnter(): void {
-    //throw new Error('Method not implemented.')
-    console.log('Entered InsertNameScene')
-  }
-
-  public onExit(): void {
-    //throw new Error('Method not implemented.')
-    console.log('Exited InsertNameScene')
   }
 
   /**
@@ -100,10 +91,14 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     })
     /** Renderiza o campo de entrada */
     this._input.renderInputBox(context)
+    this._shouldUsePointerCursor ||= this._input.shouldUsePointerCursor
+    this._shouldUsePointerCursor ||= this._listButtons.buttons.some(el => el.shouldUsePointerCursor)  
 
     this._listButtons.alignement = PositionState.HORIZONTAL
     this._listButtons.positionX = this._listButtons.getCenteredPositionX(canvas)
     this._listButtons.renderButtons(canvas, context)
+
+    canvas.style.cursor = this._shouldUsePointerCursor ? 'pointer' : 'default'
   }
 
   /**
@@ -133,7 +128,7 @@ export default class InsertNameScene extends SceneEvent implements Scene {
 
     switch (event.type) {
       case EventListenerState.MOUSE_MOVE:
-        this._input.handleMouseMove(event, canvas, () => {
+        this._input.handleMouseMove(event, () => {
           scene?.currentScene.drawScene(
             canvas,
             canvas.getContext('2d') as CanvasRenderingContext2D,
@@ -143,7 +138,8 @@ export default class InsertNameScene extends SceneEvent implements Scene {
         this._listButtons.handleMouseEvent(event, scene as SceneManager)
         break
       case EventListenerState.CLICK:
-        this._input.handleMouseClick(event, canvas)
+        this._input.inputText = ''
+        this._input.handleMouseClick(event)
         this._listButtons.handleMouseEvent(event, scene as SceneManager)
         break
     }

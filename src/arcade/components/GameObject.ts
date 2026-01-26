@@ -32,6 +32,7 @@ export default class GameObject {
   private _height: number
   private _color: string = '#FFFFFF'
   private _backgroundColor: string = '#000000'
+  private _shouldUsePointerCursor: boolean = false
 
   constructor(width: number, height: number) {
     this._width = width
@@ -84,5 +85,13 @@ export default class GameObject {
 
   public get backgroundColor(): string {
     return this._backgroundColor
+  }
+
+  public set shouldUsePointerCursor(value: boolean) {
+    this._shouldUsePointerCursor = value
+  }
+
+  public get shouldUsePointerCursor(): boolean {
+    return this._shouldUsePointerCursor
   }
 }

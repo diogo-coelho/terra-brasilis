@@ -32,6 +32,7 @@ export default class MainMenuScene extends SceneEvent implements Scene {
   private _backgroundSound: Sound
   private _initializedSoundSetup: boolean = false
   private _backgroundImage!: Image
+  private _shouldUsePointerCursor: boolean = false
 
   constructor() {
     super()
@@ -95,6 +96,9 @@ export default class MainMenuScene extends SceneEvent implements Scene {
     context.fillText(this._title, canvas.width / 2, 50)
 
     this._listButtons.renderButtons(canvas, context)
+
+    this._shouldUsePointerCursor = this._listButtons.buttons.some(el => el.shouldUsePointerCursor)  
+    canvas.style.cursor = this._shouldUsePointerCursor ? 'pointer' : 'default'
   }
 
   /**

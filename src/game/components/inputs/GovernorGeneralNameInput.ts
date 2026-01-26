@@ -21,11 +21,11 @@ export default class GovernorGeneralNameInput
 {
   constructor(width: number, height: number) {
     super(width, height)
-    this.backgroundColor = '#84310a'
+    this.backgroundColor = '#84310A'
     this.backgroundColorOnHover = '#692303'
-    this.color = '#ffffff'
-    this.colorOnHover = '#ffffff'
-    this.borderColor = '#84310a'
+    this.color = '#FFFFFF'
+    this.colorOnHover = '#FFFFFF'
+    this.borderColor = '#CAAD6C'
     this.borderWidth = 2
     this.initialize()
   }

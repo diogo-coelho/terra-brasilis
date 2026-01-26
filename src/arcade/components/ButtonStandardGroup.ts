@@ -162,15 +162,12 @@ export default class ButtonStandardGroup {
     scene: SceneManager,
     sceneCallback?: Callback
   ): void {
-    const canvas = this._canvas
-    if (!canvas) return
 
     switch (event.type) {
       case EventListenerState.MOUSE_MOVE:
         this._buttons.forEach((btn) => {
-          btn.handleMouseMove(event, canvas, sceneCallback)
+          btn.handleMouseMove(event, sceneCallback)
         })
-        this.setCursorWhenAnyButtonIsHovered(event, canvas)
         break
       case EventListenerState.CLICK:
         this._buttons.forEach((btn) => {
@@ -183,22 +180,4 @@ export default class ButtonStandardGroup {
     }
   }
 
-  /**
-   * Define o cursor do mouse quando algum botão está sendo hover.
-   * @private
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde os botões estão desenhados.
-   */
-  private setCursorWhenAnyButtonIsHovered(
-    event: MouseEvent,
-    canvas: HTMLCanvasElement
-  ): void {
-    const anyButtonIsHovered = this._buttons.some((btn) =>
-      btn.isMouseOverButton(event.x, event.y)
-    )
-    if (anyButtonIsHovered) {
-      canvas.style.cursor = 'pointer'
-    } else {
-      canvas.style.cursor = 'default'
-    }
-  }
 }
