@@ -80,7 +80,7 @@ export default class ButtonStandardGroup {
     return this._alignement
   }
 
-  public get spacing(): number {  
+  public get spacing(): number {
     return this._spacing
   }
 
@@ -120,8 +120,14 @@ export default class ButtonStandardGroup {
       button.setPosition({
         canvas,
         align: this._alignement,
-        y: this._alignement === PositionState.VERTICAL ? i * button.height + margin + this._positionY : this._positionY,
-        x: this._alignement === PositionState.HORIZONTAL ? i * button.width + margin + this._positionX : this._positionX,
+        y:
+          this._alignement === PositionState.VERTICAL
+            ? i * button.height + margin + this._positionY
+            : this._positionY,
+        x:
+          this._alignement === PositionState.HORIZONTAL
+            ? i * button.width + margin + this._positionX
+            : this._positionX,
       })
       button.renderButton(context)
     })
@@ -134,9 +140,8 @@ export default class ButtonStandardGroup {
    */
   public getCenteredPositionX(canvas: HTMLCanvasElement): number {
     const totalWidth = this._buttons[0].width * this._buttons.length
-    const totalSpacing =
-      this._spacing * (this._buttons.length - 1)
-    return  canvas.width / 2 - ((totalWidth + totalSpacing) / 2)
+    const totalSpacing = this._spacing * (this._buttons.length - 1)
+    return canvas.width / 2 - (totalWidth + totalSpacing) / 2
   }
 
   /**
@@ -146,9 +151,8 @@ export default class ButtonStandardGroup {
    */
   public getCenteredPositionY(canvas: HTMLCanvasElement): number {
     const totalHeight = this._buttons[0].height * this._buttons.length
-    const totalSpacing =
-      this._spacing * (this._buttons.length - 1)
-    return  canvas.height / 2 - ((totalHeight + totalSpacing) / 2)
+    const totalSpacing = this._spacing * (this._buttons.length - 1)
+    return canvas.height / 2 - (totalHeight + totalSpacing) / 2
   }
 
   /**
@@ -162,7 +166,6 @@ export default class ButtonStandardGroup {
     scene: SceneManager,
     sceneCallback?: Callback
   ): void {
-
     switch (event.type) {
       case EventListenerState.MOUSE_MOVE:
         this._buttons.forEach((btn) => {
@@ -179,5 +182,4 @@ export default class ButtonStandardGroup {
         })
     }
   }
-
 }

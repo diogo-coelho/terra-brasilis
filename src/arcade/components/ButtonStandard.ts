@@ -144,9 +144,7 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     )
   }
 
-  public applyHoverOnButton(
-    event: MouseEvent,
-  ): void {
+  public applyHoverOnButton(event: MouseEvent): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
       if (!this._isHovered) this.playSound(this._hoverSound as Sound)
@@ -177,10 +175,7 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     )
   }
 
-  public handleMouseMove(
-    event: MouseEvent,
-    callback?: Callback
-  ): void {
+  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnButton(event)
     callback?.()
   }

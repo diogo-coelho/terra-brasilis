@@ -34,7 +34,11 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   private _backgroundImage: Image
   private _input: InputStandard
   private _canvas: HTMLCanvasElement
-  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(0, 520, 30)
+  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(
+    0,
+    520,
+    30
+  )
   private _shouldUsePointerCursor: boolean = false
 
   constructor() {
@@ -55,7 +59,7 @@ export default class InsertNameScene extends SceneEvent implements Scene {
    */
   public drawScene(
     canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
+    context: CanvasRenderingContext2D
   ): void {
     /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
@@ -92,7 +96,9 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     /** Renderiza o campo de entrada */
     this._input.renderInputBox(context)
     this._shouldUsePointerCursor ||= this._input.shouldUsePointerCursor
-    this._shouldUsePointerCursor ||= this._listButtons.buttons.some(el => el.shouldUsePointerCursor)  
+    this._shouldUsePointerCursor ||= this._listButtons.buttons.some(
+      (el) => el.shouldUsePointerCursor
+    )
 
     this._listButtons.alignement = PositionState.HORIZONTAL
     this._listButtons.positionX = this._listButtons.getCenteredPositionX(canvas)
@@ -158,12 +164,11 @@ export default class InsertNameScene extends SceneEvent implements Scene {
       color: '#FFFFFF',
       colorOnHover: '#D7D7D7',
     })
-    
+
     const backToMenuButton = new BackToMenuButton('Voltar ao Menu')
     const goToGameButton = new GoToGameButton('Iniciar Jogo')
-    
+
     this._listButtons.addButton(backToMenuButton)
     this._listButtons.addButton(goToGameButton)
   }
-
 }

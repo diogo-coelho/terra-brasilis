@@ -112,7 +112,7 @@ export default class InputStandard extends Input implements InputEvent {
 
     if (this.isTyping && this.cursorVisible) {
       const textWidth = context.measureText(this.inputText).width
-      const cursorX = this.positionX + (this.width / 2) + (textWidth / 2)
+      const cursorX = this.positionX + this.width / 2 + textWidth / 2
       context.beginPath()
       context.moveTo(cursorX, this.positionY + 12)
       context.lineTo(cursorX, this.positionY + this.height - 12)
@@ -172,10 +172,7 @@ export default class InputStandard extends Input implements InputEvent {
    * @param {HTMLCanvasElement} canvas - O elemento canvas onde o evento ocorreu.
    * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
    */
-  public handleMouseMove(
-    event: MouseEvent,
-    callback?: Callback
-  ): void {
+  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
     callback?.()
   }
@@ -185,10 +182,7 @@ export default class InputStandard extends Input implements InputEvent {
    * @param {MouseEvent} event - O evento de clique do mouse.
    * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
    */
-  public handleMouseClick(
-    event: MouseEvent,
-    callback?: Callback
-  ): void {
+  public handleMouseClick(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
     const isOnHover = this.isMouseOverInput(event.x, event.y)
     if (isOnHover && !this.cursorVisible) {
@@ -215,7 +209,7 @@ export default class InputStandard extends Input implements InputEvent {
       this.inputText = this.inputText.slice(0, -1)
     } else if (event?.key.length === 1) {
       if (this.inputText.length >= this._maxCharInput) return
-      this.inputText += event?.key      
+      this.inputText += event?.key
       this.playSound(this._keyDownSound as Sound)
     } else if (event?.key === KeyCodeState.ENTER) {
       this.isTyping = false
@@ -247,11 +241,9 @@ export default class InputStandard extends Input implements InputEvent {
   /**
    * Aplica o efeito de hover no campo de entrada.
    * @param {MouseEvent} event - O evento de mouse.
-   * 
+   *
    */
-  private applyHoverOnInput(
-    event: MouseEvent,
-  ): void {
+  private applyHoverOnInput(event: MouseEvent): void {
     const hovering = this.isMouseOverInput(event.x, event.y)
     if (hovering) {
       this.shouldUsePointerCursor = true

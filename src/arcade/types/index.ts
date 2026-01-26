@@ -1,5 +1,5 @@
 import { Scene } from '@/arcade/interfaces'
-import { PositionState } from '../enums';
+import { PositionState } from '../enums'
 
 export type SceneManager = import('../core/SceneManager').default
 export type Game = import('../core/Game').default

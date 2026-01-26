@@ -28,7 +28,11 @@ import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
  */
 export default class MainMenuScene extends SceneEvent implements Scene {
   private _title: string
-  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(0, 130, 25)
+  private _listButtons: ButtonStandardGroup = new ButtonStandardGroup(
+    0,
+    130,
+    25
+  )
   private _backgroundSound: Sound
   private _initializedSoundSetup: boolean = false
   private _backgroundImage!: Image
@@ -97,7 +101,9 @@ export default class MainMenuScene extends SceneEvent implements Scene {
 
     this._listButtons.renderButtons(canvas, context)
 
-    this._shouldUsePointerCursor = this._listButtons.buttons.some(el => el.shouldUsePointerCursor)  
+    this._shouldUsePointerCursor = this._listButtons.buttons.some(
+      (el) => el.shouldUsePointerCursor
+    )
     canvas.style.cursor = this._shouldUsePointerCursor ? 'pointer' : 'default'
   }
 
