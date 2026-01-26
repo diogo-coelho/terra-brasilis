@@ -23,7 +23,7 @@
     "javascript"
   ],
   "author": "Diogo Coelho",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diogo-coelho/terra-brasilis.git"

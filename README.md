@@ -189,7 +189,7 @@ Contribuições são bem-vindas! Para contribuir:
 
 ## 📝 Licença
 
-Este projeto está licenciado sob a licença ISC - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ## 👤 Autor
 
@@ -204,7 +204,7 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 - Descrição do bug
 - Passos para reproduzir
 - Comportamento esperado
-- S🎯 Funcionalidades Implementadas
+- 🎯 Funcionalidades Implementadas
 
 ### Framework Arcade
 - ✅ Game loop com delta time
