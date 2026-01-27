@@ -3,7 +3,7 @@
 > Jogo isométrico de estratégia em tempo real (RTS) desenvolvido com TypeScript e Canvas API
 
 [![Version](https://img.shields.io/badge/version-0.0.0--alpha.1-orange.svg)](https://github.com/diogo-coelho/terra-brasilis)
-[![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue)](https://www.typescriptlang.org/)
 
 ## 📋 Sobre o Projeto
