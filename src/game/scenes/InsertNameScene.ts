@@ -119,13 +119,8 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   ): void {
     switch (event.type) {
       case EventListenerState.KEY_DOWN:
-        this._input.handleKeyboardEvent(event) 
-
-        /** Atualiza o nome do usuário no botão GoToGameButton */
-        const goToGameButton = this._listButtons.buttons.find(
-          (btn) => btn instanceof GoToGameButton
-        ) as GoToGameButton
-        goToGameButton.userName = this._input.inputText       
+        this._input.handleKeyboardEvent(event)
+        this.setUserNameInButton()
         break
     }
   }
@@ -177,5 +172,20 @@ export default class InsertNameScene extends SceneEvent implements Scene {
 
     this._listButtons.addButton(backToMenuButton)
     this._listButtons.addButton(goToGameButton)
+  }
+
+  /**
+   * Define o nome do usuário no botão GoToGameButton.
+   * @returns {void}
+   */
+  private setUserNameInButton(): void {
+    /** Atualiza o nome do usuário no botão GoToGameButton */
+    const goToGameButton = this._listButtons.buttons.find(
+      (btn) => btn instanceof GoToGameButton
+    )
+    if (!goToGameButton) {
+      throw new Error('GoToGameButton não encontrado na lista de botões.')
+    }
+    goToGameButton.userName = this._input.inputText
   }
 }

@@ -110,7 +110,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     context.font = '30px "Jersey 15", sans-serif'
     context.lineWidth = 3
     context.strokeStyle = '#000000'
-    context.fillStyle = '#ffffff'
 
     let xCoord = canvas.width / 2 - this._logoImage.image!.width / 2
     const phraseSize = context.measureText(this._phrase)

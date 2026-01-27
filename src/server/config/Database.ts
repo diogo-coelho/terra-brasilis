@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import mongoose, { Mongoose } from 'mongoose'
 import FormattedDate from '@/server/utils/FormattedDate'
+import MongoDBError from '../error/MongoDB'
 
 /**
  * Classe que representa a conexão ao banco de dados mongoDB
@@ -19,17 +20,17 @@ import FormattedDate from '@/server/utils/FormattedDate'
  *
  */
 export default class Database {
-  private _database: Promise<Mongoose>
+  private _database: Promise<Mongoose> | null = null
   private _date: string
 
   constructor() {
     this._date = new FormattedDate().formatted
-    this._database = mongoose.connect(
-      `${process.env.URL_MONGO_DB}/${process.env.DATABASE}`
-    )
   }
 
-  public get database(): Promise<Mongoose> {
+  public get database(): Promise<Mongoose> | null {
+    if (!this._database) {
+      throw new MongoDBError('Banco de dados não conectado')
+    }
     return this._database
   }
 
@@ -43,27 +44,32 @@ export default class Database {
    * @async
    */
   public async connection(): Promise<void> {
-    const database = await this._database
-    database.connection.on('connected', () => {
-      console.log(`[${this.date}] : Conexão estabelecida com sucesso`)
+    console.log(`[ ${this.date} ] : Conectando ao banco de dados...`)
+
+    mongoose.connection.on('connected', () => {
+      console.log(`[ ${this.date} ] : Conexão estabelecida com sucesso`)
     })
 
-    database.connection.on('disconnected', () => {
+    mongoose.connection.on('disconnected', () => {
       console.log(`[ ${this.date} ] : Conexão desconectada`)
     })
 
-    database.connection.on('error', (error: Error) => {
+    mongoose.connection.on('error', (error: Error) => {
       console.error(`[ ${this.date} ] : Erro de conexão => ${error}`)
     })
+
+    this._database = mongoose.connect(
+      `${process.env.URL_MONGO_DB}/${process.env.DATABASE}`
+    )
   }
 
   /**
    * Método que desconecta do banco de dados
-   *
+   * @returns {void}
    */
   public closeConnection(): void {
     process.on('SIGINT', async () => {
-      await this.database.then((d) => d.connection.close())
+      await this.database?.then((d) => d.connection.close())
       console.log(`[ ${this.date} ] : Mongoose encerrado`)
       process.exit(0)
     })

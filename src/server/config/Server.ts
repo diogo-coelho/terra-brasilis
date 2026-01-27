@@ -69,16 +69,19 @@ export default class Server {
    * @returns {Promise<http.Server>} O servidor HTTP configurado
    */
   private async configureMainApplication(): Promise<http.Server> {
-    try {
-      await this._database.connection()
-      this._application.set(SERVER.PORT, this.port)
-      this._application.set(SERVER.DATABASE, this._database)
-    } catch (error: unknown) {
-      new ServerError(
-        `Erro ao configurar o servidor: ${(error as Error).message}`
-      )
-    }
-
-    return http.createServer(this._application)
+    return new Promise((resolve, reject) => {
+      this._database
+        .connection()
+        .then(async () => {
+          this._application.set(SERVER.PORT, this._port)
+          this._application.set(SERVER.DATABASE, await this._database.database)
+          resolve(http.createServer(this._application))
+        })
+        .catch((error: unknown | Error) =>
+          reject(
+            new ServerError(`Erro ao conectar ao banco de dados: ${error}`)
+          )
+        )
+    })
   }
 }

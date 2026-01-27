@@ -40,19 +40,29 @@ export default class GoToGameButton extends Arcade.Components.ButtonStandard {
     return this._userName
   }
 
+  /**
+   * Método chamado ao clicar no botão.
+   * @param {SceneManager} scene - Gerenciador de cenas
+   */
   public onClick(scene: SceneManager): void {
-    this.saveUserNameInDataBase()
-      .then(() => {
-        scene?.setCurrentScene(GameSceneState.NEW_GAME)
-      })
-  }
-
-  private saveUserNameInDataBase(): Promise<void> {
-    return new Promise((resolve) => {
-      // TODO: fazer o fetch e passar o nome do usuário para o backend
-      console.log(`Saving user name: ${this._userName}`)
-      resolve()
+    this.saveUserNameInDataBase().then(() => {
+      scene?.setCurrentScene(GameSceneState.NEW_GAME)
     })
   }
- 
+
+  /**
+   * Salva o nome de usuário no banco de dados.
+   * @returns {Promise<void>} Promessa que resolve quando o nome é salvo
+   */
+  private saveUserNameInDataBase(): Promise<void> {
+    return new Promise((resolve) => {
+      fetch('/insert-username', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName: this._userName }),
+      }).then(() => resolve())
+    })
+  }
 }

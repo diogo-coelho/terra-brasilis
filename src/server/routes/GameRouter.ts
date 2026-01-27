@@ -30,10 +30,16 @@ export default class GameRouter {
 
   private initRoutes(): void {
     this._router.get('/', this.startGame)
+    this._router.post('/insert-username', this.insertUserName)
   }
 
   private startGame(req: Request, res: Response): void {
     const gameController = new GameController()
     gameController.startNewGame(req, res)
+  }
+
+  private insertUserName(req: Request, res: Response): void {
+    const gameController = new GameController()
+    gameController.insertUserName(req, res)
   }
 }

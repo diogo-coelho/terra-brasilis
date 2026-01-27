@@ -3,8 +3,10 @@
 > Jogo de estratégia em tempo real (RTS) isométrico desenvolvido com TypeScript e Canvas API
 
 [![Version](https://img.shields.io/badge/version-0.0.0--alpha.1-orange.svg)](https://github.com/diogo-coelho/terra-brasilis)
-[![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-16%2B-green)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green)](https://www.mongodb.com/)
 
 ## 📋 Sobre o Projeto
 
@@ -123,58 +125,82 @@ O jogo utiliza um sistema de gerenciamento de cenas customizado que permite:
 1. **BootScene**: Inicialização e carregamento inicial do jogo
 2. **IntroScene**: Tela de introdução com animações e transições
 3. **MainMenuScene**: Menu principal com botões interativos e música de fundo
-4. **InsertNameScene**: Interface para inserir nome do jogador
-5. **LoadGame**: Carregamento de partidas salvas
+4. **NewGameScene**: Configuração de novo jogo
+5. **InsertNameScene**: Interface para inserir nome do Governador-Geral
+6. **LoadGame**: Carregamento de partidas salvas
 
 ## 🛠️ Tecnologias Utilizadas
- 5.9.3**: Linguagem principal com configuração strict
+
+### Frontend
+- **TypeScript 5.9.3**: Linguagem principal com configuração strict
 - **Canvas API**: Renderização gráfica 2D com controle de image smoothing
 - **HTML5 Audio API**: Sistema de áudio nativo do navegador
-- **SASS**: Pré-processador CSS com Webpack
-- **Webpack 5**: Bundler com configurações separadas dev/prod
-- **SASS**: Pré-processador CSS
-- **Webpack**: Bundler e build tool
+- **SASS 1.97**: Pré-processador CSS para estilos
+- **Webpack 5.104**: Bundler com configurações separadas para dev/prod
+- **PostCSS**: Processamento de CSS para otimização
 
 ### Backend
-- **Node.js 25+**: Runtime JavaScript
-- **Express 5**: Framework web moderno
-- **MongoDB 7**: Banco de dados NoSQL
-- **Mongoose 9**: ODM para MongoDB
-- **body-parser**: Middleware para parsing de requisições
-- **dotenv**: Gerenciamento de variáveis de ambiente
+- **Node.js 16+**: Runtime JavaScript
+- **Express 5.2**: Framework web moderno
+- **MongoDB 7.0**: Banco de dados NoSQL
+- **Mongoose 9.1**: ODM para MongoDB
+- **body-parser 2.2**: Middleware para parsing de requisições
+- **dotenv 17.2**: Gerenciamento de variáveis de ambiente
 
 ### DevOps & Qualidade
-- **ESLint 9**: Linter com plugin TypeScript e Prettier
-- **Prettier**: Formatação de código consistente
-- **TypeScript**: Verificação de tipos em modo strict
-- **TerserPlugin**: Minificação de código em produção
-- **CSS Minimizer**: Otimização de CSS
+- **ESLint 9.39**: Linter com flat config, plugin TypeScript e Prettier
+- **Prettier 3.7**: Formatação de código consistente
+- **TypeScript 5.9**: Verificação de tipos em modo strict
+- **Terser Webpack Plugin 5.3**: Minificação de JavaScript em produção
+- **CSS Minimizer Webpack Plugin 7.0**: Otimização e minificação de CSS
 
 ## 📁 Estrutura de Diretórios
 
 ```
 terra-brasilis/
 ├── src/
-│   ├── arcade/          # Framework de jogo
-│   │   ├── core/        # Classes principais
-│   │   ├── components/  # Componentes reutilizáveis
-│   │   ├── events/      # Sistema de eventos
-│   │   ├── images/      # Gerenciador de imagens
-│   │   ├── sounds/      # Gerenciador de sons
-│   │   └── assets/      # Recursos do framework
-│   ├── game/            # Lógica do jogo
-│   │   ├── scenes/      # Cenas do jogo
-│   │   ├── components/  # Componentes do jogo
-│   │   └── assets/      # Recursos do jogo
-│   └── server/          # Backend
-│       ├── config/      # Configurações
-│       ├── controllers/ # Controladores
-│       ├── routes/      # Rotas da API
-│       └── utils/       # Utilitários
-├── webpack/             # Configurações Webpack
-│   ├── dev/            # Config desenvolvimento
-│   └── prod/           # Config produção
-└── dist/               # Arquivos compilados
+│   ├── arcade/              # Framework de jogo customizado
+│   │   ├── core/            # Classes principais (Game, SceneManager)
+│   │   ├── components/      # Componentes reutilizáveis e abstratos
+│   │   │   ├── abstract/    # Classes abstratas (Button, Input)
+│   │   │   └── ...          # GameObject, ButtonStandard, InputStandard
+│   │   ├── events/          # Sistema de eventos (GlobalEvents, SceneEvent)
+│   │   ├── images/          # Gerenciador de imagens
+│   │   ├── sounds/          # Gerenciador de sons
+│   │   ├── enums/           # Enumerações (KeyboardKey, ErrorState, etc)
+│   │   ├── interfaces/      # Interfaces TypeScript (Scene, ButtonEvent, etc)
+│   │   ├── errors/          # Classes de erro customizadas
+│   │   ├── types/           # Type definitions
+│   │   └── assets/          # Recursos do framework
+│   │       ├── images/      # Imagens
+│   │       ├── sounds/sfx/  # Efeitos sonoros
+│   │       └── sass/        # Estilos SASS
+│   ├── game/                # Lógica do jogo Terra Brasilis
+│   │   ├── scenes/          # Cenas (Boot, Intro, MainMenu, NewGame, etc)
+│   │   ├── components/      # Componentes específicos
+│   │   │   ├── buttons/     # Botões customizados do jogo
+│   │   │   └── inputs/      # Inputs customizados do jogo
+│   │   ├── scene-manager/   # Gerenciador de cenas do jogo
+│   │   ├── enums/           # Enums do jogo (GameSceneState)
+│   │   └── views/           # HTML templates
+│   ├── server/              # Backend Node.js + Express
+│   │   ├── config/          # Database e configuração do servidor
+│   │   ├── controllers/     # Controladores (GameController)
+│   │   ├── routes/          # Rotas da API (GameRouter)
+│   │   ├── model/           # Models Mongoose (UserModel)
+│   │   ├── error/           # Tratamento de erros
+│   │   ├── consts/          # Constantes
+│   │   ├── utils/           # Utilitários (FormattedDate)
+│   │   └── types/           # Type definitions
+│   └── types/               # Type definitions globais
+├── webpack/                 # Configurações Webpack
+│   ├── dev/                 # webpack.client.js e webpack.server.js (dev)
+│   └── prod/                # webpack.client.js e webpack.server.js (prod)
+├── dist/                    # Arquivos compilados
+├── eslint.config.js         # Configuração ESLint (flat config)
+├── tsconfig.json            # Configuração TypeScript
+├── package.json             # Dependências e scripts
+└── README.md                # Este arquivo
 ```
 
 ## 🤝 Contribuindo
@@ -204,28 +230,37 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 - Descrição do bug
 - Passos para reproduzir
 - Comportamento esperado
-- 🎯 Funcionalidades Implementadas
+- Screenshots (se aplicável)
+
+## 🎯 Funcionalidades Implementadas
 
 ### Framework Arcade
-- ✅ Game loop com delta time
-- ✅ Sistema de cenas com ciclo de vida
-- ✅ Gerenciamento de imagens (carregamento, redimensionamento)
-- ✅ Sistema de áudio (play, pause, stop, volume, loop, fade)
-- ✅ Componentes de UI (botões com hover e click)
-- ✅ Sistema de eventos customizados
-- ✅ Tratamento de erros específicos (ImageError, SoundError, ButtonError)
+- ✅ Game loop com delta time baseado em `requestAnimationFrame`
+- ✅ Sistema de cenas com ciclo de vida completo (`onEnter`, `drawScene`, `handleMouseEvent`, `onExit`)
+- ✅ Gerenciamento de imagens (carregamento, redimensionamento, image smoothing)
+- ✅ Sistema de áudio robusto (play, pause, stop, volume, loop, fade)
+- ✅ Componentes de UI abstratos e concretos (Button, Input, ButtonStandardGroup)
+- ✅ Sistema de eventos customizados (GlobalEvents, SceneEvent)
+- ✅ Tratamento de erros específicos (ImageError, SoundError, ButtonError, InputError, SceneManagerError)
+- ✅ Sistema de inputs com validação
+- ✅ GameObject base para entidades do jogo
 
 ### Jogo
-- ✅ Telas de boot, intro e menu principal
-- ✅ Interface para novo jogo e continuar
+- ✅ 6 cenas implementadas (Boot, Intro, MainMenu, NewGame, InsertName, LoadGame)
+- ✅ Componentes customizados (BackToMenuButton, ContinueGameButton, GoToGameButton, NewGameButton)
+- ✅ Input para nome do Governador-Geral (GovernorGeneralNameInput)
 - ✅ Sistema de música de fundo
-- ✅ Botões interativos com efeitos visuais
+- ✅ Botões interativos com estados (hover, click)
+- ✅ Transições entre cenas
 
 ### Backend
-- ✅ Servidor Express configurado
-- ✅ Conexão com MongoDB
+- ✅ Servidor Express 5 configurado
+- ✅ Conexão com MongoDB via Mongoose
 - ✅ Rotas de API (GameRouter)
-- ✅ Servir arquivos estáticos
+- ✅ GameController para lógica de negócio
+- ✅ UserModel para persistência
+- ✅ Servir arquivos estáticos compilados
+- ✅ Suporte a variáveis de ambiente (.env)
 
 ## 🗺️ Roadmap
 
@@ -248,17 +283,19 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 
 ### Padrões de Código
 - **POO**: Arquitetura orientada a objetos com herança e abstração
-- **Path Aliases**: Imports limpos usando `@/` via tsconfig
-- **Error Handling**: Classes de erro customizadas para cada domínio
-- **Type Safety**: Interfaces e tipos para todos os contratos
+- **Path Aliases**: Imports limpos usando `@/` via tsconfig paths
+- **Error Handling**: Classes de erro customizadas para cada domínio (ImageError, SoundError, ButtonError, etc)
+- **Type Safety**: Interfaces e tipos TypeScript para todos os contratos
+- **Strict Mode**: TypeScript configurado em modo strict para máxima segurança
+- **ES2020 Target**: Código compilado para ES2020 com suporte CommonJS
 
 ### Performance
-- **Game Loop**: Baseado em `requestAnimationFrame` para 60 FPS
-- **Delta Time**: Animações independentes do framerate
-- **Asset Preloading**: Carregamento assíncrono de recursos
-- **Code Splitting**: Webpack otimizado para produçãode jogo
-- [ ] Tutorial interativo
-- [ ] Campanha single-player
+- **Game Loop**: Baseado em `requestAnimationFrame` para 60 FPS consistentes
+- **Delta Time**: Animações independentes do framerate para suavidade
+- **Asset Preloading**: Carregamento assíncrono de imagens e sons
+- **Code Splitting**: Webpack com builds separados para client e server
+- **Minificação**: Terser para JavaScript e CSS Minimizer para estilos em produção
+- **Source Maps**: Habilitados para debug facilitado
 
 ---
 
