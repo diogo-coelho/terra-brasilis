@@ -127,7 +127,7 @@ O jogo utiliza um sistema de gerenciamento de cenas customizado que permite:
 5. **LoadGame**: Carregamento de partidas salvas
 
 ## 🛠️ Tecnologias Utilizadas
- 5.9.3**: Linguagem principal com configuração strict
+- **Typescript: 5.9.3**: Linguagem principal com configuração strict
 - **Canvas API**: Renderização gráfica 2D com controle de image smoothing
 - **HTML5 Audio API**: Sistema de áudio nativo do navegador
 - **SASS**: Pré-processador CSS com Webpack
