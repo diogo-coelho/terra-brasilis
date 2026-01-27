@@ -1,6 +1,6 @@
 # Terra Brasilis 🎮
 
-> Jogo de estratégia em tempo real (RTS) isométrico desenvolvido com TypeScript e Canvas API
+> Jogo isométrico de estratégia em tempo real (RTS) desenvolvido com TypeScript e Canvas API
 
 [![Version](https://img.shields.io/badge/version-0.0.0--alpha.1-orange.svg)](https://github.com/diogo-coelho/terra-brasilis)
 [![License](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
