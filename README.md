@@ -257,8 +257,6 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/diogo-coelho/te
 - **Delta Time**: Animações independentes do framerate
 - **Asset Preloading**: Carregamento assíncrono de recursos
 - **Code Splitting**: Webpack otimizado para produçãode jogo
-- [ ] Tutorial interativo
-- [ ] Campanha single-player
 
 ---
 
