@@ -2,26 +2,46 @@ import { EventListenerState } from '@/arcade/enums'
 import { Game, SceneManager } from '@/arcade/core'
 
 /**
- * Classe responsável por gerenciar os eventos globais do jogo,
- * como eventos de teclado e mouse.
+ * Gerenciador centralizado de eventos globais do navegador para o sistema de jogo.
  *
  * @class GlobalEvents
- *
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe GlobalEvents é responsável por configurar
- * os listeners globais para eventos de teclado e mouse,
- * e despachar esses eventos para a cena atual gerenciada
- * pelo SceneManager.
+ * A classe GlobalEvents implementa o padrão Observer/Mediator para gerenciar eventos
+ * globais do navegador e distribuí-los para a cena ativa. Responsabilidades:
+ * - Configurar listeners globais de eventos (teclado, mouse, resize)
+ * - Despachar eventos para métodos handleKeyboardEvent e handleMouseEvent da cena atual
+ * - Gerenciar evento de redimensionamento da janela
+ * - Centralizar toda a lógica de captura de eventos em um único ponto
+ * 
+ * Esta classe evita que cada cena precise configurar seus próprios listeners,
+ * reduzindo duplicação de código e garantindo que eventos sejam sempre
+ * direcionados à cena correta.
+ * 
+ * Os eventos capturados incluem:
+ * - **Teclado**: KEY_UP, KEY_DOWN
+ * - **Mouse**: CLICK, MOUSE_MOVE
+ * - **Janela**: RESIZE
+ * 
+ * @remarks
+ * Esta classe usa métodos estáticos, não requer múltiplas instâncias.
+ * Os listeners são configurados uma única vez durante a inicialização do jogo.
  *
  * @example
+ * ```typescript
+ * // Inicializar eventos globais
  * const globalEvents = new GlobalEvents(sceneManager);
+ * 
+ * // Ou usar método estático diretamente
+ * GlobalEvents.initialize(sceneManager);
+ * GlobalEvents.resize(gameEngine, sceneManager);
+ * ```
  *
  * @see SceneManager
- *
+ * @see EventListenerState
  */
 export default class GlobalEvents {
   constructor(sceneManager: SceneManager) {

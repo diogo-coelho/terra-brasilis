@@ -2,24 +2,51 @@ import SoundError from '@/arcade/errors/SoundError'
 import { ErrorState } from '../enums'
 
 /**
- * Classe que representa um som no jogo.
+ * Gerenciador de áudio com suporte a reprodução, controle de volume e efeitos de fade.
  *
+ * @class Sound
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe Sound encapsula a funcionalidade de reprodução de áudio,
- * permitindo carregar, reproduzir, pausar e controlar o volume de sons no jogo.
+ * A classe Sound encapsula toda a funcionalidade de áudio do jogo, oferecendo:
+ * - Carregamento e pré-carregamento de arquivos de áudio
+ * - Controle de reprodução (play, pause, stop)
+ * - Gerenciamento de volume com clamping automático (0-1)
+ * - Efeitos de fade in/out com duração configurvel
+ * - Sistema de loop
+ * - Listeners de eventos personalizados
+ * - Limpeza adequada de recursos (destroy)
+ * 
+ * A classe utiliza HTMLAudioElement internamente e fornece uma API
+ * mais amigável e robusta com tratamento de erros.
+ * 
+ * Os efeitos de fade são implementados com animações suaves em 50 passos,
+ * garantindo transições naturais de volume.
+ * 
+ * @remarks
+ * Use preload() para carregar áudios críticos antes de iniciar o jogo,
+ * evitando delays durante a gameplay.
  *
  * @example
  * ```typescript
- * const sound = new Sound('path/to/sound.mp3');
- * await sound.preload();
- * sound.play();
- * sound.fadeOut(1000);
+ * const bgMusic = new Sound('assets/music/theme.mp3');
+ * 
+ * // Pré-carregar e configurar
+ * await bgMusic.preload();
+ * bgMusic.loop(true);
+ * bgMusic.setVolume(0.5);
+ * 
+ * // Iniciar com fade in
+ * await bgMusic.play();
+ * bgMusic.fadeIn(2000, 0.7);
+ * 
+ * // Parar com fade out
+ * bgMusic.fadeOut(1500, true);
  * ```
  *
+ * @see HTMLAudioElement
  */
 export default class Sound {
   private _audio: HTMLAudioElement
@@ -54,9 +81,28 @@ export default class Sound {
   }
 
   /**
-   * Reproduz o áudio.
-   * @returns Promise que resolve quando a reprodução inicia com sucesso
-   * @throws SoundError se a reprodução falhar
+   * Inicia a reprodução do áudio.
+   *
+   * @returns {Promise<void>} Promise que resolve quando a reprodução inicia com sucesso
+   * 
+   * @remarks
+   * Este método é assíncrono devido às políticas de autoplay do navegador.
+   * Erros são capturados e logados, mas não lançam exceções para evitar
+   * quebra da aplicação em casos onde o navegador bloqueia o autoplay.
+   * 
+   * Em ambientes modernos, a reprodução automática pode requerer interação
+   * prévia do usuário.
+   * 
+   * @example
+   * ```typescript
+   * // Com await
+   * await sound.play();
+   * 
+   * // Com then/catch
+   * sound.play()
+   *   .then(() => console.log('Tocando'))
+   *   .catch(err => console.error('Erro ao tocar:', err));
+   * ```
    */
   public async play(): Promise<void> {
     try {
@@ -77,8 +123,26 @@ export default class Sound {
   }
 
   /**
-   * Define o volume do áudio.
-   * @param volume - Valor entre 0 (mudo) e 1 (volume máximo)
+   * Define o volume do áudio com clamping automático.
+   *
+   * @param {number} volume - Valor do volume entre 0 (mudo) e 1 (máximo)
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Valores fora do intervalo 0-1 são automaticamente ajustados:
+   * - Valores < 0 são definidos como 0
+   * - Valores > 1 são definidos como 1
+   * 
+   * Isso previne erros e garante comportamento consistente.
+   * 
+   * @example
+   * ```typescript
+   * sound.setVolume(0.5);  // 50% do volume
+   * sound.setVolume(0);    // Mudo
+   * sound.setVolume(1);    // Volume máximo
+   * sound.setVolume(1.5);  // Automaticamente ajustado para 1
+   * ```
    */
   public setVolume(volume: number): void {
     const clampedVolume = Math.max(0, Math.min(1, volume))
@@ -94,8 +158,31 @@ export default class Sound {
   }
 
   /**
-   * Pré-carrega o áudio.
-   * @returns Promise que resolve quando o áudio está pronto para reprodução
+   * Pré-carrega o áudio na memória antes da reprodução.
+   *
+   * @returns {Promise<void>} Promise que resolve quando o áudio está pronto
+   * 
+   * @remarks
+   * Este método garante que o arquivo de áudio esteja completamente carregado
+   * antes de tentar reproduzi-lo, evitando delays durante a gameplay.
+   * 
+   * Aguarda o evento 'canplaythrough' que indica que o áudio pode ser
+   * reproduzido sem interrupções para buffering.
+   * 
+   * Rejeita a Promise se houver erro no carregamento.
+   * 
+   * @example
+   * ```typescript
+   * const criticalSounds = [
+   *   new Sound('click.wav'),
+   *   new Sound('explosion.wav')
+   * ];
+   * 
+   * // Pré-carregar todos
+   * await Promise.all(
+   *   criticalSounds.map(sound => sound.preload())
+   * );
+   * ```
    */
   public preload(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -122,9 +209,27 @@ export default class Sound {
   }
 
   /**
-   * Aumenta gradualmente o volume do áudio (fade in).
-   * @param duration - Duração do fade em milissegundos
-   * @param targetVolume - Volume final (padrão: 1)
+   * Aumenta gradualmente o volume do áudio criando efeito de fade in.
+   *
+   * @param {number} duration - Duração do fade em milissegundos
+   * @param {number} [targetVolume=1] - Volume final ao término do fade (0-1)
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * O fade é implementado em 50 passos para suavidade:
+   * - Cada passo dura duration/50 milissegundos
+   * - O volume aumenta linearmente de 0 até targetVolume
+   * - Cancela qualquer fade anterior em andamento
+   * 
+   * Útil para introduções suaves de música de fundo.
+   * 
+   * @example
+   * ```typescript
+   * await backgroundMusic.play();
+   * // Fade in por 3 segundos até 70% do volume
+   * backgroundMusic.fadeIn(3000, 0.7);
+   * ```
    */
   public fadeIn(duration: number, targetVolume: number = 1): void {
     this.clearFade()
@@ -148,9 +253,30 @@ export default class Sound {
   }
 
   /**
-   * Diminui gradualmente o volume do áudio (fade out).
-   * @param duration - Duração do fade em milissegundos
-   * @param stopAfterFade - Se true, pausa o áudio ao final do fade
+   * Diminui gradualmente o volume do áudio criando efeito de fade out.
+   *
+   * @param {number} duration - Duração do fade em milissegundos
+   * @param {boolean} [stopAfterFade=false] - Se `true`, pausa o áudio ao final do fade
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * O fade é implementado em 50 passos para suavidade:
+   * - Cada passo dura duration/50 milissegundos
+   * - O volume diminui linearmente do valor atual até 0
+   * - Cancela qualquer fade anterior em andamento
+   * - Opcionalmente para a reprodução ao final
+   * 
+   * Útil para términos suaves de música ou efeitos sonoros.
+   * 
+   * @example
+   * ```typescript
+   * // Fade out por 2 segundos e parar
+   * backgroundMusic.fadeOut(2000, true);
+   * 
+   * // Fade out sem parar (volume vai para 0 mas continua tocando)
+   * sound.fadeOut(1000, false);
+   * ```
    */
   public fadeOut(duration: number, stopAfterFade: boolean = false): void {
     this.clearFade()
@@ -204,7 +330,28 @@ export default class Sound {
   }
 
   /**
-   * Destrói a instância do som, limpando recursos.
+   * Libera recursos e limpa a instância do som.
+   *
+   * @returns {void}
+   * 
+   * @remarks
+   * Processo de destruição:
+   * 1. Limpa qualquer fade em andamento
+   * 2. Para a reprodução
+   * 3. Remove a fonte do áudio
+   * 4. Força recarregamento (libera memória)
+   * 
+   * Chame este método quando o som não for mais necessário para
+   * evitar vazamento de memória, especialmente em jogos com muitos
+   * efeitos sonoros dinâmicos.
+   * 
+   * @example
+   * ```typescript
+   * // Ao trocar de cena
+   * onExit() {
+   *   this.backgroundMusic.destroy();
+   * }
+   * ```
    */
   public destroy(): void {
     this.clearFade()

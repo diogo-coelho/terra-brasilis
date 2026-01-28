@@ -2,44 +2,71 @@ import { EventListenerState, KeyboardKey } from '@/arcade/enums'
 import { EventPayload } from '@/arcade/types'
 
 /**
- * A classe SceneEvent fornece uma implementação padrão para o
- * manuseio de eventos de cena, incluindo eventos de teclado e mouse.
- * Esta classe pode ser estendida por outras classes de cena para
- * herdar a funcionalidade de gerenciamento de eventos.
+ * Classe base que fornece implementação padrão para gerenciamento de eventos de cena.
  *
+ * @class SceneEvent
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe SceneEvent implementa métodos para lidar com eventos
- * de teclado e mouse, permitindo que as cenas respondam a esses eventos
- * de maneira consistente.
+ * A classe SceneEvent implementa o padrão Template Method para processamento de eventos,
+ * oferecendo uma camada de abstração para:
+ * - Gerenciar eventos de teclado (KEY_DOWN, KEY_UP)
+ * - Gerenciar eventos de mouse (CLICK, MOUSE_MOVE)
+ * - Despachar ações associadas aos eventos de forma consistente
+ * - Validar tipos de eventos e teclas pressionadas
+ * 
+ * Esta classe deve ser estendida por todas as cenas que precisam responder a interações
+ * do usuário. Ela encapsula a lógica de validação e despacho, permitindo que as
+ * subclasses foquem apenas na lógica específica de cada cena.
+ * 
+ * @remarks
+ * Utiliza o padrão Command para associar eventos a ações específicas através
+ * do tipo EventPayload.
  *
  * @example
- * class MyScene extends SceneEvent {
- *   constructor() {
- *     super();
- *   }
- *
- *   public handleKeyboardEvent(event: KeyboardEvent): void {
- *    this.onKeyboardEvent(event, {
- *      eventType: EventListenerState.KEY_DOWN,
- *      eventKey: 'Enter',
- *      action: () => { console.log('Enter key pressed'); }
+ * ```typescript
+ * class MyScene extends SceneEvent implements Scene {
+ *   public handleKeyboardEvent(event: KeyboardEvent, scene: SceneManager): void {
+ *     this.onKeyboardEvent(event, {
+ *       eventType: EventListenerState.KEY_DOWN,
+ *       eventKey: KeyboardKey.ENTER,
+ *       action: () => scene.setCurrentScene('nextScene')
  *     });
  *   }
  * }
+ * ```
  *
  * @see EventPayload
- *
+ * @see EventListenerState
+ * @see KeyboardKey
  */
 export default class SceneEvent {
   /**
-   * Método para manipular eventos de teclado.
-   * @param {KeyboardEvent} event - O evento de teclado a ser manipulado.
-   * @param {EventPayload} callback - O callback associado ao evento de teclado.
-   * @return {any} O resultado da ação despachada.
+   * Processa eventos de teclado e despacha a ação correspondente quando as condições são atendidas.
+   *
+   * @param {KeyboardEvent} event - Evento nativo de teclado do navegador
+   * @param {EventPayload} callback - Objeto contendo tipo de evento, tecla esperada e ação a executar
+   * 
+   * @returns {any} Resultado da execução da ação, se disparada
+   * 
+   * @remarks
+   * Este método valida:
+   * - Se o tipo do evento (KEY_DOWN ou KEY_UP) corresponde ao esperado no callback
+   * - Se a tecla pressionada corresponde à tecla especificada ou se aceita qualquer tecla (KeyboardKey.ANY)
+   * 
+   * Quando ambas as condições são satisfeitas, a ação é despachada imediatamente.
+   * Eventos não reconhecidos geram um aviso no console.
+   * 
+   * @example
+   * ```typescript
+   * this.onKeyboardEvent(event, {
+   *   eventType: EventListenerState.KEY_DOWN,
+   *   eventKey: KeyboardKey.ENTER,
+   *   action: () => console.log('Enter pressionado')
+   * });
+   * ```
    */
   public onKeyboardEvent(event: KeyboardEvent, callback: EventPayload): any {
     switch (event.type) {
@@ -67,10 +94,27 @@ export default class SceneEvent {
   }
 
   /**
-   * Método para manipular eventos de mouse.
-   * @param {MouseEvent} event - O evento de mouse a ser manipulado.
-   * @param {EventPayload} callback - O callback associado ao evento de mouse.
-   * @return {any} O resultado da ação despachada.
+   * Processa eventos de mouse e despacha a ação correspondente quando as condições são atendidas.
+   *
+   * @param {MouseEvent} event - Evento nativo de mouse do navegador
+   * @param {EventPayload} callback - Objeto contendo tipo de evento e ação a executar
+   * 
+   * @returns {any} Resultado da execução da ação, se disparada
+   * 
+   * @remarks
+   * Atualmente suporta apenas eventos do tipo CLICK. Valida se o tipo do evento
+   * corresponde ao esperado no callback e, em caso positivo, despacha a ação associada.
+   * 
+   * Eventos não reconhecidos geram um aviso no console para facilitar o debug.
+   * 
+   * @example
+   * ```typescript
+   * this.onMouseEvent(event, {
+   *   eventType: EventListenerState.CLICK,
+   *   eventKey: KeyboardKey.ANY, // Não usado para mouse
+   *   action: () => this.handleClick()
+   * });
+   * ```
    */
   public onMouseEvent(event: MouseEvent, callback: EventPayload): any {
     switch (event.type) {
@@ -85,9 +129,17 @@ export default class SceneEvent {
   }
 
   /**
-   * Despacha a ação associada ao evento.
-   * @param {(...args: any[]) => any} callback - A função callback a ser executada.
-   * @returns {any} O resultado da execução do callback.
+   * Executa a função callback associada a um evento validado.
+   *
+   * @private
+   * @param {(...args: any[]) => any} callback - Função a ser executada
+   * 
+   * @returns {any} Valor retornado pela execução do callback
+   * 
+   * @remarks
+   * Método privado responsável por invocar as ações associadas aos eventos.
+   * Atua como ponto central de execução, facilitando extensões futuras como
+   * logging, tratamento de erros ou middleware de eventos.
    */
   private dispatchAction(callback: (...args: any[]) => any): any {
     return callback()

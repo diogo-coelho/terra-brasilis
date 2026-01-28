@@ -12,24 +12,46 @@ import logoImage from '@/arcade/assets/images/tb_logo.png'
 import { GameSceneState } from '@/game/enums'
 
 /**
- * A classe IntroScene representa a cena de introdução do jogo.
- * Ela implementa a interface Scene e estende a classe SceneEvent.
- * Esta cena lida com eventos de teclado, especificamente o evento de pressionar a tecla "Enter",
- * que faz a transição para a cena do menu principal do jogo.
+ * Cena de introdução com animação do logo e transição para o menu principal.
  *
  * @class IntroScene
  * @extends SceneEvent
  * @implements Scene
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-15
  *
+ * @description
+ * A IntroScene apresenta a identidade visual do jogo Terra Brasilis, sendo responsável por:
+ * - Exibir imagem de fundo temática com opacidade reduzida (0.6)
+ * - Animar o logo descendo suavemente de fora da tela até posição centralizada
+ * - Manter reprodução da música tema em loop
+ * - Aguardar tecla Enter para prosseguir ao menu principal
+ * - Exibir mensagem "Pressione Enter para iniciar"
+ * 
+ * **Animação do Logo:**
+ * - Posição inicial: Acima da tela (Y negativo)
+ * - Posição final: Centralizado com offset -100px
+ * - Velocidade: 100 pixels/segundo
+ * - Interpolação suave usando deltaTime
+ * 
+ * **Elementos Visuais:**
+ * - Background: Imagem temática com 60% de opacidade
+ * - Logo: Redimensionado para 500px de largura mantendo proporção
+ * - Texto: Fonte Jersey 15, 30px, com outline preto
+ * 
  * @example
+ * ```typescript
  * const introScene = new IntroScene();
+ * sceneManager.setScenesMap([{
+ *   name: GameSceneState.INTRO,
+ *   scene: introScene
+ * }]);
+ * ```
  *
  * @see Scene
  * @see SceneEvent
- * @see SceneManager
  * @see GameSceneState
- * @see Sound
- *
  */
 export default class IntroScene extends SceneEvent implements Scene {
   private _phrase: string

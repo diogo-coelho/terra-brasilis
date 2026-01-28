@@ -10,21 +10,51 @@ import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
 import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
 
 /**
- * A classe MainMenuScene representa a cena do menu principal do jogo.
- * Ela implementa a interface Scene e estende a classe SceneEvent.
- * Esta cena é responsável por exibir o título do jogo e pode ser expandida
- * no futuro para incluir opções de menu, configurações e outras funcionalidades relacionadas
- * ao menu principal.
+ * Cena do menu principal com opções de novo jogo e continuar.
  *
  * @class MainMenuScene
  * @extends SceneEvent
  * @implements Scene
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-15
  *
+ * @description
+ * A MainMenuScene é o hub central de navegação do jogo, oferecendo:
+ * - Interface de menu com botões interativos
+ * - Background temático com opacidade de 60%
+ * - Grupo de botões estilizados (Novo Jogo, Continuar)
+ * - Feedback visual de hover nos botões
+ * - Mudança de cursor para pointer ao passar sobre botões
+ * - Continuação da música tema iniciada nas cenas anteriores
+ * 
+ * **Botões Disponíveis:**
+ * - **Novo Jogo**: Navega para InsertNameScene
+ * - **Continuar Jogo**: (Funcionalidade a ser implementada)
+ * 
+ * **Configurações Visuais:**
+ * - Botões: 450x60px
+ * - Cor de fundo: #84310a (marrom)
+ * - Cor hover: #692303 (marrom escuro)
+ * - Espaçamento: 25px entre botões
+ * - Alinhamento: Vertical centralizado
+ * 
+ * A cena gerencia automaticamente o estado do cursor baseado na posição
+ * do mouse sobre os botões.
+ * 
  * @example
- * const mainMenuScene = new MainMenuScene();
+ * ```typescript
+ * const mainMenu = new MainMenuScene();
+ * sceneManager.setScenesMap([{
+ *   name: GameSceneState.MAIN_MENU,
+ *   scene: mainMenu
+ * }]);
+ * ```
  *
  * @see Scene
- *
+ * @see ButtonStandardGroup
+ * @see NewGameButton
+ * @see ContinueGameButton
  */
 export default class MainMenuScene extends SceneEvent implements Scene {
   private _title: string

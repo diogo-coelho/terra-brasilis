@@ -4,17 +4,38 @@ import { ErrorState } from '@/arcade/enums'
 import { NamedScene } from '@/arcade/types'
 
 /**
- * Classe responsável por gerenciar as cenas do jogo
+ * Gerenciador central responsável pelo controle e transição entre cenas do jogo.
  *
+ * @class SceneManager
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe SceneManager é responsável por gerenciar
- * as cenas do jogo, incluindo a troca de cenas
- * e o armazenamento das cenas mapeadas.
- *
+ * A classe SceneManager implementa o padrão de gerenciamento de cenas (Scene Management),
+ * sendo responsável por:
+ * - Armazenar e organizar todas as cenas disponíveis em um Map indexado por nome
+ * - Controlar qual cena está ativa atualmente
+ * - Gerenciar transições entre cenas, invocando callbacks onExit e onEnter
+ * - Manter o estado atual da cena ativa (game scene state)
+ * - Garantir segurança com validações e lançamento de erros apropriados
+ * 
+ * O gerenciador garante que sempre exista uma cena ativa e que as transições sejam
+ * realizadas de forma ordenada, evitando estados inconsistentes.
+ * 
+ * @throws {SceneManagerError} Lança erro quando tenta acessar cena não definida
+ * 
+ * @example
+ * ```typescript
+ * const sceneManager = new SceneManager();
+ * 
+ * sceneManager.setScenesMap([
+ *   { name: 'boot', scene: new BootScene() },
+ *   { name: 'menu', scene: new MenuScene() }
+ * ]);
+ * 
+ * sceneManager.setCurrentScene('boot');
+ * ```
  */
 export default class SceneManager {
   private _currentScene: Scene | undefined
@@ -38,8 +59,26 @@ export default class SceneManager {
   }
 
   /**
-   * Método que define o mapa de cenas
-   * @param {NamedScene[]} scenes - array de cenas nomeadas
+   * Registra todas as cenas disponíveis no jogo criando um mapeamento nome-cena.
+   *
+   * @param {NamedScene[]} scenes - Array de objetos contendo o nome e a instância da cena
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Este método deve ser chamado durante a inicialização do jogo para registrar todas
+   * as cenas que serão utilizadas. Utiliza o método reduce para popular o Map interno,
+   * permitindo acesso rápido às cenas pelo nome (O(1) complexity).
+   * 
+   * @example
+   * ```typescript
+   * sceneManager.setScenesMap([
+   *   { name: 'boot', scene: new BootScene() },
+   *   { name: 'intro', scene: new IntroScene() },
+   *   { name: 'mainMenu', scene: new MainMenuScene() },
+   *   { name: 'game', scene: new GameScene() }
+   * ]);
+   * ```
    */
   public setScenesMap(scenes: NamedScene[]): void {
     scenes.reduce(
@@ -49,8 +88,31 @@ export default class SceneManager {
   }
 
   /**
-   * Método que define a cena atual
-   * @param name - nome da cena a ser definida como atual
+   * Realiza a transição para uma nova cena ativa.
+   *
+   * @param {string} name - Nome identificador da cena destino (deve estar registrada no scenesMap)
+   * 
+   * @returns {void}
+   * 
+   * @throws {SceneManagerError} Lança erro se a cena não estiver mapeada no scenesMap
+   * 
+   * @remarks
+   * O processo de transição segue esta sequência:
+   * 1. Busca a cena pelo nome no Map de cenas
+   * 2. Valida se a cena existe, lançando erro caso contrário
+   * 3. Atualiza o estado da cena do jogo (gameSceneState)
+   * 4. Invoca o callback onExit da cena anterior (se existir e se implementado)
+   * 5. Atualiza a referência da cena atual
+   * 6. Invoca o callback onEnter da nova cena (se implementado)
+   * 
+   * Este método garante que os recursos sejam limpos adequadamente e que a nova
+   * cena seja inicializada corretamente.
+   * 
+   * @example
+   * ```typescript
+   * // Transição do boot para a intro
+   * sceneManager.setCurrentScene('intro');
+   * ```
    */
   public setCurrentScene(name: string): void {
     const scene = this._scenesMap.get(name)

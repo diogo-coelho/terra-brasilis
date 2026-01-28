@@ -3,26 +3,56 @@ import { EventListenerState, PositionState } from '../enums'
 import { ButtonStandardGroupConfig, Callback, SceneManager } from '../types'
 
 /**
- * A classe ButtonStandardGroup gerencia um grupo de botões padrão (ButtonStandard).
+ * Gerenciador de grupo de botões com renderização e posicionamento automáticos.
  *
+ * @class ButtonStandardGroup
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe ButtonStandardGroup é responsável por gerenciar um grupo de botões padrão (ButtonStandard).
- * Ela permite adicionar botões ao grupo, renderizá-los em um canvas HTML e manipular eventos de mouse,
- * como movimento do mouse e cliques, para interagir com os botões.
- *
- * @class ButtonStandardGroup
+ * A classe ButtonStandardGroup implementa o padrão Composite para gerenciar
+ * múltiplos botões como uma única unidade, oferecendo:
+ * - Gerenciamento centralizado de configurações visuais (cores, tamanhos)
+ * - Posicionamento automático com espaçamento configurvel
+ * - Alinhamento vertical ou horizontal
+ * - Propagação de eventos de mouse para todos os botões
+ * - Cálculos automáticos de centralização
+ * 
+ * Todos os botões adicionados ao grupo herdam automaticamente as configurações
+ * definidas via setButtonsConfigurations(), garantindo consistência visual.
+ * 
+ * O grupo calcula automaticamente o posicionamento de cada botão baseado em:
+ * - Alinhamento configurado (vertical/horizontal)
+ * - Espaçamento entre botões
+ * - Posição inicial do grupo
+ * 
+ * @remarks
+ * Ideal para menus, listas de opções e qualquer interface que necessite
+ * múltiplos botões organizados de forma consistente.
  *
  * @example
- * const buttonGroup = new ButtonStandardGroup(200, 20);
+ * ```typescript
+ * const buttonGroup = new ButtonStandardGroup(0, 150, 20);
+ * 
+ * buttonGroup.setButtonsConfigurations({
+ *   width: 200,
+ *   height: 50,
+ *   backgroundColor: '#4CAF50',
+ *   backgroundColorOnHover: '#45a049',
+ *   color: '#FFFFFF',
+ *   colorOnHover: '#E0E0E0'
+ * });
+ * 
+ * buttonGroup.addButton(new StartButton('Iniciar'));
+ * buttonGroup.addButton(new ExitButton('Sair'));
+ * 
+ * buttonGroup.alignement = PositionState.VERTICAL;
+ * buttonGroup.renderButtons(canvas, context);
+ * ```
  *
  * @see ButtonStandard
- * @see EventListenerState
- *
- *
+ * @see PositionState
  */
 export default class ButtonStandardGroup {
   private _buttons: ButtonStandard[] = []
@@ -49,6 +79,28 @@ export default class ButtonStandardGroup {
     return this._buttons
   }
 
+  /**
+   * Adiciona um botão ao grupo aplicando automaticamente as configurações visuais.
+   *
+   * @param {ButtonStandard} button - Botão a ser adicionado ao grupo
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Ao adicionar um botão, suas propriedades visuais são automaticamente sobrescritas
+   * pelas configurações do grupo:
+   * - width e height
+   * - backgroundColor e backgroundColorOnHover
+   * - color e colorOnHover
+   * 
+   * Isso garante consistência visual entre todos os botões do grupo.
+   * 
+   * @example
+   * ```typescript
+   * const button = new NewGameButton('Novo Jogo');
+   * buttonGroup.addButton(button);
+   * ```
+   */
   public addButton(button: ButtonStandard): void {
     button.width = this._buttonsWidth
     button.height = this._buttonsHeight
@@ -106,9 +158,32 @@ export default class ButtonStandardGroup {
   }
 
   /**
-   * Renderiza os botões no canvas.
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde os botões serão desenhados.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização do canvas.
+   * Renderiza todos os botões do grupo com posicionamento automático.
+   *
+   * @param {HTMLCanvasElement} canvas - Canvas onde os botões serão desenhados
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização 2D
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Para cada botão no grupo:
+   * 1. Calcula a posição baseada no alinhamento (vertical/horizontal)
+   * 2. Aplica espaçamento entre botões (exceto o primeiro)
+   * 3. Define a posição do botão
+   * 4. Renderiza o botão
+   * 
+   * **Alinhamento Vertical:**
+   * - X: Posição inicial do grupo
+   * - Y: Índice * altura + espaçamento + posição inicial
+   * 
+   * **Alinhamento Horizontal:**
+   * - X: Índice * largura + espaçamento + posição inicial
+   * - Y: Posição inicial do grupo
+   * 
+   * @example
+   * ```typescript
+   * buttonGroup.renderButtons(canvas, context);
+   * ```
    */
   public renderButtons(
     canvas: HTMLCanvasElement,
@@ -156,10 +231,32 @@ export default class ButtonStandardGroup {
   }
 
   /**
-   * Manipula eventos de mouse para os botões.
-   * @param {MouseEvent} event - O evento de mouse a ser manipulado.
-   * @param {Callback} [sceneCallback] - Callback opcional para a cena.
+   * Propaga eventos de mouse para todos os botões do grupo.
+   *
+   * @param {MouseEvent} event - Evento de mouse a ser processado
+   * @param {SceneManager} scene - Gerenciador de cenas para navegação
+   * @param {Callback} [sceneCallback] - Callback opcional executado após evento
+   * 
    * @returns {void}
+   * 
+   * @remarks
+   * Distribui eventos de mouse para cada botão do grupo baseado no tipo:
+   * 
+   * **MOUSE_MOVE:**
+   * - Chama handleMouseMove de cada botão
+   * - Atualiza estados de hover
+   * 
+   * **CLICK:**
+   * - Chama handleOnClick de cada botão
+   * - Executa onClick se o botão foi clicado
+   * 
+   * Todos os botões recebem o evento, mas apenas aqueles sob o cursor
+   * responderão efetivamente.
+   * 
+   * @example
+   * ```typescript
+   * buttonGroup.handleMouseEvent(event, sceneManager);
+   * ```
    */
   public handleMouseEvent(
     event: MouseEvent,

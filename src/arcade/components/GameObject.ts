@@ -1,29 +1,43 @@
 /**
- * Classe que representa um objeto de jogo genérico.
- * Permite definir e obter propriedades como posição, tamanho, cor e cor de fundo.
+ * Classe base que representa qualquer objeto visual renderizável no jogo.
  *
+ * @class GameObject
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe GameObject serve como uma base para todos os objetos
- * do jogo, fornecendo propriedades essenciais como posição,
- * tamanho, cor e cor de fundo. Ela pode ser estendida para criar
- * objetos de jogo mais complexos com funcionalidades adicionais.
- *
- * @constructor
- * @param {number} width - A largura inicial do objeto.
- * @param {number} height - A altura inicial do objeto.
+ * A classe GameObject serve como entidade fundamental para todos os objetos visuais do jogo,
+ * implementando o padrão Entity-Component. Ela encapsula propriedades essenciais:
+ * - Posicionamento no espaço 2D (positionX, positionY)
+ * - Dimensões (width, height)
+ * - Estilização visual (color, backgroundColor)
+ * - Controle de cursor (shouldUsePointerCursor)
+ * 
+ * Esta classe é projetada para ser estendida por componentes mais especializados
+ * como botões, inputs, sprites e outros elementos do jogo, fornecendo uma base
+ * consistente para manipulação de propriedades visuais e espaciais.
+ * 
+ * @remarks
+ * Todos os getters e setters permitem acesso controlado às propriedades privadas,
+ * facilitando futuras validações ou lógica adicional sem quebrar a API pública.
  *
  * @example
- * const player = new GameObject(50, 100);
- * player.positionX = 10;
- * player.positionY = 20;
- * player.color = '#FF0000';
- * player.backgroundColor = '#00FF00';
- * console.log(`Player position: (${player.positionX}, ${player.positionY})`);
- *
+ * ```typescript
+ * // Uso direto (embora normalmente seja estendida)
+ * const gameObject = new GameObject(50, 100);
+ * gameObject.positionX = 10;
+ * gameObject.positionY = 20;
+ * gameObject.color = '#FF0000';
+ * gameObject.backgroundColor = '#00FF00';
+ * 
+ * // Uso através de extensão
+ * class Player extends GameObject {
+ *   constructor() {
+ *     super(32, 48);
+ *   }
+ * }
+ * ```
  */
 export default class GameObject {
   private _positionX: number = 0

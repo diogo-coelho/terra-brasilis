@@ -2,19 +2,48 @@ import { Router, Request, Response } from 'express'
 import GameController from '@/server/controllers/GameController'
 
 /**
- * Classe que representa as rotas relacionadas ao jogo
+ * Roteador Express que define endpoints HTTP para operações do jogo.
  *
+ * @class GameRouter
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe GameRouter é responsável por definir as rotas
- * relacionadas ao jogo, utilizando o Express Router.
- * Ela mapeia as requisições HTTP para os métodos
- * do GameController.
+ * A classe GameRouter configura rotas HTTP usando Express Router:
+ * - Define mapeamento entre URLs e métodos do controlador
+ * - Inicializa GameController para cada requisição
+ * - Fornece interface RESTful para o cliente
+ * 
+ * **Rotas Configuradas:**
+ * 
+ * - **GET /**
+ *   - Inicia novo jogo
+ *   - Serve interface HTML do cliente
+ *   - Handler: GameController.startNewGame
+ * 
+ * - **POST /insert-username**
+ *   - Salva nome do usuário
+ *   - Espera JSON: { userName: string }
+ *   - Retorna: { message: string } ou erro
+ *   - Handler: GameController.insertUserName
+ * 
+ * O router é registrado na aplicação Express principal
+ * no caminho raiz ("/").
+ * 
+ * @example
+ * ```typescript
+ * const gameRouter = new GameRouter();
+ * app.use('/', gameRouter.router);
+ * 
+ * // Requisições:
+ * // GET http://localhost:3000/
+ * // POST http://localhost:3000/insert-username
+ * //   Body: { "userName": "João Silva" }
+ * ```
  *
- *
+ * @see GameController
+ * @see Express.Router
  */
 export default class GameRouter {
   private _router: Router

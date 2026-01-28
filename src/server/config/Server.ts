@@ -7,19 +7,48 @@ import ServerError from '../error/ServerError'
 import { SERVER } from '../consts/constants'
 
 /**
- * Classe que representa o servidor principal
+ * Servidor HTTP principal que integra Express, MongoDB e configurações da aplicação.
  *
+ * @class Server
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-10
  *
  * @description
- *  A classe Server é responsável por configurar e iniciar o servidor HTTP
- *  utilizando a aplicação Express e a conexão com o banco de dados.
+ * A classe Server orquestra a inicialização completa do servidor do jogo:
+ * - Configura aplicação Express com middlewares e rotas
+ * - Estabelece conexão com banco de dados MongoDB
+ * - Cria servidor HTTP
+ * - Normaliza e valida porta de execução
+ * - Gerencia ciclo de vida do servidor e banco de dados
+ * 
+ * **Processo de Inicialização:**
+ * 1. Carrega variáveis de ambiente (.env)
+ * 2. Inicializa aplicação Express (MainApplication)
+ * 3. Cria instância de Database
+ * 4. Normaliza porta (padrão: 3000)
+ * 5. Conecta ao MongoDB
+ * 6. Configura aplicação Express com porta e database
+ * 7. Cria servidor HTTP
+ * 
+ * A configuração é assíncrona para garantir que o banco de dados
+ * esteja conectado antes de aceitar requisições.
+ * 
+ * @throws {ServerError} Lança erro se falhar ao conectar com o banco de dados
+ * 
+ * @example
+ * ```typescript
+ * const server = new Server();
+ * 
+ * server.server.then(httpServer => {
+ *   httpServer.listen(server.port, () => {
+ *     console.log(`Servidor rodando na porta ${server.port}`);
+ *   });
+ * });
+ * ```
  *
- * @example new Server().server
- * @returns {Promise<http.Server>} O servidor HTTP configurado
- *
+ * @see MainApplication
+ * @see Database
  */
 export default class Server {
   private _application: ExpressApplication

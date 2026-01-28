@@ -11,24 +11,56 @@ import { GovernorGeneralNameInput } from '../components/inputs'
 import { BackToMenuButton, GoToGameButton } from '../components/buttons'
 
 /**
- * Cena para inserção do nome do Governador-Geral.
+ * Cena de inserção do nome do Governador-Geral com campo de entrada interativo.
  *
+ * @class InsertNameScene
+ * @extends SceneEvent
+ * @implements Scene
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A cena InsertNameScene é responsável por exibir a interface
- * para o jogador inserir o nome do Governador-Geral.
- * Ela apresenta um campo de entrada de texto
- * e uma imagem de fundo temática.
- *
- * @implements {Scene}
- *
+ * A InsertNameScene permite ao jogador personalizar sua experiência inserindo
+ * o nome do Governador-Geral. Suas responsabilidades incluem:
+ * - Exibir campo de entrada de texto interativo
+ * - Renderizar background temático com 80% de opacidade
+ * - Gerenciar estado de foco do campo de entrada
+ * - Validar e armazenar nome digitado
+ * - Fornecer botões de navegação (Voltar ao Menu, Iniciar Jogo)
+ * - Atualizar botão "Iniciar Jogo" com o nome digitado
+ * 
+ * **Fluxo de Interação:**
+ * 1. Jogador clica no campo de entrada
+ * 2. Campo ativa com cursor piscante
+ * 3. Jogador digita o nome
+ * 4. Nome é automaticamente sincronizado com GoToGameButton
+ * 5. Pressiona Enter ou clica em "Iniciar Jogo"
+ * 6. Nome é enviado ao servidor e jogo inicia
+ * 
+ * **Componentes:**
+ * - Campo de entrada: 450x40px, estilizado com tema do jogo
+ * - Botões: 210x50px, alinhamento horizontal
+ * - Background: Imagem temática com overlay
+ * 
+ * **Eventos Tratados:**
+ * - Mouse Move: Atualiza hover de input e botões
+ * - Mouse Click: Ativa/desativa campo, clica em botões
+ * - Keyboard: Digitação no campo de entrada
+ * 
  * @example
+ * ```typescript
  * const insertNameScene = new InsertNameScene();
- * sceneManager.changeScene(insertNameScene);
+ * sceneManager.setScenesMap([{
+ *   name: GameSceneState.INSERT_NAME,
+ *   scene: insertNameScene
+ * }]);
+ * ```
  *
+ * @see Scene
+ * @see GovernorGeneralNameInput
+ * @see BackToMenuButton
+ * @see GoToGameButton
  */
 export default class InsertNameScene extends SceneEvent implements Scene {
   private _title: string

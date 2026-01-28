@@ -10,23 +10,48 @@ import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 import { GameSceneState } from '../enums'
 
 /**
- * A classe BootScene representa a cena de inicialização do jogo.
- * Ela implementa a interface Scene e estende a classe SceneEvent.
- * Esta cena lida com eventos de teclado e mouse, especificamente qualquer tecla pressionada ou clique do mouse,
- * que faz a transição para a cena de introdução do jogo.
+ * Cena inicial de boot que aguarda interação do usuário para iniciar o jogo.
  *
  * @class BootScene
  * @extends SceneEvent
  * @implements Scene
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-15
  *
+ * @description
+ * A BootScene é a primeira cena apresentada ao jogador, sendo responsável por:
+ * - Exibir mensagem inicial "Pressione qualquer tecla"
+ * - Iniciar reprodução da música tema em loop
+ * - Aguardar qualquer interação (tecla ou clique) para prosseguir
+ * - Fazer transição para a IntroScene
+ * - Renderizar fundo preto com texto centralizado
+ * 
+ * Esta cena atua como uma tela splash interativa, garantindo que o áudio
+ * seja iniciado somente após interação do usuário (requisito de políticas
+ * de autoplay dos navegadores modernos).
+ * 
+ * **Fluxo:**
+ * 1. Jogador inicia o jogo
+ * 2. BootScene exibida
+ * 3. Música tema começa a tocar
+ * 4. Jogador pressiona tecla/clica
+ * 5. Transição para IntroScene
+ * 6. Música é interrompida
+ * 
  * @example
+ * ```typescript
  * const bootScene = new BootScene();
+ * sceneManager.setScenesMap([{
+ *   name: GameSceneState.BOOT,
+ *   scene: bootScene
+ * }]);
+ * sceneManager.setCurrentScene(GameSceneState.BOOT);
+ * ```
  *
  * @see Scene
  * @see SceneEvent
- * @see SceneManager
  * @see GameSceneState
- *
  */
 export default class BootScene extends SceneEvent implements Scene {
   private _backgroundSound: Sound

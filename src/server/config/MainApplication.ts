@@ -6,19 +6,48 @@ import { ExpressApplication, IMainApplication } from '../types/types'
 import GameRouter from '@/server/routes/GameRouter'
 
 /**
- * Classe que representa a aplicação principal do servidor Express
+ * Configuração principal da aplicação Express com middlewares, rotas e arquivos estáticos.
  *
+ * @class MainApplication
+ * @implements IMainApplication
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-10
  *
  * @description
- * A classe MainApplication é responsável por configurar a aplicação Express,
- * incluindo middlewares, arquivos estáticos e rotas.
+ * A classe MainApplication centraliza toda configuração do Express:
+ * - Inicializa instância do Express
+ * - Configura middlewares (body-parser para JSON e URL-encoded)
+ * - Define diretório de arquivos estáticos (cliente do jogo)
+ * - Registra rotas da aplicação (GameRouter)
+ * 
+ * **Middlewares Configurados:**
+ * - body-parser.json(): Parse de requisições JSON
+ * - body-parser.urlencoded(): Parse de formulários
+ * - express.static(): Servir arquivos estáticos do cliente
+ * 
+ * **Arquivos Estáticos:**
+ * O diretório configurado via EXPRESS_STATIC_FILES contém:
+ * - HTML do cliente do jogo
+ * - JavaScript bundled (Webpack)
+ * - Assets (imagens, sons)
+ * 
+ * **Rotas:**
+ * Todas as rotas são gerenciadas por GameRouter:
+ * - GET /: Inicia jogo
+ * - POST /insert-username: Salva nome do jogador
+ * 
+ * @example
+ * ```typescript
+ * const app = new MainApplication();
+ * const expressApp = app.mainApplication;
+ * 
+ * expressApp.listen(3000, () => {
+ *   console.log('Servidor rodando!');
+ * });
+ * ```
  *
- * @example new MainApplication().mainApplication
- * @returns {express.Application} A aplicação Express configurada
- *
+ * @see GameRouter
  */
 export default class MainApplication implements IMainApplication {
   public _express: ExpressApplication

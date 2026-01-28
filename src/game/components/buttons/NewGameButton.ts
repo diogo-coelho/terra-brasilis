@@ -4,27 +4,35 @@ import { SceneManager } from '@/arcade/core'
 import GameSceneState from '@/game/enums/GameSceneState'
 
 /**
- * Classe que representa o botão de novo jogo.
- * Estende a classe ButtonStandard e implementa o método de clique específico.
+ * Botão especializado para iniciar um novo jogo navegando para cena de inserção de nome.
  *
+ * @class NewGameButton
+ * @extends ButtonStandard
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe NewGameButton é uma implementação concreta
- * da classe ButtonStandard, representando o botão
- * de novo jogo. Ela define o comportamento
- * específico ao clicar no botão, que é
- * navegar para a cena de inserção de nome.
- *
- * @constructor
- * @param {string} label - O rótulo do botão.
- *
+ * A classe NewGameButton é uma especialização de ButtonStandard que implementa
+ * o comportamento específico de navegação para iniciar um novo jogo:
+ * - Exibe label "Novo Jogo" (ou personalizado)
+ * - Ao ser clicado, navega para InsertNameScene
+ * - Herda todas as funcionalidades visuais de ButtonStandard
+ * - Integra-se com o sistema de cenas do jogo
+ * 
+ * Este botão é tipicamente usado no menu principal e representa
+ * o ponto de entrada para uma nova partida do jogo.
+ * 
  * @example
- * const newGameButton = new NewGameButton(
- * 'New Game',
- * );
+ * ```typescript
+ * const newGameBtn = new NewGameButton('Novo Jogo');
+ * newGameBtn.backgroundColor = '#84310a';
+ * newGameBtn.backgroundColorOnHover = '#692303';
+ * buttonGroup.addButton(newGameBtn);
+ * ```
+ *
+ * @see ButtonStandard
+ * @see GameSceneState
  */
 export default class NewGameButton extends Arcade.Components.ButtonStandard {
   constructor(label: string) {

@@ -9,26 +9,50 @@ import { SoundError } from '../errors'
 import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
 
 /**
- * Classe que representa um campo de entrada de texto padrão no jogo.
+ * Implementação concreta de campo de entrada de texto com cursor piscante e validação.
  *
+ * @class InputStandard
+ * @extends Input
+ * @implements InputEvent
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe InputStandard é uma implementação concreta
- * da classe abstrata Input, representando um campo
- * de entrada de texto padrão no jogo. Ela define propriedades como fonte,
- * tamanho da fonte, alinhamento do texto e métodos para
- * renderização e posicionamento do campo de entrada na tela.
- *
- * @constructor
- * @param {number} width - A largura inicial do campo de entrada.
- * @param {number} height - A altura inicial do campo de entrada.
+ * A classe InputStandard fornece uma implementação completa de campo de entrada de texto com:
+ * - Cursor piscante animado quando em foco
+ * - Limitação automática de caracteres baseada na largura
+ * - Feedback sonoro ao digitar
+ * - Suporte a teclas especiais (Backspace, Enter)
+ * - Estados visuais (hover, foco)
+ * - Renderização com fonte e estilo personalizados
+ * - Bordas estilizadas
+ * 
+ * O campo calcula automaticamente o número máximo de caracteres que cabem
+ * baseado na largura fornecida (aprox. 11.25 pixels por caractere).
+ * 
+ * Possui som padrão de digitação pré-carregado que toca a cada tecla pressionada.
+ * 
+ * @remarks
+ * O cursor pisca a cada 500ms quando o campo está em foco.
+ * Pressionar Enter desativa o campo e executa callback opcional.
  *
  * @example
- * const nameInput = new InputStandard(200, 40);
- *
+ * ```typescript
+ * const input = new InputStandard(300, 40);
+ * input.backgroundColor = '#1a1a1a';
+ * input.backgroundColorOnHover = '#2a2a2a';
+ * input.color = '#FFFFFF';
+ * input.borderColor = '#555';
+ * input.fontSize = 18;
+ * input.font = 'Arial';
+ * 
+ * input.setPosition({
+ *   canvas: myCanvas,
+ *   align: PositionState.VERTICAL,
+ *   y: 200
+ * });
+ * ```
  */
 export default class InputStandard extends Input implements InputEvent {
   private _font: string
@@ -178,9 +202,33 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Manipula o evento de clique do mouse.
-   * @param {MouseEvent} event - O evento de clique do mouse.
-   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
+   * Manipula evento de clique do mouse para ativar/desativar o campo de entrada.
+   *
+   * @param {MouseEvent} event - Evento de clique do mouse
+   * @param {Callback} [callback] - Função executada ao ativar o campo
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Comportamento baseado na posição do clique:
+   * 
+   * **Clique DENTRO do campo:**
+   * - Ativa o estado de digitação (isTyping = true)
+   * - Torna o cursor visível (cursorVisible = true)
+   * - Inicia animação de cursor piscante
+   * - Executa callback opcional
+   * 
+   * **Clique FORA do campo:**
+   * - Desativa o estado de digitação (isTyping = false)
+   * - Oculta o cursor (cursorVisible = false)
+   * - Para animação de cursor piscante
+   * 
+   * @example
+   * ```typescript
+   * input.handleMouseClick(event, () => {
+   *   console.log('Campo ativado para digitação');
+   * });
+   * ```
    */
   public handleMouseClick(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
@@ -198,10 +246,31 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Manipula o evento de teclado.
-   * @param {KeyboardEvent} event - O evento de teclado.
-   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
+   * Manipula eventos de teclado para entrada de texto.
+   *
+   * @param {KeyboardEvent} event - Evento de teclado
+   * @param {Callback} [callback] - Função opcional executada ao pressionar Enter
+   * 
    * @returns {void}
+   * 
+   * @remarks
+   * Este método processa diferentes tipos de teclas:
+   * 
+   * **Backspace**: Remove o último caractere do texto
+   * **Enter**: Desativa o campo e executa callback
+   * **Caracteres (length === 1)**: 
+   * - Adiciona ao texto se não exceder máximo de caracteres
+   * - Toca som de digitação
+   * 
+   * Só processa eventos se o campo estiver ativo (isTyping = true).
+   * O limite de caracteres é calculado automaticamente baseado na largura.
+   * 
+   * @example
+   * ```typescript
+   * input.handleKeyboardEvent(event, () => {
+   *   console.log('Enter pressionado com texto:', input.inputText);
+   * });
+   * ```
    */
   public handleKeyboardEvent(event: KeyboardEvent, callback?: Callback): void {
     if (!this.isTyping) return
@@ -257,8 +326,15 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Inicia o cursor piscante.
+   * Inicia a animação de cursor piscante.
+   *
+   * @private
    * @returns {void}
+   * 
+   * @remarks
+   * Cria um intervalo que alterna a visibilidade do cursor a cada 500ms,
+   * criando o efeito visual de piscar. O intervalo é armazenado em blinkingTimer
+   * para poder ser cancelado posteriormente.
    */
   private blinkingCursor(): void {
     this.blinkingTimer = setInterval(() => {
@@ -267,8 +343,14 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Desativa o cursor piscante.
+   * Para a animação de cursor piscante.
+   *
+   * @private
    * @returns {void}
+   * 
+   * @remarks
+   * Limpa o intervalo criado por blinkingCursor(), interrompendo a animação.
+   * Deve ser chamado quando o campo perde o foco ou é desativado.
    */
   private disableBlinkingCursor(): void {
     clearInterval(this.blinkingTimer)

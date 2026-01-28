@@ -1,6 +1,53 @@
 import { AlignedPosition, ColorOnHover, SceneManager } from '@/arcade/types'
 import GameObject from '../GameObject'
 
+/**
+ * Classe abstrata que define a estrutura base para campos de entrada de texto interativos.
+ *
+ * @abstract
+ * @class Input
+ * @extends GameObject
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-20
+ *
+ * @description
+ * A classe Input implementa o padrão Template Method para campos de entrada de texto,
+ * fornecendo funcionalidades fundamentais:
+ * - Gerenciamento de estado de digitação (isTyping)
+ * - Armazenamento do texto digitado (inputText)
+ * - Controle de cursor piscante (cursorVisible)
+ * - Estados visuais (cores padrão e hover)
+ * - Estilização de borda (borderWidth, borderColor)
+ * 
+ * Como classe abstrata, define métodos que devem ser implementados pelas subclasses:
+ * - renderInputBox: Define como o campo de entrada é renderizado
+ * - setPosition: Define como o campo é posicionado
+ * - isMouseOverInput: Define detecção de hover
+ * 
+ * Esta classe gerencia o ciclo de vida da interação com o campo de entrada,
+ * desde a ativação (foco) até a desativação.
+ * 
+ * @remarks
+ * Não pode ser instanciada diretamente. Use InputStandard ou crie uma subclasse customizada.
+ *
+ * @example
+ * ```typescript
+ * class CustomInput extends Input {
+ *   renderInputBox(context: CanvasRenderingContext2D): void {
+ *     // Implementação customizada
+ *   }
+ *   
+ *   setPosition({ canvas, x, y, align }: AlignedPosition): void {
+ *     // Implementação de posicionamento
+ *   }
+ *   
+ *   isMouseOverInput(xCoords: number, yCoords: number): boolean {
+ *     // Implementação de detecção
+ *   }
+ * }
+ * ```
+ */
 export default abstract class Input extends GameObject {
   private _backgroundColorOnHover: ColorOnHover = {
     default: '',

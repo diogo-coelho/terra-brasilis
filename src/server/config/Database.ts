@@ -4,20 +4,48 @@ import FormattedDate from '@/server/utils/FormattedDate'
 import MongoDBError from '../error/MongoDB'
 
 /**
- * Classe que representa a conexão ao banco de dados mongoDB
+ * Gerenciador de conexão MongoDB usando Mongoose com tratamento de eventos.
  *
+ * @class Database
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-10
  *
  * @description
- * A classe Database é responsável por estabelecer a conexão com o banco de dados
- * mongoDB utilizando o mongoose. Ela também gerencia eventos de conexão,
- * desconexão e erros, além de fornecer um método para fechar a conexão
- * de forma adequada quando o processo é encerrado.
+ * A classe Database encapsula toda lógica de conexão com MongoDB:
+ * - Estabelece conexão usando Mongoose
+ * - Monitora eventos de conexão (connected, disconnected, error)
+ * - Fornece logging detalhado com timestamps
+ * - Gerencia desconexão graceful (SIGINT)
+ * - Utiliza variáveis de ambiente para configuração
+ * 
+ * **Eventos Monitorados:**
+ * - **connected**: Conexão estabelecida com sucesso
+ * - **disconnected**: Conexão perdida
+ * - **error**: Erro durante operações do banco
+ * 
+ * **Variáveis de Ambiente:**
+ * - URL_MONGO_DB: URL de conexão do MongoDB
+ * - DATABASE: Nome do banco de dados
+ * 
+ * A classe garante que a conexão seja fechada adequadamente quando
+ * o processo recebe sinal de interrupção (Ctrl+C), evitando
+ * conexões pendentes.
+ * 
+ * @throws {MongoDBError} Lança erro se tentar acessar database antes de conectar
+ * 
+ * @example
+ * ```typescript
+ * const database = new Database();
+ * 
+ * await database.connection();
+ * const db = await database.database;
+ * 
+ * // Configurar graceful shutdown
+ * database.closeConnection();
+ * ```
  *
- * @example new Database().connection()
- *
+ * @see Mongoose
  */
 export default class Database {
   private _database: Promise<Mongoose> | null = null

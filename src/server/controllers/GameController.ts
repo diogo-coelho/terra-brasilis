@@ -6,17 +6,54 @@ import User from '../model/UserModel'
 import MongoDBError from '../error/MongoDB'
 
 /**
- * Classe que representa o controlador do jogo
+ * Controlador HTTP para operações relacionadas ao jogo.
  *
+ * @class GameController
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe GameController é responsável por gerenciar
- * as operações relacionadas ao jogo, incluindo
- * o início de um novo jogo.
+ * A classe GameController gerencia requisições HTTP relacionadas ao jogo:
+ * - Iniciar novo jogo (servir interface HTML)
+ * - Salvar nome do usuário no MongoDB
+ * - Logging de operações com timestamps
+ * - Tratamento de erros de banco de dados
+ * 
+ * **Endpoints Implementados:**
+ * 
+ * **startNewGame (GET /):**
+ * - Serve arquivo index.html do cliente
+ * - Inicia interface do jogo no navegador
+ * - Loga início de nova partida
+ * 
+ * **insertUserName (POST /insert-username):**
+ * - Recebe nome do usuário via JSON
+ * - Cria documento no MongoDB
+ * - Retorna confirmação ou erro
+ * - Loga operação com timestamp
+ * 
+ * Todos os métodos utilizam FormattedDate para logging consistente
+ * e tratam erros de forma apropriada com mensagens descritivas.
+ * 
+ * @throws {MongoDBError} Lança erro se falhar ao salvar no banco de dados
+ * 
+ * @example
+ * ```typescript
+ * const controller = new GameController();
+ * 
+ * // Em uma rota Express
+ * router.get('/', (req, res) => {
+ *   controller.startNewGame(req, res);
+ * });
+ * 
+ * router.post('/insert-username', (req, res) => {
+ *   controller.insertUserName(req, res);
+ * });
+ * ```
  *
+ * @see User
+ * @see FormattedDate
  */
 export default class GameController {
   /**

@@ -9,39 +9,50 @@ import hoverSound from '../assets/sounds/sfx/btn_hover.ogg'
 import clickSound from '../assets/sounds/sfx/btn_click.wav'
 
 /**
- * Classe que representa um botão padrão no jogo.
- * Estende a classe Button e implementa métodos específicos para renderização e posicionamento.
+ * Implementação concreta de botão com renderização e interação padronizadas.
  *
+ * @class ButtonStandard
+ * @extends Button
+ * @implements ButtonEvent
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-15
  *
  * @description
- * A classe ButtonStandard é uma implementação concreta
- * da classe abstrata Button, representando um botão
- * padrão no jogo. Ela define propriedades como fonte,
- * tamanho da fonte, alinhamento do texto e métodos para
- * renderização e posicionamento do botão na tela.
- *
- * @constructor
- * @param {number} x - A largura inicial do botão.
- * @param {number} y - A altura inicial do botão.
- * @param {string} label - O rótulo do botão.
- * @param {string} font - A fonte do texto do botão.
- * @param {number} fontSize - O tamanho da fonte do texto do botão.
- * @param {CanvasTextAlign} textAlign - O alinhamento do texto do botão.
- * @param {CanvasTextBaseline} textBaseline - A linha de base do texto do botão.
+ * A classe ButtonStandard fornece uma implementação completa e pronta para uso de botão,
+ * incluindo:
+ * - Renderização de texto com configurações de fonte personalizadas
+ * - Sistema de hover com feedback visual e sonoro
+ * - Posicionamento flexível (manual, horizontal ou vertical)
+ * - Integração com sistema de eventos de mouse
+ * - Efeitos sonoros para hover e clique (pré-configurados)
+ * 
+ * O botão utiliza o padrão Observer para detectar ações do mouse e responder
+ * adequadamente com feedback visual (mudança de cor) e auditivo (sons).
+ * 
+ * Possui sons padrão pré-carregados:
+ * - Hover: Som ao passar o mouse sobre o botão
+ * - Click: Som ao clicar no botão
+ * 
+ * @remarks
+ * Esta é a implementação padrão de botão e deve ser usada para a maioria dos casos.
+ * Para comportamentos altamente customizados, considere estender a classe Button diretamente.
  *
  * @example
- * const startButton = new ButtonStandard(
- *  100,
- *  50,
- *  'Start Game',
- *  'Arial',
- *  20,
- *  'center',
- *  'middle'
- * );
+ * ```typescript
+ * const button = new ButtonStandard(100, 50, 'Iniciar');
+ * button.backgroundColor = '#4CAF50';
+ * button.backgroundColorOnHover = '#45a049';
+ * button.color = '#FFFFFF';
+ * button.fontSize = 20;
+ * button.font = 'Arial';
+ * 
+ * button.setPosition({
+ *   canvas: myCanvas,
+ *   align: PositionState.VERTICAL,
+ *   y: 200
+ * });
+ * ```
  */
 export default class ButtonStandard extends Button implements ButtonEvent {
   private _font: string
@@ -110,6 +121,37 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     return this._clickSound
   }
 
+  /**
+   * Define a posição do botão no canvas usando coordenadas absolutas ou alinhamento.
+   *
+   * @param {AlignedPosition} options - Objeto com opções de posicionamento
+   * @param {HTMLCanvasElement} options.canvas - Canvas de referência para cálculos
+   * @param {number} [options.x] - Coordenada X (obrigatória sem align ou com align horizontal)
+   * @param {number} [options.y] - Coordenada Y (obrigatória sem align ou com align vertical)
+   * @param {PositionState} [options.align] - Tipo de alinhamento (VERTICAL ou HORIZONTAL)
+   * 
+   * @returns {void}
+   * 
+   * @throws {ButtonError} Se coordenadas necessárias não forem fornecidas
+   * 
+   * @remarks
+   * Modos de posicionamento:
+   * - **Manual**: Fornece x e y sem align - posiciona nas coordenadas exatas
+   * - **Vertical**: Usa align=VERTICAL com y - centraliza horizontalmente
+   * - **Horizontal**: Usa align=HORIZONTAL com x - centraliza verticalmente
+   * 
+   * @example
+   * // Posicionamento manual
+   * button.setPosition({ canvas, x: 100, y: 200 });
+   * 
+   * @example
+   * // Alinhamento vertical (centralizado horizontalmente)
+   * button.setPosition({ canvas, align: PositionState.VERTICAL, y: 150 });
+   * 
+   * @example
+   * // Alinhamento horizontal (centralizado verticalmente)
+   * button.setPosition({ canvas, align: PositionState.HORIZONTAL, x: 300 });
+   */
   public setPosition({ canvas, x, y, align }: AlignedPosition): void {
     if (!align) {
       if (!x && !y)
@@ -135,6 +177,26 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     }
   }
 
+  /**
+   * Verifica se as coordenadas do mouse estão dentro da área do botão.
+   *
+   * @param {number} xCoord - Coordenada X do mouse
+   * @param {number} yCoord - Coordenada Y do mouse
+   * 
+   * @returns {boolean} `true` se o mouse estiver sobre o botão, `false` caso contrário
+   * 
+   * @remarks
+   * Utiliza detecção de colisão AABB (Axis-Aligned Bounding Box) para determinar
+   * se o ponto está dentro do retângulo do botão. Este método é fundamental para
+   * implementar interações de hover e clique.
+   * 
+   * @example
+   * ```typescript
+   * if (button.isMouseOverButton(event.x, event.y)) {
+   *   // Mouse está sobre o botão
+   * }
+   * ```
+   */
   public isMouseOverButton(xCoord: number, yCoord: number): boolean {
     return (
       xCoord >= this.positionX &&
@@ -144,6 +206,30 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     )
   }
 
+  /**
+   * Aplica efeito visual e sonoro de hover quando o mouse passa sobre o botão.
+   *
+   * @param {MouseEvent} event - Evento de mouse contendo coordenadas
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Este método gerencia o estado de hover do botão:
+   * 
+   * **Quando o mouse ENTRA na área do botão:**
+   * - Toca o som de hover (apenas na primeira vez)
+   * - Ativa cursor pointer
+   * - Aplica cores de hover (background e texto)
+   * - Marca _isHovered como true
+   * 
+   * **Quando o mouse SAI da área do botão:**
+   * - Desativa cursor pointer
+   * - Restaura cores padrão
+   * - Marca _isHovered como false
+   * 
+   * O controle de _isHovered evita reprodução repetida do som enquanto o mouse
+   * permanece sobre o botão.
+   */
   public applyHoverOnButton(event: MouseEvent): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
@@ -160,6 +246,27 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     }
   }
 
+  /**
+   * Renderiza o botão no canvas com seu estado visual atual.
+   *
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização 2D do canvas
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Processo de renderização:
+   * 1. Desenha retângulo de fundo com backgroundColor atual
+   * 2. Configura estilo de texto (cor, fonte, alinhamento)
+   * 3. Desenha o texto do label centralizado no botão
+   * 
+   * O texto é sempre centralizado horizontal e verticalmente,
+   * usando as propriedades textAlign='center' e textBaseline='middle'.
+   * 
+   * @example
+   * ```typescript
+   * button.renderButton(context);
+   * ```
+   */
   public renderButton(context: CanvasRenderingContext2D): void {
     context.fillStyle = this.backgroundColor || '#ccc'
     context.fillRect(this.positionX, this.positionY, this.width, this.height)
@@ -175,11 +282,56 @@ export default class ButtonStandard extends Button implements ButtonEvent {
     )
   }
 
+  /**
+   * Manipula evento de movimento do mouse sobre o botão.
+   *
+   * @param {MouseEvent} event - Evento de movimento do mouse
+   * @param {Callback} [callback] - Função opcional executada após aplicar hover
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Este método é chamado continuamente enquanto o mouse se move.
+   * Aplica efeito de hover e opcionalmente executa um callback customizado,
+   * permitindo comportamentos adicionais como redesenhar a cena.
+   * 
+   * @example
+   * ```typescript
+   * button.handleMouseMove(event, () => {
+   *   console.log('Mouse moveu sobre o botão');
+   * });
+   * ```
+   */
   public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnButton(event)
     callback?.()
   }
 
+  /**
+   * Manipula evento de clique no botão.
+   *
+   * @param {ButtonClickHandle} options - Objeto com configurações do clique
+   * @param {MouseEvent} options.event - Evento de clique do mouse
+   * @param {Callback} [options.callback] - Função executada ao clicar no botão
+   * 
+   * @returns {void}
+   * 
+   * @remarks
+   * Verifica se o clique ocorreu dentro da área do botão.
+   * Se sim:
+   * - Reproduz o som de clique
+   * - Executa o callback fornecido (se existir)
+   * 
+   * Este método é responsável pela lógica principal de interação do botão.
+   * 
+   * @example
+   * ```typescript
+   * button.handleOnClick({
+   *   event: mouseEvent,
+   *   callback: () => console.log('Botão clicado!')
+   * });
+   * ```
+   */
   public handleOnClick({ event, callback }: ButtonClickHandle): void {
     const hovering = this.isMouseOverButton(event.x, event.y)
     if (hovering) {
