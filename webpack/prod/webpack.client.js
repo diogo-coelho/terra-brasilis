@@ -5,6 +5,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 
 const PATHS = {
   entry: `../../src/game`,
@@ -27,10 +28,10 @@ const commonGameConfig = {
         test: /\.json$/i,
         loader: 'json-loader',
       }, {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'file-loader',
-        options: {
-          name: 'assets/images/[name].[ext]'
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[name].[ext]'
         }
       },{
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -58,9 +59,23 @@ const commonGameConfig = {
   },
   target: 'web',
   optimization: {
+    minimize: true,
     minimizer: [
       new CssMinimizerPlugin(),
-      new TerserPlugin()
+      new TerserPlugin(),
+      new ImageMinimizerPlugin({
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              ['mozjpeg', { quality: 70 }],
+              ['pngquant', { quality: [0.65, 0.8] }],
+              ['gifsicle', { optimizationLevel: 3 }],
+              ['svgo', { plugins: [{ removeViewBox: false }] }]
+            ]
+          }
+        }
+      })
     ],
     minimize: true
   },
