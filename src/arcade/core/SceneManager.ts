@@ -4,58 +4,65 @@ import { ErrorState } from '@/arcade/enums'
 import { NamedScene } from '@/arcade/types'
 
 /**
- * Gerenciador central responsável pelo controle e transição entre cenas do jogo.
+ * Classe singleton responsável pelo gerenciamento centralizado de cenas do jogo.
  *
  * @class SceneManager
  * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
+ * @version 1.1.0
+ * @since 2026-01-29
  *
  * @description
- * A classe SceneManager implementa o padrão de gerenciamento de cenas (Scene Management),
- * sendo responsável por:
- * - Armazenar e organizar todas as cenas disponíveis em um Map indexado por nome
- * - Controlar qual cena está ativa atualmente
- * - Gerenciar transições entre cenas, invocando callbacks onExit e onEnter
- * - Manter o estado atual da cena ativa (game scene state)
- * - Garantir segurança com validações e lançamento de erros apropriados
- * 
- * O gerenciador garante que sempre exista uma cena ativa e que as transições sejam
- * realizadas de forma ordenada, evitando estados inconsistentes.
- * 
- * @throws {SceneManagerError} Lança erro quando tenta acessar cena não definida
- * 
+ * O SceneManager implementa o padrão Scene Management, sendo o núcleo do fluxo de navegação do jogo.
+ * Suas principais responsabilidades são:
+ * - Registrar e mapear todas as cenas do jogo em um Map indexado por nome
+ * - Controlar e expor a cena ativa atual
+ * - Gerenciar transições seguras entre cenas, invocando os métodos onExit/onEnter
+ * - Manter o estado global da cena ativa (gameSceneState)
+ * - Garantir integridade e consistência do fluxo, lançando erros apropriados
+ *
+ * O SceneManager é utilizado por todo o ciclo de vida do jogo, garantindo que sempre exista uma cena ativa
+ * e que as transições sejam ordenadas e seguras.
+ *
+ * @throws {SceneManagerError} Se tentar acessar ou transitar para uma cena não registrada
+ *
  * @example
- * ```typescript
- * const sceneManager = new SceneManager();
- * 
+ * // Instanciação e uso típico:
+ * const sceneManager = SceneManager.getInstance();
  * sceneManager.setScenesMap([
  *   { name: 'boot', scene: new BootScene() },
  *   { name: 'menu', scene: new MenuScene() }
  * ]);
- * 
  * sceneManager.setCurrentScene('boot');
- * ```
  */
 export default class SceneManager {
-  private _currentScene: Scene | undefined
-  private _gameSceneState: string | undefined
-  private _scenesMap: Map<string, Scene> = new Map()
+  private static _currentScene: Scene | undefined
+  private static _gameSceneState: string | undefined
+  private static _scenesMap: Map<string, Scene> = new Map()
+  private static _instance: SceneManager
+
+  private constructor() {}
+
+  public static getInstance(): SceneManager {
+    if (!this._instance) {
+      this._instance = new SceneManager()
+    }
+    return this._instance
+  }
 
   public get scenesMap(): Map<string, Scene> {
-    return this._scenesMap
+    return SceneManager._scenesMap
   }
 
   public get gameSceneState(): string | undefined {
-    if (!this._gameSceneState)
+    if (!SceneManager._gameSceneState)
       throw new SceneManagerError(ErrorState.NO_GAME_SCENE_STATE)
-    return this._gameSceneState
+    return SceneManager._gameSceneState
   }
 
   public get currentScene(): Scene {
-    if (!this._currentScene)
+    if (!SceneManager._currentScene)
       throw new SceneManagerError(ErrorState.NO_CURRENT_SCENE)
-    return this._currentScene
+    return SceneManager._currentScene
   }
 
   /**
@@ -83,7 +90,7 @@ export default class SceneManager {
   public setScenesMap(scenes: NamedScene[]): void {
     scenes.reduce(
       (map, scene) => map.set(scene.name, scene.scene),
-      this._scenesMap
+      SceneManager._scenesMap
     )
   }
 
@@ -115,12 +122,12 @@ export default class SceneManager {
    * ```
    */
   public setCurrentScene(name: string): void {
-    const scene = this._scenesMap.get(name)
+    const scene = SceneManager._scenesMap.get(name)
     if (!scene) throw new SceneManagerError(ErrorState.NO_MAPPED_SCENES)
 
-    this._gameSceneState = name as string
-    this._currentScene?.onExit?.()
-    this._currentScene = scene
-    this._currentScene.onEnter?.()
+    SceneManager._gameSceneState = name as string
+    SceneManager._currentScene?.onExit?.()
+    SceneManager._currentScene = scene
+    SceneManager._currentScene.onEnter?.()
   }
 }

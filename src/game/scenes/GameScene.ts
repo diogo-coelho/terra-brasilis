@@ -34,7 +34,7 @@ import { SceneManager } from '@/arcade/types'
  * 
  * @example
  * ```typescript
- * const gameScene = new NewGameScene();
+ * const gameScene = new GameScene();
  * sceneManager.setScenesMap([{
  *   name: GameSceneState.NEW_GAME,
  *   scene: gameScene
@@ -44,12 +44,12 @@ import { SceneManager } from '@/arcade/types'
  * @see Scene
  * @see SceneEvent
  */
-export default class NewGameScene extends SceneEvent implements Scene {
+export default class GameScene extends SceneEvent implements Scene {
   private _title: string
 
   constructor() {
     super()
-    this._title = 'New Game Scene'
+    this._title = 'Game Scene'
   }
 
   public drawScene(
@@ -74,13 +74,13 @@ export default class NewGameScene extends SceneEvent implements Scene {
     event: KeyboardEvent,
     sceneManager: SceneManager
   ): void {
-    console.log('Key pressed in NewGameScene:', event.key)
+    console.log('Key pressed in GameScene:', event.key)
   }
 
   public handleMouseEvent?(
     event: MouseEvent,
     sceneManager: SceneManager
   ): void {
-    console.log('Mouse event in NewGameScene:', event.type)
+    console.log('Mouse event in GameScene:', event.type)
   }
 }

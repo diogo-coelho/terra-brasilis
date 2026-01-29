@@ -2,13 +2,13 @@ import { SceneEvent } from '@/arcade/core'
 import { Image } from '@/arcade/images'
 import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
-import { ButtonStandardGroup, InputStandard } from '@/arcade/components'
+import { ButtonStandardGroup, InputStandard } from '@/arcade/ui'
 import { EventListenerState, PositionState } from '@/arcade/enums'
 
 import backgroundImage from '@/arcade/assets/images/tb_insert_name_background.png'
 
-import { GovernorGeneralNameInput } from '@/game/components/inputs'
-import { BackToMenuButton, GoToGameButton } from '@/game/components/buttons'
+import { GovernorGeneralNameInput } from '@/game/ui/inputs'
+import { BackToMenuButton, GoToGameButton } from '@/game/ui/buttons'
 
 /**
  * Cena de inserção do nome do Governador-Geral com campo de entrada interativo.

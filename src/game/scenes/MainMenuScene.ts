@@ -1,13 +1,13 @@
 import Scene from '@/arcade/interfaces/Scene'
 import { SceneEvent, SceneManager } from '@/arcade/core'
-import { ButtonStandardGroup } from '@/arcade/components'
+import { ButtonStandardGroup } from '@/arcade/ui'
 import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'
 
 import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
 
-import { ContinueGameButton, NewGameButton } from '@/game/components/buttons'
+import { ContinueGameButton, NewGameButton } from '@/game/ui/buttons'
 
 /**
  * Cena do menu principal com opções de novo jogo e continuar.

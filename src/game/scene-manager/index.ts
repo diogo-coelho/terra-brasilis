@@ -31,7 +31,7 @@ import MainMenuScene from '@/game/scenes/MainMenuScene'
  * sceneManager.setCurrentScene(GameSceneState.BOOT)
  *
  */
-const sceneManager: SceneManager = new Arcade.SceneManager()
+const sceneManager: SceneManager = Arcade.SceneManager.getInstance()
 const sceneSettings: NamedScene[] = [
   { name: GameSceneState.BOOT, scene: new BootScene() },
   { name: GameSceneState.INTRO, scene: new IntroScene() },

@@ -9,7 +9,7 @@ window.document.title = 'Terra Brasilis'
 window.onload = () => {
   const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
   /** Inicia o jogo */
-  const gameEngine: Game = new Arcade.Game(canvas)
+  const gameEngine: Game = Arcade.Game.getInstance(canvas)
   gameEngine.resizeScreen()
   gameEngine.setImageSmoothingEnabled(false)
 

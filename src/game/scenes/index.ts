@@ -3,7 +3,7 @@ import MenuScene from './MainMenuScene'
 import BootScene from './BootScene'
 import InsertNameScene from './InsertNameScene'
 import LoadGame from './LoadGame'
-import NewGameScene from './NewGameScene'
+import NewGameScene from './GameScene'
 
 export {
   IntroScene,

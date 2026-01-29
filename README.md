@@ -31,29 +31,30 @@ O diferencial está na construção de todo o ecossistema de desenvolvimento: de
 
 O projeto segue uma arquitetura modular dividida em três camadas principais:
 
+
 ### 1. **Arcade Framework** (`src/arcade/`)
 
-Motor de jogo customizado construído do zero, totalmente independente de bibliotecas externas.
+Motor de jogo customizado, modular e independente, desenvolvido 100% em TypeScript.
 
-**Características principais:**
-- **Game Loop**: Loop de renderização baseado em `requestAnimationFrame` com cálculo de deltaTime para 60 FPS consistentes
-- **Scene Management**: Sistema completo de gerenciamento de cenas com lifecycle (onEnter, drawScene, onExit) e transições
-- **Sprite & Animation**: Sistema de sprites animados com suporte a spritesheets, controle de frames e timing automático
-- **Isometric Rendering**: Renderização isométrica com projeção diamante (45° rotation + 0.5 Y-scale)
-- **Audio System**: Gerenciamento completo de sons e música (play, pause, stop, volume, loop, fade)
-- **Image Management**: Carregamento assíncrono de imagens com redimensionamento e modos de ajuste
-- **UI Components**: Componentes reutilizáveis (botões, inputs) com sistema de herança e abstrações
-- **Event System**: Eventos globais e eventos específicos de cenas para comunicação desacoplada
-- **Error Handling**: Sistema de erros customizados por domínio com mensagens descritivas
-- **Timing Utilities**: Temporizadores de alta precisão para cooldowns e eventos temporais
+**Principais responsabilidades e arquitetura:**
+- **Game Loop (Classe Game):** Controla o ciclo principal do jogo, calcula o deltaTime e delega a renderização para a cena ativa. Garante animações fluidas e sincronizadas com o hardware.
+- **Gerenciamento de Cenas (Classe SceneManager):** Centraliza o fluxo de navegação, registra todas as cenas, controla a cena ativa e executa transições seguras (onExit/onEnter). Implementa padrão singleton.
+- **Sprites & Animação (Classes Sprite e Frame):** Gerencia sprites animados com suporte a spritesheets, animação frame-by-frame automática, múltiplas animações por offset e geração de sombras dinâmicas.
+- **Renderização Isométrica:** Projeção diamante (45° + 0.5 Y-scale) para tiles, com renderização back-to-front.
+- **Sistema de Áudio:** Controle completo de sons e música (play, pause, stop, volume, loop, fade).
+- **Gerenciamento de Imagens:** Carregamento assíncrono, redimensionamento e modos de ajuste para assets visuais.
+- **Componentes de UI:** Botões, inputs e grupos reutilizáveis, com sistema de herança e abstração.
+- **Sistema de Eventos:** Comunicação desacoplada entre componentes e cenas.
+- **Tratamento de Erros:** Classes de erro customizadas por domínio, com mensagens descritivas.
+- **Utilitários de Tempo:** Temporizadores de alta precisão para cooldowns e eventos temporais.
 
-**Estrutura modular:**
-- `core/` - Classes fundamentais do engine
-- `components/` - Entidades e componentes de UI reutilizáveis
+**Principais módulos:**
+- `core/` - Núcleo do engine: Game, SceneManager, Sprite, Frame, etc.
+- `components/` - Componentes de UI e entidades reutilizáveis
 - `images/` e `sounds/` - Gerenciamento de assets
 - `events/` - Sistema de eventos
 - `errors/` - Tratamento de erros customizado
-- `interfaces/`, `enums/`, `types/` - Contratos TypeScript
+- `interfaces/`, `enums/`, `types/` - Contratos e tipos TypeScript
 
 ### 2. **Game Logic** (`src/game/`)
 

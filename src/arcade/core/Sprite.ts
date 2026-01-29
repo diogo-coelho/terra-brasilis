@@ -1,45 +1,26 @@
-import { GameObject } from "@/arcade/components"
+import { GameObject } from "@/arcade/ui"
 import { Image } from "@/arcade/images"
 import Frame from "@/arcade/core/Frame"
 
 /**
- * Sprite animado com suporte a spritesheets e renderização otimizada.
+ * Componente visual avançado para sprites animados com suporte a spritesheets, animação automática e renderização otimizada.
  *
  * @class Sprite
  * @extends GameObject
  * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
+ * @version 1.1.0
+ * @since 2026-01-29
  *
  * @description
- * A classe Sprite é um componente visual avançado para jogos 2D que gerencia:
+ * A classe Sprite gerencia:
  * - Carregamento e renderização de spritesheets
- * - Animação frame-by-frame automática
- * - Sistema de offset para navegação no spritesheet
- * - Geração de sombras dinâmicas
- * - Controle de visibilidade
- * - Zoom/escala de sprites
+ * - Animação frame-by-frame automática (usando Frame)
+ * - Sistema de offset para múltiplas animações no mesmo spritesheet
+ * - Geração e cache de sombras dinâmicas
+ * - Controle de visibilidade e escala (zoom)
  * - Posicionamento preciso no canvas
- * 
- * **Arquitetura:**
+ *
  * Estende GameObject, herdando propriedades de posição e dimensão.
- * Utiliza a classe Frame internamente para gerenciar a animação.
- * Integra-se com a classe Image do arcade para carregamento de recursos.
- * 
- * **Sistema de Spritesheet:**
- * Os sprites são organizados horizontalmente no spritesheet.
- * Cada frame tem a mesma largura e altura.
- * A animação percorre os frames da esquerda para a direita.
- * 
- * **Coordenadas:**
- * - offsetX, offsetY: Posição inicial no spritesheet (pixels)
- * - positionX, positionY: Posição de renderização no canvas
- * - width, height: Dimensões de cada frame individual
- * 
- * **Sistema de Sombra:**
- * Gera automaticamente uma sombra escura do sprite.
- * A sombra é criada uma única vez e reutilizada (cache).
- * Renderizada com 10% de opacidade abaixo do sprite.
  *
  * @param {Image} source - Imagem do spritesheet carregada
  * @param {number} width - Largura de cada frame em pixels
@@ -50,67 +31,23 @@ import Frame from "@/arcade/core/Frame"
  * @param {number} durationPerFrame - Duração total da animação em ms
  *
  * @example
- * ```typescript
  * // Sprite de personagem com 8 frames de animação
  * const playerSheet = new Image('assets/player-walk.png');
- * const player = new Sprite(
- *   playerSheet,
- *   64,    // Largura de cada frame
- *   64,    // Altura de cada frame
- *   8,     // 8 frames de animação
- *   0,     // Começa no pixel 0 (X)
- *   0,     // Começa no pixel 0 (Y)
- *   800    // Animação completa em 800ms
- * );
- * 
+ * const player = new Sprite(playerSheet, 64, 64, 8, 0, 0, 800);
  * player.setPosition(100, 200);
- * 
+ *
  * // No game loop
- * function update(deltaTime: number) {
- *   player.animate(deltaTime);
+ * function update(time: number) {
+ *   player.animate(time);
  *   player.draw(context, true); // Com sombra
  * }
- * ```
  *
  * @example
- * ```typescript
  * // Múltiplas animações no mesmo spritesheet
- * const enemySheet = new Image('assets/enemy-sheet.png');
  * const enemy = new Sprite(enemySheet, 48, 48, 4, 0, 0, 400);
- * 
- * // Trocar para animação de ataque (linha 1 do spritesheet)
- * enemy.setOffset(0, 48); // Pula para segunda linha
- * 
- * // Alternar visibilidade
+ * enemy.setOffset(0, 48); // Troca para linha de ataque
  * enemy.shown = false; // Esconde
  * enemy.shown = true;  // Mostra
- * ```
- *
- * @example
- * ```typescript
- * // Sistema de sprite dinâmico
- * class AnimatedCharacter {
- *   private sprite: Sprite;
- *   
- *   constructor() {
- *     const sheet = new Image('character.png');
- *     this.sprite = new Sprite(sheet, 32, 32, 6, 0, 0, 600);
- *   }
- *   
- *   playWalkAnimation() {
- *     this.sprite.setOffset(0, 0); // Linha 1: walk
- *   }
- *   
- *   playJumpAnimation() {
- *     this.sprite.setOffset(0, 32); // Linha 2: jump
- *   }
- *   
- *   render(ctx: CanvasRenderingContext2D, time: number) {
- *     this.sprite.animate(time);
- *     this.sprite.draw(ctx, false);
- *   }
- * }
- * ```
  *
  * @see GameObject
  * @see Frame

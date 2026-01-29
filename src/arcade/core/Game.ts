@@ -2,54 +2,61 @@ import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/core'
 
 /**
- * Motor principal do jogo responsável pelo loop de renderização e gerenciamento do canvas.
+ * Classe singleton responsável pelo ciclo principal do jogo (game loop) e gerenciamento do canvas.
  *
  * @class Game
  * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
+ * @version 1.1.0
+ * @since 2026-01-29
  *
  * @description
- * A classe Game atua como o núcleo do motor de jogo, sendo responsável por:
- * - Inicializar e gerenciar o elemento HTMLCanvasElement e seu contexto de renderização 2D
- * - Controlar o loop principal do jogo usando requestAnimationFrame
- * - Calcular e gerenciar o deltaTime para animações independentes de frame rate
- * - Coordenar a renderização das cenas através do SceneManager
- * - Configurar propriedades do canvas como dimensões e suavização de imagens
- * 
- * Esta classe implementa o padrão de game loop, atualizando o tempo a cada frame
- * e delegando a renderização para a cena ativa, garantindo 60 FPS quando possível.
+ * A classe Game é o núcleo do Arcade Framework, responsável por:
+ * - Inicializar e gerenciar o elemento HTMLCanvasElement e seu contexto 2D
+ * - Controlar o game loop usando requestAnimationFrame
+ * - Calcular e expor o deltaTime para animações fluidas e independentes do frame rate
+ * - Delegar a renderização para a cena ativa via SceneManager
+ * - Configurar propriedades do canvas (dimensões, suavização de imagem)
+ *
+ * O Game garante um ciclo de atualização consistente (60 FPS), sincronizando o tempo e a renderização
+ * de acordo com o hardware do usuário. É a porta de entrada para inicialização e execução do jogo.
  *
  * @example
- * ```typescript
+ * // Inicialização típica:
  * const canvas = document.querySelector('canvas');
- * const game = new Game(canvas);
- * const sceneManager = new SceneManager();
- * 
+ * const game = Game.getInstance(canvas);
+ * const sceneManager = SceneManager.getInstance();
+ *
  * game.resizeScreen();
  * game.setImageSmoothingEnabled(false);
  * game.startGame(sceneManager);
- * ```
  */
 export default class Game {
-  private _canvas: HTMLCanvasElement
-  private _context: CanvasRenderingContext2D
-  private _lastTime: number
-  private _currentTime: number = 0
-  private _deltaTime: number = 0
+  private static _canvas: HTMLCanvasElement
+  private static _context: CanvasRenderingContext2D
+  private static _lastTime: number
+  private static _currentTime: number = 0
+  private static _deltaTime: number = 0
+  private static _instance: Game
 
-  constructor(canvas: HTMLCanvasElement) {
-    this._canvas = canvas
-    this._context = this._canvas.getContext('2d') as CanvasRenderingContext2D
-    this._lastTime = performance.now()
+  private constructor(canvas: HTMLCanvasElement) {
+    Game._canvas = canvas
+    Game._context = Game._canvas.getContext('2d') as CanvasRenderingContext2D
+    Game._lastTime = performance.now()
   }
 
   public get canvas(): HTMLCanvasElement {
-    return this._canvas
+    return Game._canvas
   }
 
   public get context(): CanvasRenderingContext2D {
-    return this._context
+    return Game._context
+  }
+
+  public static getInstance(canvas: HTMLCanvasElement): Game {
+    if (!Game._canvas || !Game._context) {
+      this._instance = new Game(canvas)
+    }
+    return this._instance
   }
 
   /**
@@ -74,8 +81,8 @@ export default class Game {
    * game.resizeScreen();
    */
   public resizeScreen(width?: number, height?: number): void {
-    this._canvas.width = width || document.body.clientWidth
-    this._canvas.height = height || document.body.clientHeight
+    Game._canvas.width = width || document.body.clientWidth
+    Game._canvas.height = height || document.body.clientHeight
   }
 
   /**
@@ -99,7 +106,7 @@ export default class Game {
    * game.setImageSmoothingEnabled(true);
    */
   public setImageSmoothingEnabled(value: boolean): void {
-    this._context.imageSmoothingEnabled = value
+    Game._context.imageSmoothingEnabled = value
   }
 
   /**
@@ -118,8 +125,8 @@ export default class Game {
    * O deltaTime é passado para a cena permitindo animações independentes da taxa de frames.
    */
   public main(scene: Scene): void {
-    this._context.clearRect(0, 0, this._canvas.width, this._canvas.height)
-    scene.drawScene(this._canvas, this._context, this._deltaTime)
+    Game._context.clearRect(0, 0, Game._canvas.width, Game._canvas.height)
+    scene.drawScene(Game._canvas, Game._context, Game._deltaTime)
   }
 
   /**
@@ -148,7 +155,7 @@ export default class Game {
    */
   public startGame(sceneManager: SceneManager): void {
     const gameLoop = (): void => {
-      this.updateTime()
+      Game.updateTime()
       this.main(sceneManager.currentScene)
       requestAnimationFrame(gameLoop)
     }
@@ -170,9 +177,9 @@ export default class Game {
    * A fórmula aplicada:
    * deltaTime = (currentTime - lastTime) / 1000
    */
-  private updateTime(): void {
-    this._currentTime = performance.now()
-    this._deltaTime = (this._currentTime - this._lastTime) / 1000
-    this._lastTime = this._currentTime
+  private static updateTime(): void {
+    Game._currentTime = performance.now()
+    Game._deltaTime = (Game._currentTime - Game._lastTime) / 1000
+    Game._lastTime = Game._currentTime
   }
 }

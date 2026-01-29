@@ -1,74 +1,31 @@
 /**
- * Controlador de animação frame-by-frame para sprites.
+ * Controlador de animação frame-by-frame para spritesheets.
  *
  * @class Frame
  * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
+ * @version 1.1.0
+ * @since 2026-01-29
  *
  * @description
- * A classe Frame gerencia o sistema de animação frame-by-frame:
- * - Controla número total de frames na animação
- * - Rastreia frame atual sendo exibido
- * - Calcula timing automático entre frames
- * - Fornece navegação cíclica pelos frames
- * - Sincroniza animação com tempo real
- * 
- * **Sistema de Timing:**
- * O tempo de duração por frame é calculado automaticamente:
- * ```
- * tempoDeUmFrame = durationPerFrame / frames
- * ```
- * 
- * Por exemplo, com 4 frames e duration de 400ms:
- * - Cada frame exibe por 100ms
- * - Animação completa dura 400ms
- * - Depois do último frame, volta ao primeiro
- * 
- * **Gerenciamento de Estado:**
- * - _currentFrame: Índice do frame atual (0-based)
- * - _frameTimer: Timestamp quando deve trocar de frame
- * - _frames: Total de frames
- * - _durationPerFrame: Duração total da animação
- * 
- * Esta classe é usada internamente pela classe Sprite.
+ * A classe Frame gerencia animações frame-by-frame para sprites animados:
+ * - Controla o número total de frames e o frame atual
+ * - Calcula o timing automático de cada frame
+ * - Permite navegação cíclica (loop) pelos frames
+ * - Sincroniza animação com o tempo real do jogo
+ *
+ * Usada internamente por Sprite para animações fluidas e desacopladas do frame rate.
  *
  * @param {number} frames - Número total de frames na animação
  * @param {number} durationPerFrame - Duração total da animação em milissegundos
  *
  * @example
- * ```typescript
  * // Animação de 8 frames, 800ms total
- * const frameController = new Frame(8, 800);
- * // Cada frame dura: 800 / 8 = 100ms
- * 
- * let offsetX = 0;
- * const frameWidth = 64;
- * 
- * function update() {
- *   const now = Date.now();
- *   if (now >= frameController.frameTimer) {
- *     offsetX = frameController.nextFrame(offsetX, frameWidth);
- *   }
+ * const frame = new Frame(8, 800); // Cada frame dura 100ms
+ *
+ * // No game loop:
+ * if (Date.now() >= frame.frameTimer) {
+ *   offsetX = frame.nextFrame(offsetX, frameWidth);
  * }
- * ```
- *
- * @example
- * ```typescript
- * // Animação rápida vs lenta
- * const fastAnimation = new Frame(4, 200);  // 50ms por frame
- * const slowAnimation = new Frame(4, 2000); // 500ms por frame
- * ```
- *
- * @example
- * ```typescript
- * // Trocar número de frames dinamicamente
- * const frame = new Frame(4, 400);
- * 
- * // Mudar para animação de 6 frames
- * frame.frames = 6; // Reseta para frame 0
- * // Agora cada frame dura: 400 / 6 = ~66.67ms
- * ```
  */
 export default class Frame {
 

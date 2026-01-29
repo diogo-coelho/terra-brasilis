@@ -6,7 +6,7 @@ import {
   ButtonStandard,
   ButtonStandardGroup,
   InputStandard,
-} from './components'
+} from './ui'
 
 /**
  * Módulo principal do Arcade, que agrupa as principais classes do motor de jogo.
@@ -23,7 +23,7 @@ import {
 export * as core from './core'
 export * as types from './types'
 export * as interfaces from './interfaces'
-export * as components from './components'
+export * as ui from './ui'
 export * as enums from './enums'
 export * as events from './events'
 export * as sounds from './sounds'
