@@ -19,34 +19,34 @@ import MongoDBError from '@/server/error/MongoDB'
  * - Salvar nome do usuário no MongoDB
  * - Logging de operações com timestamps
  * - Tratamento de erros de banco de dados
- * 
+ *
  * **Endpoints Implementados:**
- * 
+ *
  * **startNewGame (GET /):**
  * - Serve arquivo index.html do cliente
  * - Inicia interface do jogo no navegador
  * - Loga início de nova partida
- * 
+ *
  * **insertUserName (POST /insert-username):**
  * - Recebe nome do usuário via JSON
  * - Cria documento no MongoDB
  * - Retorna confirmação ou erro
  * - Loga operação com timestamp
- * 
+ *
  * Todos os métodos utilizam FormattedDate para logging consistente
  * e tratam erros de forma apropriada com mensagens descritivas.
- * 
+ *
  * @throws {MongoDBError} Lança erro se falhar ao salvar no banco de dados
- * 
+ *
  * @example
  * ```typescript
  * const controller = new GameController();
- * 
+ *
  * // Em uma rota Express
  * router.get('/', (req, res) => {
  *   controller.startNewGame(req, res);
  * });
- * 
+ *
  * router.post('/insert-username', (req, res) => {
  *   controller.insertUserName(req, res);
  * });

@@ -19,15 +19,15 @@ import GameObject from '../GameObject'
  * - Controle de cursor piscante (cursorVisible)
  * - Estados visuais (cores padrão e hover)
  * - Estilização de borda (borderWidth, borderColor)
- * 
+ *
  * Como classe abstrata, define métodos que devem ser implementados pelas subclasses:
  * - renderInputBox: Define como o campo de entrada é renderizado
  * - setPosition: Define como o campo é posicionado
  * - isMouseOverInput: Define detecção de hover
- * 
+ *
  * Esta classe gerencia o ciclo de vida da interação com o campo de entrada,
  * desde a ativação (foco) até a desativação.
- * 
+ *
  * @remarks
  * Não pode ser instanciada diretamente. Use InputStandard ou crie uma subclasse customizada.
  *
@@ -37,11 +37,11 @@ import GameObject from '../GameObject'
  *   renderInputBox(context: CanvasRenderingContext2D): void {
  *     // Implementação customizada
  *   }
- *   
+ *
  *   setPosition({ canvas, x, y, align }: AlignedPosition): void {
  *     // Implementação de posicionamento
  *   }
- *   
+ *
  *   isMouseOverInput(xCoords: number, yCoords: number): boolean {
  *     // Implementação de detecção
  *   }
@@ -56,7 +56,7 @@ export default abstract class Input extends GameObject {
   private _colorOnHover: ColorOnHover = { default: '', hover: '' }
   private _isTyping: boolean = false
   private _inputText: string = ''
-  private _cursorVisible: boolean = true
+  private _cursorVisible: boolean = false
   private _borderWidth: number = 0
   private _borderColor: string = ''
 

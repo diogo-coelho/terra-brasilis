@@ -46,7 +46,7 @@ export default class GoToGameButton extends Arcade.Components.ButtonStandard {
    */
   public onClick(scene: SceneManager): void {
     this.saveUserNameInDataBase().then(() => {
-      scene?.setCurrentScene(GameSceneState.NEW_GAME)
+      scene?.setCurrentScene(GameSceneState.GAME)
     })
   }
 

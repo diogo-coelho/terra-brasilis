@@ -28,18 +28,18 @@ import { GameSceneState } from '@/game/enums'
  * - Manter reprodução da música tema em loop
  * - Aguardar tecla Enter para prosseguir ao menu principal
  * - Exibir mensagem "Pressione Enter para iniciar"
- * 
+ *
  * **Animação do Logo:**
  * - Posição inicial: Acima da tela (Y negativo)
  * - Posição final: Centralizado com offset -100px
  * - Velocidade: 100 pixels/segundo
  * - Interpolação suave usando deltaTime
- * 
+ *
  * **Elementos Visuais:**
  * - Background: Imagem temática com 60% de opacidade
  * - Logo: Redimensionado para 500px de largura mantendo proporção
  * - Texto: Fonte Jersey 15, 30px, com outline preto
- * 
+ *
  * @example
  * ```typescript
  * const introScene = new IntroScene();

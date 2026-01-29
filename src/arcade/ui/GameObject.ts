@@ -13,11 +13,11 @@
  * - Dimensões (width, height)
  * - Estilização visual (color, backgroundColor)
  * - Controle de cursor (shouldUsePointerCursor)
- * 
+ *
  * Esta classe é projetada para ser estendida por componentes mais especializados
  * como botões, inputs, sprites e outros elementos do jogo, fornecendo uma base
  * consistente para manipulação de propriedades visuais e espaciais.
- * 
+ *
  * @remarks
  * Todos os getters e setters permitem acesso controlado às propriedades privadas,
  * facilitando futuras validações ou lógica adicional sem quebrar a API pública.
@@ -30,7 +30,7 @@
  * gameObject.positionY = 20;
  * gameObject.color = '#FF0000';
  * gameObject.backgroundColor = '#00FF00';
- * 
+ *
  * // Uso através de extensão
  * class Player extends GameObject {
  *   constructor() {

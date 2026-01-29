@@ -27,12 +27,12 @@ import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
  * - Estados visuais (hover, foco)
  * - Renderização com fonte e estilo personalizados
  * - Bordas estilizadas
- * 
+ *
  * O campo calcula automaticamente o número máximo de caracteres que cabem
  * baseado na largura fornecida (aprox. 11.25 pixels por caractere).
- * 
+ *
  * Possui som padrão de digitação pré-carregado que toca a cada tecla pressionada.
- * 
+ *
  * @remarks
  * O cursor pisca a cada 500ms quando o campo está em foco.
  * Pressionar Enter desativa o campo e executa callback opcional.
@@ -46,7 +46,7 @@ import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
  * input.borderColor = '#555';
  * input.fontSize = 18;
  * input.font = 'Arial';
- * 
+ *
  * input.setPosition({
  *   canvas: myCanvas,
  *   align: PositionState.VERTICAL,
@@ -134,6 +134,7 @@ export default class InputStandard extends Input implements InputEvent {
       this.positionY + this.height / 2
     )
 
+    /** Desenha o cursor piscante */
     if (this.isTyping && this.cursorVisible) {
       const textWidth = context.measureText(this.inputText).width
       const cursorX = this.positionX + this.width / 2 + textWidth / 2
@@ -206,23 +207,23 @@ export default class InputStandard extends Input implements InputEvent {
    *
    * @param {MouseEvent} event - Evento de clique do mouse
    * @param {Callback} [callback] - Função executada ao ativar o campo
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Comportamento baseado na posição do clique:
-   * 
+   *
    * **Clique DENTRO do campo:**
    * - Ativa o estado de digitação (isTyping = true)
    * - Torna o cursor visível (cursorVisible = true)
    * - Inicia animação de cursor piscante
    * - Executa callback opcional
-   * 
+   *
    * **Clique FORA do campo:**
    * - Desativa o estado de digitação (isTyping = false)
    * - Oculta o cursor (cursorVisible = false)
    * - Para animação de cursor piscante
-   * 
+   *
    * @example
    * ```typescript
    * input.handleMouseClick(event, () => {
@@ -250,21 +251,21 @@ export default class InputStandard extends Input implements InputEvent {
    *
    * @param {KeyboardEvent} event - Evento de teclado
    * @param {Callback} [callback] - Função opcional executada ao pressionar Enter
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Este método processa diferentes tipos de teclas:
-   * 
+   *
    * **Backspace**: Remove o último caractere do texto
    * **Enter**: Desativa o campo e executa callback
-   * **Caracteres (length === 1)**: 
+   * **Caracteres (length === 1)**:
    * - Adiciona ao texto se não exceder máximo de caracteres
    * - Toca som de digitação
-   * 
+   *
    * Só processa eventos se o campo estiver ativo (isTyping = true).
    * O limite de caracteres é calculado automaticamente baseado na largura.
-   * 
+   *
    * @example
    * ```typescript
    * input.handleKeyboardEvent(event, () => {
@@ -330,7 +331,7 @@ export default class InputStandard extends Input implements InputEvent {
    *
    * @private
    * @returns {void}
-   * 
+   *
    * @remarks
    * Cria um intervalo que alterna a visibilidade do cursor a cada 500ms,
    * criando o efeito visual de piscar. O intervalo é armazenado em blinkingTimer
@@ -347,7 +348,7 @@ export default class InputStandard extends Input implements InputEvent {
    *
    * @private
    * @returns {void}
-   * 
+   *
    * @remarks
    * Limpa o intervalo criado por blinkingCursor(), interrompendo a animação.
    * Deve ser chamado quando o campo perde o foco ou é desativado.

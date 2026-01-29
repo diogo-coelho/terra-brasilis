@@ -20,28 +20,28 @@ import GameRouter from '@/server/routes/GameRouter'
  * - Configura middlewares (body-parser para JSON e URL-encoded)
  * - Define diretório de arquivos estáticos (cliente do jogo)
  * - Registra rotas da aplicação (GameRouter)
- * 
+ *
  * **Middlewares Configurados:**
  * - body-parser.json(): Parse de requisições JSON
  * - body-parser.urlencoded(): Parse de formulários
  * - express.static(): Servir arquivos estáticos do cliente
- * 
+ *
  * **Arquivos Estáticos:**
  * O diretório configurado via EXPRESS_STATIC_FILES contém:
  * - HTML do cliente do jogo
  * - JavaScript bundled (Webpack)
  * - Assets (imagens, sons)
- * 
+ *
  * **Rotas:**
  * Todas as rotas são gerenciadas por GameRouter:
  * - GET /: Inicia jogo
  * - POST /insert-username: Salva nome do jogador
- * 
+ *
  * @example
  * ```typescript
  * const app = new MainApplication();
  * const expressApp = app.mainApplication;
- * 
+ *
  * expressApp.listen(3000, () => {
  *   console.log('Servidor rodando!');
  * });

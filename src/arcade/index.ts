@@ -1,11 +1,25 @@
-import { Frame, Game, SceneManager, Sprite, Tile, Timer } from './core'
+import {
+  Frame,
+  Game,
+  SceneManager,
+  Sprite,
+  Tile,
+  TileMap,
+  Timer,
+  Scenario,
+  ScenarioMap,
+} from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
 import {
   GameObject,
+  Button,
+  Input,
+  Text,
   ButtonStandard,
   ButtonStandardGroup,
   InputStandard,
+  TextStandard,
 } from './ui'
 
 /**
@@ -35,19 +49,26 @@ export const Arcade = {
   SceneManager: SceneManager,
   Sprite: Sprite,
   Tile: Tile,
+  TileMap: TileMap,
   Timer: Timer,
   Frame: Frame,
+  Scenario: Scenario,
+  ScenarioMap: ScenarioMap,
   /** events */
   GlobalEvents: GlobalEvents,
   /** sounds */
   Sound: Sound,
   /** images */
   Image: Image,
-  /** components */
+  /** components ui */
   Components: {
     GameObject: GameObject,
+    Button: Button,
+    Input: Input,
+    Text: Text,
     ButtonStandard: ButtonStandard,
     ButtonStandardGroup: ButtonStandardGroup,
     InputStandard: InputStandard,
+    TextStandard: TextStandard,
   },
 }

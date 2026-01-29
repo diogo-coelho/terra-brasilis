@@ -13,20 +13,20 @@
  * - Configuração incorreta de propriedades
  * - Falhas em operações de renderização
  * - Problemas com eventos de botão
- * 
+ *
  * Esta classe estende Error nativo do JavaScript, adicionando:
  * - Nome específico "ButtonError" para identificação
  * - Encadeamento de stack trace quando causado por outro erro
  * - Mensagens personalizadas e descritivas
- * 
+ *
  * O encadeamento de erros permite rastrear a causa raiz quando um
  * ButtonError é lançado devido a outro erro.
- * 
+ *
  * @example
  * ```typescript
  * // Uso simples
  * throw new ButtonError('Parâmetros de posicionamento inválidos');
- * 
+ *
  * // Com erro original
  * try {
  *   button.setPosition({ canvas });

@@ -19,10 +19,10 @@ import GameSceneState from '@/game/enums/GameSceneState'
  * - Ao ser clicado, navega para InsertNameScene
  * - Herda todas as funcionalidades visuais de ButtonStandard
  * - Integra-se com o sistema de cenas do jogo
- * 
+ *
  * Este botão é tipicamente usado no menu principal e representa
  * o ponto de entrada para uma nova partida do jogo.
- * 
+ *
  * @example
  * ```typescript
  * const newGameBtn = new NewGameButton('Novo Jogo');
