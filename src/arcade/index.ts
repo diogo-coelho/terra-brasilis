@@ -1,4 +1,4 @@
-import { Game, SceneManager } from './core'
+import { Frame, Game, SceneManager, Sprite, Tile, Timer } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
 import {
@@ -30,8 +30,13 @@ export * as sounds from './sounds'
 export * as images from './images'
 
 export const Arcade = {
+  /** core */
   Game: Game,
   SceneManager: SceneManager,
+  Sprite: Sprite,
+  Tile: Tile,
+  Timer: Timer,
+  Frame: Frame,
   /** events */
   GlobalEvents: GlobalEvents,
   /** sounds */

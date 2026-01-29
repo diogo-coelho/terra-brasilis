@@ -1,9 +1,9 @@
 import path from 'path'
 import { Request, Response } from 'express'
 import FormattedDate from '@/server/utils/FormattedDate'
-import { VIEW_PATH } from '../consts/constants'
-import User from '../model/UserModel'
-import MongoDBError from '../error/MongoDB'
+import { VIEW_PATH } from '@/server/consts/constants'
+import User from '@/server/model/UserModel'
+import MongoDBError from '@/server/error/MongoDB'
 
 /**
  * Controlador HTTP para operações relacionadas ao jogo.

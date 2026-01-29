@@ -10,7 +10,7 @@ import {
   LoadGame,
   NewGameScene,
 } from '@/game/scenes'
-import MainMenuScene from '../scenes/MainMenuScene'
+import MainMenuScene from '@/game/scenes/MainMenuScene'
 
 /**
  * O módulo de cenas do jogo é responsável por gerenciar as diferentes cenas que compõem o jogo.

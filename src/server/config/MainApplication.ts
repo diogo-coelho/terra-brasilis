@@ -2,7 +2,7 @@ import 'dotenv/config'
 import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
-import { ExpressApplication, IMainApplication } from '../types/types'
+import { ExpressApplication, IMainApplication } from '@/server/types/types'
 import GameRouter from '@/server/routes/GameRouter'
 
 /**

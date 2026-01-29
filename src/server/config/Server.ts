@@ -1,10 +1,10 @@
 import 'dotenv/config'
 import * as http from 'http'
-import MainApplication from './MainApplication'
-import Database from './Database'
-import { ExpressApplication } from '../types/types'
-import ServerError from '../error/ServerError'
-import { SERVER } from '../consts/constants'
+import MainApplication from '@/server/config/MainApplication'
+import Database from '@/server/config/Database'
+import { ExpressApplication } from '@/server/types/types'
+import ServerError from '@/server/error/ServerError'
+import { SERVER } from '@/server/consts/constants'
 
 /**
  * Servidor HTTP principal que integra Express, MongoDB e configurações da aplicação.

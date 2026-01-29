@@ -7,8 +7,8 @@ import { EventListenerState, PositionState } from '@/arcade/enums'
 
 import backgroundImage from '@/arcade/assets/images/tb_insert_name_background.png'
 
-import { GovernorGeneralNameInput } from '../components/inputs'
-import { BackToMenuButton, GoToGameButton } from '../components/buttons'
+import { GovernorGeneralNameInput } from '@/game/components/inputs'
+import { BackToMenuButton, GoToGameButton } from '@/game/components/buttons'
 
 /**
  * Cena de inserção do nome do Governador-Geral com campo de entrada interativo.

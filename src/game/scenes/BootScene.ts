@@ -7,7 +7,7 @@ import { Sound } from '@/arcade/sounds'
 
 import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 
-import { GameSceneState } from '../enums'
+import { GameSceneState } from '@/game/enums'
 
 /**
  * Cena inicial de boot que aguarda interação do usuário para iniciar o jogo.

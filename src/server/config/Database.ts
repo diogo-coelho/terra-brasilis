@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import mongoose, { Mongoose } from 'mongoose'
 import FormattedDate from '@/server/utils/FormattedDate'
-import MongoDBError from '../error/MongoDB'
+import MongoDBError from '@/server/error/MongoDB'
 
 /**
  * Gerenciador de conexão MongoDB usando Mongoose com tratamento de eventos.
