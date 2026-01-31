@@ -38,7 +38,9 @@ export default class Game {
   private static _deltaTime: number = 0
   private static _instance: Game
 
-  private constructor(canvas: HTMLCanvasElement) {
+  private constructor() {}
+
+  public set canvas(canvas: HTMLCanvasElement) {
     Game._canvas = canvas
     Game._context = Game._canvas.getContext('2d') as CanvasRenderingContext2D
     Game._lastTime = performance.now()
@@ -52,9 +54,14 @@ export default class Game {
     return Game._context
   }
 
-  public static getInstance(canvas: HTMLCanvasElement): Game {
+  public get deltaTime(): number {
+    return Game._deltaTime
+  }
+
+  public static getInstance(canvasId: string): Game {
     if (!Game._canvas || !Game._context) {
-      this._instance = new Game(canvas)
+      this._instance = new Game()
+      this._instance.canvas = document.getElementById(canvasId) as HTMLCanvasElement
     }
     return this._instance
   }
@@ -126,6 +133,7 @@ export default class Game {
    */
   public main(scene: Scene): void {
     Game._context.clearRect(0, 0, Game._canvas.width, Game._canvas.height)
+    scene.update?.(Game._canvas, Game._context, Game._deltaTime)
     scene.drawScene(Game._canvas, Game._context, Game._deltaTime)
   }
 

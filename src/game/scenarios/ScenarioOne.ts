@@ -1,5 +1,7 @@
 import { Scenario, Tile, TileMap } from '@/arcade/core'
+import oceanTileSpritesheet from '@/arcade/assets/images/tb_ocean_stylesheet.png'
 import { OceanTile } from '@/game/tiles'
+import { Image } from '@/arcade/images'
 
 /**
  * Implementação de um cenário isométrico 10x10 totalmente preenchido com OceanTile.
@@ -37,150 +39,19 @@ export default class ScenarioOne extends Scenario {
   public createScenario(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
-    deltaTime: number
   ): void {
+    const oceanImage = new Image(oceanTileSpritesheet)
     this._oceanTile = new OceanTile()
+    this._oceanTile.setSpritesheet(oceanImage)
+    
     // TODO: Criar um mapper para converter a instancia de um tile por uma chave
-    /**
-     * Cria e renderiza o cenário 10x10 de OceanTile.
-     *
-     * @param {HTMLCanvasElement} canvas - Elemento canvas alvo para renderização
-     * @param {CanvasRenderingContext2D} context - Contexto 2D do canvas
-     * @param {number} deltaTime - Tempo decorrido para animações e atualização
-     *
-     * @returns {void}
-     *
-     * @example
-     * const scenario = new ScenarioOne();
-     * scenario.createScenario(canvas, context, deltaTime);
-     */
-    this._worldMap = new TileMap(
-      [
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
-        [
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-          this._oceanTile,
-        ],
+    this._worldMap = new TileMap([
+        [this._oceanTile]
       ],
       128,
       64
     )
 
-    this.drawScenario(canvas, context, deltaTime)
+    this.drawScenario(canvas, context)
   }
 }

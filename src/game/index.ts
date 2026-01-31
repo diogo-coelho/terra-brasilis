@@ -7,9 +7,10 @@ import { sceneManager } from '@/game/scene-manager'
 window.document.title = 'Terra Brasilis'
 
 window.onload = () => {
-  const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
   /** Inicia o jogo */
-  const gameEngine: Game = Arcade.Game.getInstance(canvas)
+  const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
+  const gameEngine: Game = Arcade.Game.getInstance('gameCanvas')
+  gameEngine.canvas = canvas
   gameEngine.resizeScreen()
   gameEngine.setImageSmoothingEnabled(false)
 

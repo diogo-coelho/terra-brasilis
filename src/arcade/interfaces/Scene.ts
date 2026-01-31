@@ -19,6 +19,8 @@ export default interface Scene {
 
   onExit?(): void
 
+  update?(canvas?: HTMLCanvasElement, context?: CanvasRenderingContext2D, deltaTime?: number): void
+
   drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,

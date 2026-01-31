@@ -69,8 +69,15 @@ export default class Scenario {
   public drawScenario(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
+  ): void {
+    this._worldMap?.drawWorldMap(canvas, context)
+  }
+
+  public updateScenario(
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    this._worldMap?.drawWorldMap(canvas, context, deltaTime)
+    this._worldMap?.update(deltaTime)
   }
 }

@@ -154,37 +154,6 @@ export default class Tile extends Sprite {
   }
 
   /**
-   * Define ou substitui a textura do tile.
-   *
-   * @param {Image} spritesheet - Imagem do spritesheet de terreno
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Este método é um wrapper conveniente para setSpritesheet() do Sprite,
-   * facilitando a troca de textura de tiles em tempo de execução.
-   *
-   * **Casos de Uso Comuns:**
-   * - Trocar terreno (grama → terra arada)
-   * - Alternar estados (gelo → água derretida)
-   * - Aplicar variações de textura
-   * - Modificação por eventos (queimado, destruído)
-   *
-   * @example
-   * ```typescript
-   * const grassTexture = new Image('grass.png');
-   * const snowTexture = new Image('snow.png');
-   *
-   * tile.setTileSpritesheet(grassTexture);
-   * // ... após evento de inverno
-   * tile.setTileSpritesheet(snowTexture);
-   * ```
-   */
-  public setTileSpritesheet(spritesheet: Image): void {
-    this.setSpritesheet(spritesheet)
-  }
-
-  /**
    * Indica se o tile pode ser atravessado por personagens.
    * @return {boolean} true se o tile for caminhável, false caso contrário
    */
