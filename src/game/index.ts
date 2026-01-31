@@ -2,17 +2,14 @@ import '@/arcade/assets/sass/styles.scss'
 import { Arcade } from '@/arcade/index'
 import { Game, SceneManager } from '@/arcade/core'
 
+import { arcadeEngine } from '@/game/system'
 import { sceneManager } from '@/game/scene-manager'
 
 window.document.title = 'Terra Brasilis'
 
 window.onload = () => {
-  /** Inicia o jogo */
-  const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
-  const gameEngine: Game = Arcade.Game.getInstance('gameCanvas')
-  gameEngine.canvas = canvas
-  gameEngine.resizeScreen()
-  gameEngine.setImageSmoothingEnabled(false)
+  /** Inicializa o motor do jogo */
+  const gameEngine: Game = arcadeEngine
 
   /** Inicializa os eventos globais */
   const GlobalEvents = Arcade.GlobalEvents

@@ -90,7 +90,7 @@ export default class TileMap {
       for (var row = 0; row < this._tiles.length; row++) {
         let tilePositionX = (row - col) * this._tileHeight
         // Centraliza o grid de forma horizontal no canvas
-        tilePositionX += canvas.width / 2 - this._tileWidth / 2
+        tilePositionX += (canvas.width / 2) - (this._tileWidth / 2)
         const tilePositionY = (row + col) * (this._tileHeight / 2)
         this._tiles[row][col].setPosition(tilePositionX, tilePositionY)
         this._tiles[row][col].draw(context, false)
@@ -98,10 +98,15 @@ export default class TileMap {
     }
   }
 
-  public update(deltaTime: number): void {
+  public update(
+    canvas: HTMLCanvasElement,
+    context: CanvasRenderingContext2D,
+    deltaTime: number
+  ): void {
     for (var col = 0; col < this._tiles[0].length; col++) {
       for (var row = 0; row < this._tiles.length; row++) {
         this._tiles[row][col].animate(deltaTime)
+        this._tiles[row][col].draw(context, false)
       }
     }
   }

@@ -221,6 +221,7 @@ export default class Sprite extends GameObject {
 
     const frameIndex = this._frame.update(deltaTime)
     this._offsetX = frameIndex * this.width
+    console.log('offsetX atualizado:', this._offsetX)
   }
 
   /**
@@ -327,6 +328,8 @@ export default class Sprite extends GameObject {
         context.restore()
       }
 
+      console.log('offsetX:', this._offsetX)
+      
       context.drawImage(
         this._spritesheet?.image as HTMLImageElement,
         this._offsetX,

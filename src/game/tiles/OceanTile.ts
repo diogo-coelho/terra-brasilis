@@ -1,5 +1,5 @@
 import { Tile } from '@/arcade/core'
-import Image from '@/arcade/images/Image'
+import { Image } from '@/arcade/images'
 
 /**
  * Representa um tile de água no jogo, com propriedades específicas de navegação e animação.
@@ -28,11 +28,17 @@ import Image from '@/arcade/images/Image'
  */
 export default class OceanTile extends Tile {
 
-  constructor() {
+  constructor(image: string) {
     super(128, 64, 4, 10)
     this.isWalkable = false
     this.isNavigable = true
     this.elevation = 0
+    this.initializeSpritesheet(image)
+  }
+
+  private initializeSpritesheet(image: string): void {
+    const spritesheetImage = new Image(image)
+    this.setSpritesheet(spritesheetImage)
   }
 
 }

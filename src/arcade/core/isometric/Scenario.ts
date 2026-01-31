@@ -78,6 +78,6 @@ export default class Scenario {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    this._worldMap?.update(deltaTime)
+    this._worldMap?.update(canvas, context, deltaTime)
   }
 }

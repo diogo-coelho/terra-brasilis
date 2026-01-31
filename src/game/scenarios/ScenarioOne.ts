@@ -40,9 +40,9 @@ export default class ScenarioOne extends Scenario {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
   ): void {
-    const oceanImage = new Image(oceanTileSpritesheet)
-    this._oceanTile = new OceanTile()
-    this._oceanTile.setSpritesheet(oceanImage)
+    //const oceanImage = new Image(oceanTileSpritesheet)
+    this._oceanTile = new OceanTile(oceanTileSpritesheet)
+    //this._oceanTile.setSpritesheet(oceanImage)
     
     // TODO: Criar um mapper para converter a instancia de um tile por uma chave
     this._worldMap = new TileMap([

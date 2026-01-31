@@ -2,11 +2,12 @@ export default class Frame {
   private _frames: number
   private _currentFrame: number = 1
   private _frameDuration: number // duração de um frame
-  private _accumulator: number = 0
+  private _accumulator: number
 
   constructor(frames: number, totalDuration: number) {
     this._frames = frames
     this._frameDuration = frames > 0 ? (totalDuration / frames) : 0
+    this._accumulator = 0
   }
 
   public get currentFrame(): number {
@@ -19,11 +20,13 @@ export default class Frame {
     }
 
     this._accumulator += deltaTime
-
+    console.log('Accumulator:', this._accumulator, 'Frame Duration:', this._frameDuration)
     if (this._accumulator >= this._frameDuration) {
+      console.log('Accumulator:', this._accumulator)
       this._accumulator = 0
       this._currentFrame = this._currentFrame < this._frames ? (this._currentFrame + 1) : 1
     }
+    console.log('Current Frame:', this._currentFrame)
     return this._currentFrame
   }
 

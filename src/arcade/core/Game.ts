@@ -133,8 +133,8 @@ export default class Game {
    */
   public main(scene: Scene): void {
     Game._context.clearRect(0, 0, Game._canvas.width, Game._canvas.height)
-    scene.update?.(Game._canvas, Game._context, Game._deltaTime)
     scene.drawScene(Game._canvas, Game._context, Game._deltaTime)
+    scene.update?.(Game._canvas, Game._context, Game._deltaTime)
   }
 
   /**
