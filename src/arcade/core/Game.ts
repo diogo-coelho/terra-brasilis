@@ -61,7 +61,9 @@ export default class Game {
   public static getInstance(canvasId: string): Game {
     if (!Game._canvas || !Game._context) {
       this._instance = new Game()
-      this._instance.canvas = document.getElementById(canvasId) as HTMLCanvasElement
+      this._instance.canvas = document.getElementById(
+        canvasId
+      ) as HTMLCanvasElement
     }
     return this._instance
   }

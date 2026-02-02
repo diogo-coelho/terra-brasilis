@@ -40,8 +40,7 @@ export default class SceneManager {
   private static _scenesMap: Map<string, Scene> = new Map()
   private static _instance: SceneManager
 
-  private constructor() {
-    }
+  private constructor() {}
 
   public static getInstance(): SceneManager {
     if (!this._instance) {

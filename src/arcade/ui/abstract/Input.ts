@@ -1,5 +1,5 @@
 import { AlignedPosition, ColorOnHover, SceneManager } from '@/arcade/types'
-import GameObject from '../GameObject'
+import GameObject from '../../core/GameObject'
 
 /**
  * Classe abstrata que define a estrutura base para campos de entrada de texto interativos.

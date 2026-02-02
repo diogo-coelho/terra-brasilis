@@ -18,7 +18,11 @@ export default class GameScene extends SceneEvent implements Scene {
     if (!this._scenarioOne) {
       throw new Error('ScenarioOne is not initialized.')
     }
-    this._scenarioOne.createScenario(gameEngine.canvas, gameEngine.context as CanvasRenderingContext2D)
+    this._scenarioOne.createScenario(
+      gameEngine.canvas,
+      gameEngine.context as CanvasRenderingContext2D,
+      gameEngine.deltaTime
+    )
   }
 
   public onExit(): void {
@@ -40,7 +44,5 @@ export default class GameScene extends SceneEvent implements Scene {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     deltaTime: number
-  ): void {
-    
-  }
+  ): void {}
 }

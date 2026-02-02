@@ -1,6 +1,5 @@
 import { GameObject } from '@/arcade/ui'
 import { Image } from '@/arcade/images'
-import Frame from '@/arcade/core/Frame'
 
 /**
  * Componente visual avançado para sprites animados com suporte a spritesheets, animação automática e renderização otimizada.
@@ -50,7 +49,6 @@ import Frame from '@/arcade/core/Frame'
  * enemy.shown = true;  // Mostra
  *
  * @see GameObject
- * @see Frame
  * @see Image
  */
 export default class Sprite extends GameObject {
@@ -60,7 +58,6 @@ export default class Sprite extends GameObject {
   private _shadow: CanvasRenderingContext2D | null = null
   private _zoomLevel: number = 1
   private _shown: boolean = true
-  private _frame: Frame | null = null
 
   constructor(
     source: Image,
@@ -75,7 +72,7 @@ export default class Sprite extends GameObject {
     this._spritesheet = source
     this._offsetX = offsetX
     this._offsetY = offsetY
-    this._frame = new Frame(frames, totalDuration)
+    this.initializeFrames(frames, totalDuration)
   }
 
   public set shown(value: boolean) {
@@ -217,11 +214,10 @@ export default class Sprite extends GameObject {
    * ```
    */
   public animate(deltaTime: number): void {
-    if (!this._frame) return
+    if (!this._frames) return
 
-    const frameIndex = this._frame.update(deltaTime)
+    const frameIndex = this.update(deltaTime)
     this._offsetX = frameIndex * this.width
-    console.log('offsetX atualizado:', this._offsetX)
   }
 
   /**
@@ -328,8 +324,6 @@ export default class Sprite extends GameObject {
         context.restore()
       }
 
-      console.log('offsetX:', this._offsetX)
-      
       context.drawImage(
         this._spritesheet?.image as HTMLImageElement,
         this._offsetX,

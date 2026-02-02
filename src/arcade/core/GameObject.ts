@@ -1,3 +1,5 @@
+import { MS_PER_UNIT } from '@/arcade/constants'
+
 /**
  * Classe base que representa qualquer objeto visual renderizável no jogo.
  *
@@ -47,6 +49,10 @@ export default class GameObject {
   private _color: string = '#FFFFFF'
   private _backgroundColor: string = '#000000'
   private _shouldUsePointerCursor: boolean = false
+  protected _frames: number = 0
+  protected _currentFrame: number = 0
+  protected _frameDuration: number = 0
+  protected _accumulator: number = 0
 
   constructor(width: number, height: number) {
     this._width = width
@@ -107,5 +113,26 @@ export default class GameObject {
 
   public get shouldUsePointerCursor(): boolean {
     return this._shouldUsePointerCursor
+  }
+
+  public initializeFrames(frames: number, totalDuration: number) {
+    this._frames = frames
+    this._frameDuration =
+      frames > 0 ? (totalDuration * MS_PER_UNIT) / frames / 1000 : 0
+    this._accumulator = 0
+  }
+
+  public update(deltaTime: number): number {
+    if (this._frames <= 1 || this._frameDuration <= 0) {
+      return this._currentFrame
+    }
+
+    this._accumulator += deltaTime
+    if (this._accumulator >= this._frameDuration) {
+      this._accumulator -= this._frameDuration
+      this._currentFrame =
+        this._currentFrame < this._frames - 1 ? this._currentFrame + 1 : 0
+    }
+    return this._currentFrame
   }
 }

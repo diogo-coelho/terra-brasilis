@@ -2,34 +2,35 @@ import { Tile } from '@/arcade/core'
 import { Image } from '@/arcade/images'
 
 /**
- * Representa um tile de água no jogo, com propriedades específicas de navegação e animação.
+ * Tile de água animado para mapas isométricos.
  *
- * @class WaterTile
+ * @class OceanTile
  * @extends Tile
  * @author Diogo Coelho
- * @version 1.0.0
+ * @version 1.0.1
  * @since 2026-02-15
  *
  * @description
- * A classe WaterTile estende a classe base Tile para representar tiles de água no ambiente do jogo.
- * Esses tiles possuem características específicas:
- * - Não são caminháveis (isWalkable = false)
- * - Não são navegáveis (isNavigable = false)
- * - Possuem elevação zero (elevation = 0)
- * - Utilizam uma spritesheet animada para simular o movimento da água
- * - Definem uma cor padrão azul para representação visual
- * - A animação é configurada para 4 frames com duração total de 300ms
+ * A classe OceanTile representa um tile de água animado, utilizado em mapas isométricos do Terra Brasilis.
+ * Características principais:
+ * - Não é caminhável (isWalkable = false)
+ * - É navegável (isNavigable = true)
+ * - Elevação zero (elevation = 0)
+ * - Utiliza spritesheet animada (4 frames, 300ms)
+ * - Inicializa a textura via caminho de imagem
+ *
+ * @param {string} image Caminho para a imagem do spritesheet de água
  *
  * @example
- * // Criação de um tile de água na posição (100, 150) com tamanho 32x32
- * const waterTile = new WaterTile(100, 150, 32, 32);
- * gameScene.addTile(waterTile);
+ * // Criação de um tile de oceano
+ * const oceanTile = new OceanTile('assets/tiles/ocean.png');
+ * gameScene.addTile(oceanTile);
  *
+ * @see Tile
  */
 export default class OceanTile extends Tile {
-
   constructor(image: string) {
-    super(128, 64, 4, 10)
+    super(128, 64, 4, 300)
     this.isWalkable = false
     this.isNavigable = true
     this.elevation = 0
@@ -40,5 +41,4 @@ export default class OceanTile extends Tile {
     const spritesheetImage = new Image(image)
     this.setSpritesheet(spritesheetImage)
   }
-
 }

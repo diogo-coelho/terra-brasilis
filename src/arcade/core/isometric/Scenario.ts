@@ -68,7 +68,7 @@ export default class Scenario {
    */
   public drawScenario(
     canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
+    context: CanvasRenderingContext2D
   ): void {
     this._worldMap?.drawWorldMap(canvas, context)
   }

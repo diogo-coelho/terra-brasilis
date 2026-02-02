@@ -1,3 +1,3 @@
-import { arcadeEngine } from "./Engine";
+import { arcadeEngine } from './Engine'
 
 export { arcadeEngine }

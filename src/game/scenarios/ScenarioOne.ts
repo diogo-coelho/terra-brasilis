@@ -1,5 +1,5 @@
 import { Scenario, Tile, TileMap } from '@/arcade/core'
-import oceanTileSpritesheet from '@/arcade/assets/images/tb_ocean_stylesheet.png'
+import oceanTileSpritesheet from '@/arcade/assets/images/water_tile_spritesheet.png'
 import { OceanTile } from '@/game/tiles'
 import { Image } from '@/arcade/images'
 
@@ -39,14 +39,17 @@ export default class ScenarioOne extends Scenario {
   public createScenario(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
+    deltaTime: number
   ): void {
     //const oceanImage = new Image(oceanTileSpritesheet)
     this._oceanTile = new OceanTile(oceanTileSpritesheet)
     //this._oceanTile.setSpritesheet(oceanImage)
-    
+
     // TODO: Criar um mapper para converter a instancia de um tile por uma chave
-    this._worldMap = new TileMap([
-        [this._oceanTile]
+    this._worldMap = new TileMap(
+      [
+        [this._oceanTile, this._oceanTile],
+        [this._oceanTile, this._oceanTile],
       ],
       128,
       64

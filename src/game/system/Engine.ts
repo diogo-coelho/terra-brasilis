@@ -1,5 +1,5 @@
-import { Arcade } from "@/arcade"
-import { Game } from "@/arcade/types"
+import { Arcade } from '@/arcade'
+import { Game } from '@/arcade/types'
 
 /** Inicia o jogo */
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
