@@ -1,7 +1,5 @@
 import { Scenario, Tile, TileMap } from '@/arcade/core'
-import oceanTileSpritesheet from '@/arcade/assets/images/water_tile_spritesheet.png'
-import { OceanTile } from '@/game/tiles'
-import { Image } from '@/arcade/images'
+import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
 
 /**
  * Implementação de um cenário isométrico 10x10 totalmente preenchido com OceanTile.
@@ -26,35 +24,22 @@ import { Image } from '@/arcade/images'
  * @example
  * // Criação e renderização do cenário
  * const scenario = new ScenarioOne();
- * scenario.createScenario(canvas, context, deltaTime);
  */
 export default class ScenarioOne extends Scenario {
-  private _oceanTile: Tile | null = null
+  private _tileMapper: Map<number, Tile> | null = null
 
   constructor() {
     super()
     this._name = 'Scenario One'
+    this._tileMapper = new TileMapper().mapper
+    this.createScenario()
   }
 
-  public createScenario(
-    canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
-    deltaTime: number
-  ): void {
-    //const oceanImage = new Image(oceanTileSpritesheet)
-    this._oceanTile = new OceanTile(oceanTileSpritesheet)
-    //this._oceanTile.setSpritesheet(oceanImage)
-
-    // TODO: Criar um mapper para converter a instancia de um tile por uma chave
-    this._worldMap = new TileMap(
-      [
-        [this._oceanTile, this._oceanTile],
-        [this._oceanTile, this._oceanTile],
-      ],
-      128,
-      64
+  private createScenario(): void {
+    const grid = GridScenarioOne.map((row) =>
+      row.map((key) => this._tileMapper?.get(key))
     )
 
-    this.drawScenario(canvas, context)
+    this.worldMap = new TileMap(grid as Tile[][], 128, 64)
   }
 }

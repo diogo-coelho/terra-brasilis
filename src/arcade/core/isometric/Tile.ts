@@ -128,7 +128,6 @@ import Image from '@/arcade/images/Image'
  *
  * @see Sprite
  * @see Image
- * @see Frame
  */
 export default class Tile extends Sprite {
   protected _isWalkable: boolean = true
@@ -283,5 +282,15 @@ export default class Tile extends Sprite {
     this.draw(context, false)
     // Restaura o contexto para evitar afetar outros desenhos
     context.restore()
+  }
+
+  public clone(): Tile {
+    return new Tile(
+      this.width,
+      this.height,
+      this._frames,
+      this._frameDuration,
+      this.spritesheet as Image
+    )
   }
 }

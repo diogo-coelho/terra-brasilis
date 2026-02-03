@@ -16,7 +16,7 @@ import { Image } from '@/arcade/images'
  * - Não é caminhável (isWalkable = false)
  * - É navegável (isNavigable = true)
  * - Elevação zero (elevation = 0)
- * - Utiliza spritesheet animada (4 frames, 300ms)
+ * - Utiliza spritesheet animada (3 frames, 50ms por frame)
  * - Inicializa a textura via caminho de imagem
  *
  * @param {string} image Caminho para a imagem do spritesheet de água
@@ -30,7 +30,7 @@ import { Image } from '@/arcade/images'
  */
 export default class OceanTile extends Tile {
   constructor(image: string) {
-    super(128, 64, 4, 300)
+    super(128, 64, 4, 60)
     this.isWalkable = false
     this.isNavigable = true
     this.elevation = 0

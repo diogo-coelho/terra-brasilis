@@ -43,6 +43,7 @@ export default class TileMap {
   protected _tileWidth: number = 64
   protected _tileHeight: number = 32
   protected _tiles: Tile[][]
+  protected _frameDelay: number = 0
 
   constructor(
     tiles: Tile[][],
@@ -78,8 +79,17 @@ export default class TileMap {
     return this._tileHeight
   }
 
+  public set frameDelay(value: number) {
+    this._frameDelay = value
+  }
+
+  public get frameDelay(): number {
+    return this._frameDelay
+  }
+
   /**
    * Desenha o mapa de tiles isométricos no contexto fornecido.
+   * @param {HTMLCanvasElement} canvas - Elemento canvas onde o mapa será desenhado
    * @param {CanvasRenderingContext2D} context - Contexto de renderização do canvas
    */
   public drawWorldMap(
@@ -98,21 +108,26 @@ export default class TileMap {
     }
   }
 
+  /**
+   * Atualiza o mapa de tiles, animando tiles conforme necessário.
+   * @param { HTMLCanvasElement } canvas - Elemento canvas onde o mapa será desenhado
+   * @param { CanvasRenderingContext2D } context - Contexto de renderização do canvas
+   * @param { number } deltaTime - Tempo decorrido desde a última atualização (em milissegundos)
+   */
   public update(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    for (var col = 0; col < this._tiles[0].length; col++) {
-      for (var row = 0; row < this._tiles.length; row++) {
-        let tilePositionX = (row - col) * this._tileHeight
-        // Centraliza o grid de forma horizontal no canvas
-        tilePositionX += canvas.width / 2 - this._tileWidth / 2
-        const tilePositionY = (row + col) * (this._tileHeight / 2)
-        this._tiles[row][col].setPosition(tilePositionX, tilePositionY)
-        this._tiles[row][col].animate(deltaTime)
-        this._tiles[row][col].draw(context, false)
+    // 1. Animar cada instância única de tile apenas uma vez, com variação de delay
+    const uniqueTiles = new Set<Tile>()
+    for (let row = 0; row < this._tiles.length; row++) {
+      for (let col = 0; col < this._tiles[row].length; col++) {
+        uniqueTiles.add(this._tiles[row][col])
       }
     }
+    uniqueTiles.forEach((tile) => tile.animate(deltaTime))
+    // 2. Renderizar cada tile na posição correta
+    this.drawWorldMap(canvas, context)
   }
 }

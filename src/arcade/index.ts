@@ -1,6 +1,7 @@
 import {
-  Frame,
   Game,
+  GameObject,
+  GameSession,
   SceneManager,
   Sprite,
   Tile,
@@ -12,7 +13,6 @@ import {
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
 import {
-  GameObject,
   Button,
   Input,
   Text,
@@ -46,12 +46,13 @@ export * as images from './images'
 export const Arcade = {
   /** core */
   Game: Game,
+  GameObject: GameObject,
+  GameSession: GameSession,
   SceneManager: SceneManager,
   Sprite: Sprite,
   Tile: Tile,
   TileMap: TileMap,
   Timer: Timer,
-  Frame: Frame,
   Scenario: Scenario,
   ScenarioMap: ScenarioMap,
   /** events */
@@ -62,7 +63,6 @@ export const Arcade = {
   Image: Image,
   /** components ui */
   Components: {
-    GameObject: GameObject,
     Button: Button,
     Input: Input,
     Text: Text,

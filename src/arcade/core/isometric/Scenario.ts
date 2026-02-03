@@ -35,6 +35,11 @@ import TileMap from '@/arcade/core/isometric/TileMap'
 export default class Scenario {
   protected _name: string = ''
   protected _worldMap: TileMap | null = null
+  protected _description: string = ''
+  protected _creator: string = ''
+  protected _creationDate: Date | null = null
+  protected _updateDate: Date | null = null
+  protected _duration: number = 0
 
   /** Nome identificador do cenário */
   public get name(): string {
@@ -46,12 +51,12 @@ export default class Scenario {
   }
 
   /** Mapa de tiles isométricos do cenário */
-  public get tileMap(): TileMap | null {
+  public get worldMap(): TileMap | null {
     return this._worldMap
   }
 
-  public set tileMap(tileMap: TileMap | null) {
-    this._worldMap = tileMap
+  public set worldMap(worldMap: TileMap | null) {
+    this._worldMap = worldMap
   }
 
   /**
@@ -70,7 +75,7 @@ export default class Scenario {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
-    this._worldMap?.drawWorldMap(canvas, context)
+    this.worldMap?.drawWorldMap(canvas, context)
   }
 
   public updateScenario(
@@ -78,6 +83,6 @@ export default class Scenario {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    this._worldMap?.update(canvas, context, deltaTime)
+    this.worldMap?.update(canvas, context, deltaTime)
   }
 }

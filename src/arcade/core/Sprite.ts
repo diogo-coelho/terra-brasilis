@@ -1,5 +1,5 @@
-import { GameObject } from '@/arcade/ui'
 import { Image } from '@/arcade/images'
+import GameObject from '@/arcade/core/game/GameObject'
 
 /**
  * Componente visual avançado para sprites animados com suporte a spritesheets, animação automática e renderização otimizada.

@@ -1,11 +1,14 @@
 import { SceneEvent } from '@/arcade/core'
+import { GameSessionError, ScenarioError } from '@/arcade/errors'
 import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 
-import { ScenarioOne } from '@/game/scenarios'
 import { arcadeEngine } from '@/game/system'
+import { Match } from '@/game/isometric/game-world'
+import { ScenarioOne } from '@/game/isometric/scenarios'
 
 export default class GameScene extends SceneEvent implements Scene {
+  private _match: Match | null = null
   private _scenarioOne: ScenarioOne | null = null
 
   constructor() {
@@ -14,20 +17,22 @@ export default class GameScene extends SceneEvent implements Scene {
 
   public onEnter(): void {
     const gameEngine = arcadeEngine
+
     this._scenarioOne = new ScenarioOne()
     if (!this._scenarioOne) {
-      throw new Error('ScenarioOne is not initialized.')
+      throw new ScenarioError('ScenarioOne is not initialized.')
     }
-    this._scenarioOne.createScenario(
-      gameEngine.canvas,
-      gameEngine.context as CanvasRenderingContext2D,
-      gameEngine.deltaTime
-    )
+
+    this._match = new Match(this._scenarioOne)
+    if (!this._match) {
+      throw new GameSessionError('Match is not initialized.')
+    }
+    this._match.startGameSession(gameEngine.canvas, gameEngine.context)
   }
 
   public onExit(): void {
-    console.log('Exiting Game Scene')
     this._scenarioOne = null
+    this._match = null
   }
 
   public update(
@@ -35,8 +40,8 @@ export default class GameScene extends SceneEvent implements Scene {
     context?: CanvasRenderingContext2D,
     deltaTime?: number
   ): void {
-    if (this._scenarioOne && canvas && context && deltaTime !== undefined) {
-      this._scenarioOne.updateScenario(canvas, context, deltaTime)
+    if (this._match && canvas && context && deltaTime !== undefined) {
+      this._match?.updateGameSession(canvas, context, deltaTime)
     }
   }
 

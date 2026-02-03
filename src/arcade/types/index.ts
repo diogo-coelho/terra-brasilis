@@ -2,7 +2,7 @@ import { Scene } from '@/arcade/interfaces'
 import { PositionState } from '../enums'
 
 export type SceneManager = import('../core/SceneManager').default
-export type Game = import('../core/Game').default
+export type Game = import('../core/game/Game').default
 
 export type NamedScene = { name: string; scene: Scene }
 export type EventPayload = {

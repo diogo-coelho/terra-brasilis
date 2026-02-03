@@ -1,5 +1,5 @@
 import { Game } from '@/arcade/core'
-import GameObject from '../../core/GameObject'
+import GameObject from '../../core/game/GameObject'
 
 /**
  * Classe representando um objeto de texto renderizável.
