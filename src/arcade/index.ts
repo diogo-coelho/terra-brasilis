@@ -7,6 +7,7 @@ import {
   Tile,
   TileMap,
   Timer,
+  GameCalendar,
   Scenario,
   ScenarioMap,
 } from './core'
@@ -53,6 +54,7 @@ export const Arcade = {
   Tile: Tile,
   TileMap: TileMap,
   Timer: Timer,
+  GameCalendar: GameCalendar,
   Scenario: Scenario,
   ScenarioMap: ScenarioMap,
   /** events */
