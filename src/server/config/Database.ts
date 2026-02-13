@@ -18,29 +18,29 @@ import MongoDBError from '@/server/error/MongoDB'
  * - Fornece logging detalhado com timestamps
  * - Gerencia desconexão graceful (SIGINT)
  * - Utiliza variáveis de ambiente para configuração
- * 
+ *
  * **Eventos Monitorados:**
  * - **connected**: Conexão estabelecida com sucesso
  * - **disconnected**: Conexão perdida
  * - **error**: Erro durante operações do banco
- * 
+ *
  * **Variáveis de Ambiente:**
  * - URL_MONGO_DB: URL de conexão do MongoDB
  * - DATABASE: Nome do banco de dados
- * 
+ *
  * A classe garante que a conexão seja fechada adequadamente quando
  * o processo recebe sinal de interrupção (Ctrl+C), evitando
  * conexões pendentes.
- * 
+ *
  * @throws {MongoDBError} Lança erro se tentar acessar database antes de conectar
- * 
+ *
  * @example
  * ```typescript
  * const database = new Database();
- * 
+ *
  * await database.connection();
  * const db = await database.database;
- * 
+ *
  * // Configurar graceful shutdown
  * database.closeConnection();
  * ```

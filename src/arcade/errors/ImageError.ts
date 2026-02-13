@@ -13,12 +13,12 @@
  * - Redimensionamento e transformações
  * - Acesso a propriedades antes do carregamento completo
  * - Parâmetros inválidos em operações de imagem
- * 
+ *
  * Estende Error nativo adicionando:
  * - Nome específico "ImageError" para identificação
  * - Encadeamento de stack trace quando causado por outro erro
  * - Contexto sobre falhas em operações de imagem
- * 
+ *
  * @example
  * ```typescript
  * // Erro de parâmetros
@@ -27,7 +27,7 @@
  *     'Largura ou altura alvo devem ser fornecidos'
  *   );
  * }
- * 
+ *
  * // Erro com causa original
  * try {
  *   image.resizeProportionally({ targetWidth: -100 });

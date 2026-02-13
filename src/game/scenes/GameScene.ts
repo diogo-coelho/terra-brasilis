@@ -1,86 +1,57 @@
 import { SceneEvent } from '@/arcade/core'
+import { GameSessionError, ScenarioError } from '@/arcade/errors'
 import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 
-/**
- * Cena de jogo principal (em desenvolvimento).
- *
- * @class NewGameScene
- * @extends SceneEvent
- * @implements Scene
- * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
- *
- * @description
- * A NewGameScene representa a cena onde o gameplay efetivo acontecerá.
- * Atualmente em estágio inicial de desenvolvimento, esta cena:
- * - Exibe título "New Game Scene" centralizado
- * - Processa eventos de teclado e mouse (logging para debug)
- * - Serve como placeholder para futura implementação do jogo
- * 
- * **Estado Atual:**
- * - Renderização básica de texto
- * - Handlers de eventos para desenvolvimento
- * - Estrutura preparada para expansão
- * 
- * **Desenvolvimento Futuro:**
- * Esta cena será expandida para incluir:
- * - Mecânicas de gameplay de Terra Brasilis
- * - Interface de usuário do jogo
- * - Gerenciamento de recursos e economia
- * - Sistema de turnos ou tempo real
- * - Interações com NPCs e eventos
- * 
- * @example
- * ```typescript
- * const gameScene = new GameScene();
- * sceneManager.setScenesMap([{
- *   name: GameSceneState.NEW_GAME,
- *   scene: gameScene
- * }]);
- * ```
- *
- * @see Scene
- * @see SceneEvent
- */
+import { arcadeEngine } from '@/game/system'
+import { Match } from '@/game/isometric/game-world'
+import { ScenarioOne } from '@/game/isometric/scenarios'
+
 export default class GameScene extends SceneEvent implements Scene {
-  private _title: string
+  private _match: Match | null = null
+  private _scenarioOne: ScenarioOne | null = null
 
   constructor() {
     super()
-    this._title = 'Game Scene'
+  }
+
+  public onEnter(): void {
+    const gameEngine = arcadeEngine
+
+    this._scenarioOne = new ScenarioOne()
+    if (!this._scenarioOne) {
+      throw new ScenarioError('ScenarioOne is not initialized.')
+    }
+
+    this._match = new Match(
+      gameEngine.canvas,
+      gameEngine.context,
+      this._scenarioOne
+    )
+    if (!this._match) {
+      throw new GameSessionError('Match is not initialized.')
+    }
+    this._match.startGameSession()
+  }
+
+  public onExit(): void {
+    this._scenarioOne = null
+    this._match = null
+  }
+
+  public update(
+    canvas?: HTMLCanvasElement,
+    context?: CanvasRenderingContext2D,
+    deltaTime?: number
+  ): void {
+    if (this._match && canvas && context && deltaTime !== undefined) {
+      this._match?.updateGameSession(deltaTime)
+    }
   }
 
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     deltaTime: number
-  ): void {
-    /** Escreve a frase centralizada */
-    context.fillStyle = '#ffffff'
-    context.font = '30px "Jersey 15", sans-serif'
-    context.lineWidth = 3
-    context.strokeStyle = '#000000'
-    context.textAlign = 'center'
-
-    let xCoord = canvas.width / 2
-
-    context.strokeText(this._title, xCoord, canvas.height / 2 + 100)
-    context.fillText(this._title, xCoord, canvas.height / 2 + 100)
-  }
-
-  public handleKeyboardEvent?(
-    event: KeyboardEvent,
-    sceneManager: SceneManager
-  ): void {
-    console.log('Key pressed in GameScene:', event.key)
-  }
-
-  public handleMouseEvent?(
-    event: MouseEvent,
-    sceneManager: SceneManager
-  ): void {
-    console.log('Mouse event in GameScene:', event.type)
-  }
+  ): void {}
 }

@@ -29,7 +29,7 @@ import { BackToMenuButton, GoToGameButton } from '@/game/ui/buttons'
  * - Validar e armazenar nome digitado
  * - Fornecer botões de navegação (Voltar ao Menu, Iniciar Jogo)
  * - Atualizar botão "Iniciar Jogo" com o nome digitado
- * 
+ *
  * **Fluxo de Interação:**
  * 1. Jogador clica no campo de entrada
  * 2. Campo ativa com cursor piscante
@@ -37,17 +37,17 @@ import { BackToMenuButton, GoToGameButton } from '@/game/ui/buttons'
  * 4. Nome é automaticamente sincronizado com GoToGameButton
  * 5. Pressiona Enter ou clica em "Iniciar Jogo"
  * 6. Nome é enviado ao servidor e jogo inicia
- * 
+ *
  * **Componentes:**
  * - Campo de entrada: 450x40px, estilizado com tema do jogo
  * - Botões: 210x50px, alinhamento horizontal
  * - Background: Imagem temática com overlay
- * 
+ *
  * **Eventos Tratados:**
  * - Mouse Move: Atualiza hover de input e botões
  * - Mouse Click: Ativa/desativa campo, clica em botões
  * - Keyboard: Digitação no campo de entrada
- * 
+ *
  * @example
  * ```typescript
  * const insertNameScene = new InsertNameScene();

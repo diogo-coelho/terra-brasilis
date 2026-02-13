@@ -13,17 +13,17 @@
  * - Implementar cooldowns e delays
  * - Gerenciar duração de eventos temporários
  * - Sincronizar ações baseadas em tempo
- * 
+ *
  * O timer inicia automaticamente no momento da instanciação e pode ser
  * resetado a qualquer momento usando o método update().
- * 
+ *
  * **Características:**
  * - Precisão em milissegundos
  * - Inicialização automática
  * - Reset manual via update()
  * - Leitura não-destrutiva do tempo decorrido
  * - Acesso ao timestamp inicial
- * 
+ *
  * **Casos de Uso Comuns:**
  * - Cooldown de habilidades
  * - Duração de power-ups
@@ -36,7 +36,7 @@
  * // Cooldown de habilidade
  * class Player {
  *   private attackCooldown = new Timer();
- *   
+ *
  *   attack() {
  *     if (this.attackCooldown.elapsed >= 1000) { // 1 segundo
  *       // Executa ataque
@@ -45,13 +45,13 @@
  *   }
  * }
  * ```
- * 
+ *
  * @example
  * ```typescript
  * // Duração de power-up
  * class PowerUp {
  *   private duration = new Timer();
- *   
+ *
  *   update() {
  *     if (this.duration.elapsed >= 5000) { // 5 segundos
  *       this.deactivate();
@@ -59,12 +59,12 @@
  *   }
  * }
  * ```
- * 
+ *
  * @example
  * ```typescript
  * // Medição de tempo de jogo
  * const gameTimer = new Timer();
- * 
+ *
  * function showGameTime() {
  *   const seconds = Math.floor(gameTimer.elapsed / 1000);
  *   const minutes = Math.floor(seconds / 60);
@@ -73,7 +73,6 @@
  * ```
  */
 export default class Timer {
-
   private _startTime: number = 0
 
   constructor() {
@@ -84,11 +83,11 @@ export default class Timer {
    * Retorna o timestamp (em milissegundos) do início do timer.
    *
    * @returns {number} Timestamp em milissegundos desde epoch Unix (01/01/1970)
-   * 
+   *
    * @remarks
    * Útil para comparações diretas de tempo ou cálculos customizados.
    * O valor retornado é o mesmo de Date.now() no momento da criação ou último update().
-   * 
+   *
    * @example
    * ```typescript
    * const timer = new Timer();
@@ -103,14 +102,14 @@ export default class Timer {
    * Reseta o timer para o momento atual, reiniciando a contagem.
    *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Atualiza o tempo inicial (_startTime) para o timestamp atual,
    * efetivamente zerando o elapsed. Use este método para:
    * - Reiniciar contadores após eventos
    * - Resetar cooldowns
    * - Iniciar nova medição de intervalo
-   * 
+   *
    * @example
    * ```typescript
    * const timer = new Timer();
@@ -121,37 +120,37 @@ export default class Timer {
    * ```
    */
   public update(): void {
-    var d = new Date();
-    this._startTime = d.getTime();
+    var d = new Date()
+    this._startTime = d.getTime()
   }
 
   /**
    * Calcula e retorna o tempo decorrido desde o início ou último reset.
    *
    * @returns {number} Tempo decorrido em milissegundos
-   * 
+   *
    * @remarks
    * Este getter calcula a diferença entre o timestamp atual e o timestamp
    * inicial, fornecendo o tempo decorrido em milissegundos.
-   * 
+   *
    * **Importante:**
    * - A leitura é não-destrutiva (não reseta o timer)
    * - Pode ser chamado múltiplas vezes
    * - Precisão em milissegundos
    * - Retorna sempre valor >= 0
-   * 
+   *
    * @example
    * ```typescript
    * const timer = new Timer();
-   * 
+   *
    * // Converter para segundos
    * const seconds = timer.elapsed / 1000;
-   * 
+   *
    * // Verificar se passou tempo suficiente
    * if (timer.elapsed >= 500) {
    *   console.log('Meio segundo passou!');
    * }
-   * 
+   *
    * // Usar como condição de loop
    * while (timer.elapsed < 5000) {
    *   // Executa por 5 segundos
@@ -161,5 +160,4 @@ export default class Timer {
   public get elapsed(): number {
     return Date.now() - this._startTime
   }
-
 }

@@ -5,7 +5,7 @@ enum GameSceneState {
   INSERT_NAME = 'INSERT_NAME',
   LOADED_GAME = 'LOADED_GAME',
   MENU = 'MENU',
-  NEW_GAME = 'NEW_GAME',
+  GAME = 'GAME',
 }
 
 export default GameSceneState

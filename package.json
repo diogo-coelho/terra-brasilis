@@ -1,6 +1,6 @@
 {
   "name": "terra-brasilis",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.2",
   "description": "RTS isométrico em Javascript",
   "main": "index.js",
   "scripts": {

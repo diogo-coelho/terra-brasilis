@@ -17,11 +17,11 @@ import { ImageResizePayload, Position } from '../types'
  * - Sistema de posição com interpolação suave
  * - Animação de movimento entre posições alvo
  * - Validação de carregamento
- * 
+ *
  * A classe gerencia automaticamente as dimensões naturais da imagem e permite
  * redimensionamento mantendo proporções. Suporta animações de movimento
  * independentes de frame rate através do deltaTime.
- * 
+ *
  * @remarks
  * Sempre verifique se a imagem está carregada com isLoaded() antes de
  * realizar operações de renderização ou manipulação.
@@ -29,14 +29,14 @@ import { ImageResizePayload, Position } from '../types'
  * @example
  * ```typescript
  * const backgroundImage = new Image('assets/background.png', 800, 600);
- * 
+ *
  * // Aguardar carregamento
  * if (backgroundImage.isLoaded()) {
  *   backgroundImage.setImageAsCover(canvas);
  *   backgroundImage.initialPosition(0, -100);
  *   backgroundImage.setTargetPosition(0, 0);
  * }
- * 
+ *
  * // No loop do jogo
  * backgroundImage.updatePosition(deltaTime);
  * context.drawImage(
@@ -88,17 +88,17 @@ export default class Image {
    * Verifica se a imagem foi carregada completamente e está pronta para uso.
    *
    * @returns {boolean} `true` se a imagem estiver carregada, `false` caso contrário
-   * 
+   *
    * @remarks
    * Valida múltiplas condições para garantir que a imagem está pronta:
    * - A referência não é null
    * - É uma instância válida de HTMLImageElement
    * - A propriedade complete é true
    * - A largura natural não é zero (indica erro de carregamento)
-   * 
+   *
    * Sempre verifique este método antes de realizar operações que dependem
    * da imagem estar carregada.
-   * 
+   *
    * @example
    * ```typescript
    * if (image.isLoaded()) {
@@ -119,20 +119,20 @@ export default class Image {
    * Redimensiona a imagem para cobrir todo o canvas mantendo proporções.
    *
    * @param {HTMLCanvasElement} canvas - Canvas de referência para dimensões
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Comportamento similar ao CSS `background-size: cover`:
    * - A imagem cobre completamente o canvas
    * - Mantém proporções originais (aspect ratio)
    * - Partes da imagem podem ficar fora do canvas se proporções diferirem
-   * 
+   *
    * Calcula a escala necessária comparando as proporções do canvas e da imagem,
    * usando a maior escala para garantir cobertura total.
-   * 
+   *
    * Não executa se a imagem não estiver carregada.
-   * 
+   *
    * @example
    * ```typescript
    * const background = new Image('background.jpg');
@@ -160,27 +160,27 @@ export default class Image {
    * @param {number} [params.targetWidth] - Largura alvo (obrigatório para option='cover')
    * @param {number} [params.targetHeight] - Altura alvo (obrigatório para option='contain')
    * @param {'cover' | 'contain'} [params.option='cover'] - Modo de redimensionamento
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @throws {ImageError} Se parâmetros necessários não forem fornecidos
-   * 
+   *
    * @remarks
    * **Modo 'cover':**
    * - Define a largura como targetWidth
    * - Calcula altura mantendo proporção (ratio = altura/largura)
    * - Requer targetWidth
-   * 
+   *
    * **Modo 'contain':**
    * - Define a altura como targetHeight
    * - Calcula largura mantendo proporção (ratio = largura/altura)
    * - Requer targetHeight
-   * 
+   *
    * @example
    * ```typescript
    * // Redimensionar por largura
    * image.resizeProportionally({ targetWidth: 500, option: 'cover' });
-   * 
+   *
    * // Redimensionar por altura
    * image.resizeProportionally({ targetHeight: 300, option: 'contain' });
    * ```
@@ -257,22 +257,22 @@ export default class Image {
    *
    * @param {number} deltaTime - Tempo decorrido desde o último frame (em segundos)
    * @param {number} [speed] - Velocidade opcional (não utilizada atualmente)
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Implementa interpolação linear para movimento suave:
    * - Calcula direção do movimento usando Math.sign
    * - Aplica velocidade (speed) multiplicada por deltaTime
    * - Garante que não ultrapasse a posição alvo
-   * 
+   *
    * Fórmula:
    * ```
    * nova_posição = posição_atual + (speed * deltaTime * direção)
    * ```
-   * 
+   *
    * Só executa se initialPosition() foi chamado (_initialized = true).
-   * 
+   *
    * @example
    * ```typescript
    * // No loop do jogo

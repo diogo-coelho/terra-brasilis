@@ -14,28 +14,28 @@ import GameController from '@/server/controllers/GameController'
  * - Define mapeamento entre URLs e métodos do controlador
  * - Inicializa GameController para cada requisição
  * - Fornece interface RESTful para o cliente
- * 
+ *
  * **Rotas Configuradas:**
- * 
+ *
  * - **GET /**
  *   - Inicia novo jogo
  *   - Serve interface HTML do cliente
  *   - Handler: GameController.startNewGame
- * 
+ *
  * - **POST /insert-username**
  *   - Salva nome do usuário
  *   - Espera JSON: { userName: string }
  *   - Retorna: { message: string } ou erro
  *   - Handler: GameController.insertUserName
- * 
+ *
  * O router é registrado na aplicação Express principal
  * no caminho raiz ("/").
- * 
+ *
  * @example
  * ```typescript
  * const gameRouter = new GameRouter();
  * app.use('/', gameRouter.router);
- * 
+ *
  * // Requisições:
  * // GET http://localhost:3000/
  * // POST http://localhost:3000/insert-username

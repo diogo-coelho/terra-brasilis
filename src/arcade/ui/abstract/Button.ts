@@ -1,11 +1,6 @@
 import { Sound } from '../../sounds'
-import GameObject from '../GameObject'
-import {
-  ButtonClickHandle,
-  AlignedPosition,
-  ColorOnHover,
-  Callback,
-} from '../../types'
+import GameObject from '../../core/game/GameObject'
+import { ButtonClickHandle, AlignedPosition, ColorOnHover } from '../../types'
 import { SceneManager } from '@/arcade/core'
 
 /**
@@ -26,14 +21,14 @@ import { SceneManager } from '@/arcade/core'
  * - Integrar reprodução de efeitos sonoros
  * - Definir contratos para implementação de renderização e posicionamento
  * - Abstrair comportamento de clique para subclasses
- * 
+ *
  * Como classe abstrata, ela define métodos que devem ser implementados pelas subclasses:
  * - renderButton: Define como o botão é desenhado
  * - setPosition: Define como o botão é posicionado
  * - handleOnClick: Define o comportamento ao clicar
- * 
+ *
  * O padrão ColorOnHover permite transições visuais suaves quando o mouse passa sobre o botão.
- * 
+ *
  * @remarks
  * Esta classe não pode ser instanciada diretamente. Use implementações concretas
  * como ButtonStandard ou crie sua própria subclasse.
@@ -44,15 +39,15 @@ import { SceneManager } from '@/arcade/core'
  *   constructor(width: number, height: number, label: string) {
  *     super(width, height, label);
  *   }
- * 
+ *
  *   renderButton(context: CanvasRenderingContext2D): void {
  *     // Implementação customizada de renderização
  *   }
- * 
+ *
  *   setPosition({ canvas, x, y, align }: AlignedPosition): void {
  *     // Implementação de posicionamento
  *   }
- * 
+ *
  *   handleOnClick({ event, scene, callback }: ButtonClickHandle): void {
  *     // Implementação de clique
  *   }

@@ -12,23 +12,23 @@ import { Arcade } from '@/arcade'
  * @description
  * A classe GovernorGeneralNameInput é uma especialização de InputStandard
  * com estilização pré-configurada para o tema de Terra Brasilis:
- * 
+ *
  * **Estilo Visual:**
  * - Background: #84310A (marrom terra)
  * - Background Hover: #692303 (marrom escuro)
  * - Texto: #FFFFFF (branco)
  * - Borda: #CAAD6C (dourado)
  * - Fonte: Jersey 15, 24px
- * 
+ *
  * **Características:**
  * - Estilização automática no construtor
  * - Configurações de fonte personalizadas
  * - Alinhamento centralizado de texto
  * - Integração perfeita com tema colonial
- * 
+ *
  * Este componente é usado especificamente na InsertNameScene para
  * capturar o nome que o jogador escolhe para seu Governador-Geral.
- * 
+ *
  * @example
  * ```typescript
  * const nameInput = new GovernorGeneralNameInput(450, 40);

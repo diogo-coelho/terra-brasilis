@@ -16,16 +16,16 @@ import { Game, SceneManager } from '@/arcade/core'
  * - Despachar eventos para métodos handleKeyboardEvent e handleMouseEvent da cena atual
  * - Gerenciar evento de redimensionamento da janela
  * - Centralizar toda a lógica de captura de eventos em um único ponto
- * 
+ *
  * Esta classe evita que cada cena precise configurar seus próprios listeners,
  * reduzindo duplicação de código e garantindo que eventos sejam sempre
  * direcionados à cena correta.
- * 
+ *
  * Os eventos capturados incluem:
  * - **Teclado**: KEY_UP, KEY_DOWN
  * - **Mouse**: CLICK, MOUSE_MOVE
  * - **Janela**: RESIZE
- * 
+ *
  * @remarks
  * Esta classe usa métodos estáticos, não requer múltiplas instâncias.
  * Os listeners são configurados uma única vez durante a inicialização do jogo.
@@ -34,7 +34,7 @@ import { Game, SceneManager } from '@/arcade/core'
  * ```typescript
  * // Inicializar eventos globais
  * const globalEvents = new GlobalEvents(sceneManager);
- * 
+ *
  * // Ou usar método estático diretamente
  * GlobalEvents.initialize(sceneManager);
  * GlobalEvents.resize(gameEngine, sceneManager);

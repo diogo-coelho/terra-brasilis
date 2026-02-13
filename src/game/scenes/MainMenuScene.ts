@@ -27,21 +27,21 @@ import { ContinueGameButton, NewGameButton } from '@/game/ui/buttons'
  * - Feedback visual de hover nos botões
  * - Mudança de cursor para pointer ao passar sobre botões
  * - Continuação da música tema iniciada nas cenas anteriores
- * 
+ *
  * **Botões Disponíveis:**
  * - **Novo Jogo**: Navega para InsertNameScene
  * - **Continuar Jogo**: (Funcionalidade a ser implementada)
- * 
+ *
  * **Configurações Visuais:**
  * - Botões: 450x60px
  * - Cor de fundo: #84310a (marrom)
  * - Cor hover: #692303 (marrom escuro)
  * - Espaçamento: 25px entre botões
  * - Alinhamento: Vertical centralizado
- * 
+ *
  * A cena gerencia automaticamente o estado do cursor baseado na posição
  * do mouse sobre os botões.
- * 
+ *
  * @example
  * ```typescript
  * const mainMenu = new MainMenuScene();

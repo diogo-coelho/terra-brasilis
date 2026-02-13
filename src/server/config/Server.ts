@@ -21,7 +21,7 @@ import { SERVER } from '@/server/consts/constants'
  * - Cria servidor HTTP
  * - Normaliza e valida porta de execução
  * - Gerencia ciclo de vida do servidor e banco de dados
- * 
+ *
  * **Processo de Inicialização:**
  * 1. Carrega variáveis de ambiente (.env)
  * 2. Inicializa aplicação Express (MainApplication)
@@ -30,16 +30,16 @@ import { SERVER } from '@/server/consts/constants'
  * 5. Conecta ao MongoDB
  * 6. Configura aplicação Express com porta e database
  * 7. Cria servidor HTTP
- * 
+ *
  * A configuração é assíncrona para garantir que o banco de dados
  * esteja conectado antes de aceitar requisições.
- * 
+ *
  * @throws {ServerError} Lança erro se falhar ao conectar com o banco de dados
- * 
+ *
  * @example
  * ```typescript
  * const server = new Server();
- * 
+ *
  * server.server.then(httpServer => {
  *   httpServer.listen(server.port, () => {
  *     console.log(`Servidor rodando na porta ${server.port}`);

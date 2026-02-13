@@ -69,14 +69,14 @@ export default class SceneManager {
    * Registra todas as cenas disponíveis no jogo criando um mapeamento nome-cena.
    *
    * @param {NamedScene[]} scenes - Array de objetos contendo o nome e a instância da cena
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @remarks
    * Este método deve ser chamado durante a inicialização do jogo para registrar todas
    * as cenas que serão utilizadas. Utiliza o método reduce para popular o Map interno,
    * permitindo acesso rápido às cenas pelo nome (O(1) complexity).
-   * 
+   *
    * @example
    * ```typescript
    * sceneManager.setScenesMap([
@@ -98,11 +98,11 @@ export default class SceneManager {
    * Realiza a transição para uma nova cena ativa.
    *
    * @param {string} name - Nome identificador da cena destino (deve estar registrada no scenesMap)
-   * 
+   *
    * @returns {void}
-   * 
+   *
    * @throws {SceneManagerError} Lança erro se a cena não estiver mapeada no scenesMap
-   * 
+   *
    * @remarks
    * O processo de transição segue esta sequência:
    * 1. Busca a cena pelo nome no Map de cenas
@@ -111,10 +111,10 @@ export default class SceneManager {
    * 4. Invoca o callback onExit da cena anterior (se existir e se implementado)
    * 5. Atualiza a referência da cena atual
    * 6. Invoca o callback onEnter da nova cena (se implementado)
-   * 
+   *
    * Este método garante que os recursos sejam limpos adequadamente e que a nova
    * cena seja inicializada corretamente.
-   * 
+   *
    * @example
    * ```typescript
    * // Transição do boot para a intro

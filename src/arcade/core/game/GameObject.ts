@@ -1,3 +1,5 @@
+import { MS_PER_UNIT } from '@/arcade/constants'
+
 /**
  * Classe base que representa qualquer objeto visual renderizável no jogo.
  *
@@ -13,11 +15,11 @@
  * - Dimensões (width, height)
  * - Estilização visual (color, backgroundColor)
  * - Controle de cursor (shouldUsePointerCursor)
- * 
+ *
  * Esta classe é projetada para ser estendida por componentes mais especializados
  * como botões, inputs, sprites e outros elementos do jogo, fornecendo uma base
  * consistente para manipulação de propriedades visuais e espaciais.
- * 
+ *
  * @remarks
  * Todos os getters e setters permitem acesso controlado às propriedades privadas,
  * facilitando futuras validações ou lógica adicional sem quebrar a API pública.
@@ -30,7 +32,7 @@
  * gameObject.positionY = 20;
  * gameObject.color = '#FF0000';
  * gameObject.backgroundColor = '#00FF00';
- * 
+ *
  * // Uso através de extensão
  * class Player extends GameObject {
  *   constructor() {
@@ -47,6 +49,11 @@ export default class GameObject {
   private _color: string = '#FFFFFF'
   private _backgroundColor: string = '#000000'
   private _shouldUsePointerCursor: boolean = false
+  protected _frames: number = 0
+  protected _currentFrame: number = 0
+  protected _frameDuration: number = 0
+  protected _accumulator: number = 0
+  protected _frameDelay: number = 0
 
   constructor(width: number, height: number) {
     this._width = width
@@ -107,5 +114,43 @@ export default class GameObject {
 
   public get shouldUsePointerCursor(): boolean {
     return this._shouldUsePointerCursor
+  }
+
+  public set frameDelay(value: number) {
+    this._frameDelay = value
+  }
+
+  public get frameDelay(): number {
+    return this._frameDelay
+  }
+
+  public initializeFrames(frames: number, totalDuration: number) {
+    this._frames = frames
+    this._frameDuration =
+      frames > 0 ? (totalDuration * MS_PER_UNIT) / frames / 1000 : 0
+    this._accumulator = 0
+  }
+
+  /**
+   * Atualiza a animação do objeto, respeitando um pequeno delay entre frames.
+   * @param {number} deltaTime - Tempo decorrido desde o último frame (ms)
+   * @returns {number} Frame atual
+   */
+  public update(deltaTime: number): number {
+    if (this._frames <= 1 || this._frameDuration <= 0) {
+      return this._currentFrame
+    }
+
+    this._accumulator += deltaTime
+    // Considera frameDelay extra, se definido
+    const totalFrameTime =
+      this._frameDuration + (this._frameDelay > 0 ? this._frameDelay : 0)
+
+    if (this._accumulator >= totalFrameTime) {
+      this._accumulator -= totalFrameTime
+      this._currentFrame =
+        this._currentFrame < this._frames - 1 ? this._currentFrame + 1 : 0
+    }
+    return this._currentFrame
   }
 }

@@ -16,11 +16,11 @@ import { EventPayload } from '@/arcade/types'
  * - Gerenciar eventos de mouse (CLICK, MOUSE_MOVE)
  * - Despachar ações associadas aos eventos de forma consistente
  * - Validar tipos de eventos e teclas pressionadas
- * 
+ *
  * Esta classe deve ser estendida por todas as cenas que precisam responder a interações
  * do usuário. Ela encapsula a lógica de validação e despacho, permitindo que as
  * subclasses foquem apenas na lógica específica de cada cena.
- * 
+ *
  * @remarks
  * Utiliza o padrão Command para associar eventos a ações específicas através
  * do tipo EventPayload.
@@ -48,17 +48,17 @@ export default class SceneEvent {
    *
    * @param {KeyboardEvent} event - Evento nativo de teclado do navegador
    * @param {EventPayload} callback - Objeto contendo tipo de evento, tecla esperada e ação a executar
-   * 
+   *
    * @returns {any} Resultado da execução da ação, se disparada
-   * 
+   *
    * @remarks
    * Este método valida:
    * - Se o tipo do evento (KEY_DOWN ou KEY_UP) corresponde ao esperado no callback
    * - Se a tecla pressionada corresponde à tecla especificada ou se aceita qualquer tecla (KeyboardKey.ANY)
-   * 
+   *
    * Quando ambas as condições são satisfeitas, a ação é despachada imediatamente.
    * Eventos não reconhecidos geram um aviso no console.
-   * 
+   *
    * @example
    * ```typescript
    * this.onKeyboardEvent(event, {
@@ -98,15 +98,15 @@ export default class SceneEvent {
    *
    * @param {MouseEvent} event - Evento nativo de mouse do navegador
    * @param {EventPayload} callback - Objeto contendo tipo de evento e ação a executar
-   * 
+   *
    * @returns {any} Resultado da execução da ação, se disparada
-   * 
+   *
    * @remarks
    * Atualmente suporta apenas eventos do tipo CLICK. Valida se o tipo do evento
    * corresponde ao esperado no callback e, em caso positivo, despacha a ação associada.
-   * 
+   *
    * Eventos não reconhecidos geram um aviso no console para facilitar o debug.
-   * 
+   *
    * @example
    * ```typescript
    * this.onMouseEvent(event, {
@@ -133,9 +133,9 @@ export default class SceneEvent {
    *
    * @private
    * @param {(...args: any[]) => any} callback - Função a ser executada
-   * 
+   *
    * @returns {any} Valor retornado pela execução do callback
-   * 
+   *
    * @remarks
    * Método privado responsável por invocar as ações associadas aos eventos.
    * Atua como ponto central de execução, facilitando extensões futuras como

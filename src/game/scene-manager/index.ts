@@ -8,7 +8,7 @@ import {
   BootScene,
   InsertNameScene,
   LoadGame,
-  NewGameScene,
+  GameScene,
 } from '@/game/scenes'
 import MainMenuScene from '@/game/scenes/MainMenuScene'
 
@@ -24,13 +24,14 @@ import MainMenuScene from '@/game/scenes/MainMenuScene'
  * @see BootScene
  * @see InsertNameScene
  * @see LoadGame
- * @see NewGameScene
+ * @see GameScene
  *
  * @example
  * import { sceneManager } from '@/game/scenes'
  * sceneManager.setCurrentScene(GameSceneState.BOOT)
  *
  */
+
 const sceneManager: SceneManager = Arcade.SceneManager.getInstance()
 const sceneSettings: NamedScene[] = [
   { name: GameSceneState.BOOT, scene: new BootScene() },
@@ -38,9 +39,9 @@ const sceneSettings: NamedScene[] = [
   { name: GameSceneState.MAIN_MENU, scene: new MainMenuScene() },
   { name: GameSceneState.INSERT_NAME, scene: new InsertNameScene() },
   { name: GameSceneState.LOADED_GAME, scene: new LoadGame() },
-  { name: GameSceneState.NEW_GAME, scene: new NewGameScene() },
+  { name: GameSceneState.GAME, scene: new GameScene() },
 ]
 sceneManager.setScenesMap(sceneSettings)
-sceneManager.setCurrentScene(GameSceneState.BOOT)
+sceneManager.setCurrentScene(GameSceneState.GAME)
 
 export { sceneManager }

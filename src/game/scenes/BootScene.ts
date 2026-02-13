@@ -1,9 +1,9 @@
 import { SceneEvent } from '@/arcade/core'
-import Scene from '@/arcade/interfaces/Scene'
+import { Sound } from '@/arcade/sounds'
 import { SceneManager } from '@/arcade/types'
+import Scene from '@/arcade/interfaces/Scene'
 import EventListenerState from '@/arcade/enums/EventListenerState'
 import KeyboardKey from '@/arcade/enums/KeyboardKey'
-import { Sound } from '@/arcade/sounds'
 
 import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 
@@ -26,11 +26,11 @@ import { GameSceneState } from '@/game/enums'
  * - Aguardar qualquer interação (tecla ou clique) para prosseguir
  * - Fazer transição para a IntroScene
  * - Renderizar fundo preto com texto centralizado
- * 
+ *
  * Esta cena atua como uma tela splash interativa, garantindo que o áudio
  * seja iniciado somente após interação do usuário (requisito de políticas
  * de autoplay dos navegadores modernos).
- * 
+ *
  * **Fluxo:**
  * 1. Jogador inicia o jogo
  * 2. BootScene exibida
@@ -38,7 +38,7 @@ import { GameSceneState } from '@/game/enums'
  * 4. Jogador pressiona tecla/clica
  * 5. Transição para IntroScene
  * 6. Música é interrompida
- * 
+ *
  * @example
  * ```typescript
  * const bootScene = new BootScene();
