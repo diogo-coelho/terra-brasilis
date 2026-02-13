@@ -23,11 +23,15 @@ export default class GameScene extends SceneEvent implements Scene {
       throw new ScenarioError('ScenarioOne is not initialized.')
     }
 
-    this._match = new Match(this._scenarioOne)
+    this._match = new Match(
+      gameEngine.canvas,
+      gameEngine.context,
+      this._scenarioOne
+    )
     if (!this._match) {
       throw new GameSessionError('Match is not initialized.')
     }
-    this._match.startGameSession(gameEngine.canvas, gameEngine.context)
+    this._match.startGameSession()
   }
 
   public onExit(): void {
@@ -41,7 +45,7 @@ export default class GameScene extends SceneEvent implements Scene {
     deltaTime?: number
   ): void {
     if (this._match && canvas && context && deltaTime !== undefined) {
-      this._match?.updateGameSession(canvas, context, deltaTime)
+      this._match?.updateGameSession(deltaTime)
     }
   }
 

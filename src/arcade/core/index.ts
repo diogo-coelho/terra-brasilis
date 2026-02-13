@@ -5,11 +5,12 @@ import SceneManager from './SceneManager'
 import SceneEvent from './SceneEvent'
 import Sprite from './Sprite'
 import Timer from './timer/Timer'
+import GameCalendar from './timer/GameCalendar'
 import Tile from './isometric/Tile'
 import TileMap from './isometric/TileMap'
 import Scenario from './isometric/Scenario'
 import ScenarioMap from './isometric/ScenarioMap'
-import GameCalendar from './timer/GameCalendar'
+import Unit from './isometric/Unit'
 
 export {
   Game,
@@ -24,4 +25,5 @@ export {
   Scenario,
   ScenarioMap,
   GameCalendar,
+  Unit,
 }

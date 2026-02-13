@@ -1,5 +1,8 @@
-import { Scenario, Tile, TileMap } from '@/arcade/core'
+import { Scenario, Tile, TileMap, Unit } from '@/arcade/core'
+import CaravelShipSpritesheet from '@/arcade/assets/images/tb_caravel_spritesheet.png'
+
 import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
+import { CaravelShip } from '@/game/isometric/units'
 
 /**
  * Implementação de um cenário isométrico 10x10 totalmente preenchido com OceanTile.
@@ -27,19 +30,25 @@ import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
  */
 export default class ScenarioOne extends Scenario {
   private _tileMapper: Map<number, Tile> | null = null
+  private _caravelShip: Unit | null = null
 
   constructor() {
     super()
     this._name = 'Scenario One'
     this._tileMapper = new TileMapper().mapper
+    this._caravelShip = new CaravelShip(CaravelShipSpritesheet)
     this.createScenario()
   }
 
   private createScenario(): void {
+    /** Monta o grid do cenário */
     const grid = GridScenarioOne.map((row) =>
       row.map((key) => this._tileMapper?.get(key))
     )
-
     this.worldMap = new TileMap(grid as Tile[][], 128, 64)
+
+    /** Adicionando a caravela como unidade no cenário */
+    this._caravelShip?.setPosition(620, 125)
+    this.units = [this._caravelShip as Unit]
   }
 }

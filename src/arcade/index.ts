@@ -10,6 +10,7 @@ import {
   GameCalendar,
   Scenario,
   ScenarioMap,
+  Unit,
 } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
@@ -51,12 +52,15 @@ export const Arcade = {
   GameSession: GameSession,
   SceneManager: SceneManager,
   Sprite: Sprite,
-  Tile: Tile,
-  TileMap: TileMap,
+  /** timer */
   Timer: Timer,
   GameCalendar: GameCalendar,
+  /** isometric */
   Scenario: Scenario,
   ScenarioMap: ScenarioMap,
+  Tile: Tile,
+  TileMap: TileMap,
+  Unit: Unit,
   /** events */
   GlobalEvents: GlobalEvents,
   /** sounds */

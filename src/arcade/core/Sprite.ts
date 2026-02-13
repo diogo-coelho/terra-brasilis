@@ -278,6 +278,7 @@ export default class Sprite extends GameObject {
 
           canvas.width = this.width
           canvas.height = this.height
+          this._shadow = contextCanvas
 
           if (this._spritesheet && this._spritesheet.isLoaded()) {
             contextCanvas.drawImage(

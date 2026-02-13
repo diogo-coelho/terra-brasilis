@@ -1,4 +1,5 @@
 import TileMap from '@/arcade/core/isometric/TileMap'
+import Unit from '@/arcade/core/isometric/Unit'
 
 /**
  * Classe base para cenários isométricos do jogo.
@@ -40,6 +41,7 @@ export default class Scenario {
   protected _creationDate: Date | null = null
   protected _updateDate: Date | null = null
   protected _duration: number = 0
+  protected _units: Unit[] | null = null
 
   /** Nome identificador do cenário */
   public get name(): string {
@@ -57,6 +59,14 @@ export default class Scenario {
 
   public set worldMap(worldMap: TileMap | null) {
     this._worldMap = worldMap
+  }
+
+  public set units(units: Unit[]) {
+    this._units = units
+  }
+
+  public get units(): Unit[] {
+    return this._units as Unit[]
   }
 
   /**
