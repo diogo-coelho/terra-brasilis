@@ -84,61 +84,69 @@ export default class Unit extends Sprite {
     canvas: HTMLCanvasElement
   ): void {
     // Lógica de movimentação e atualização do estado da unidade
-    if (this.targetTileX === 0 && this.targetTileY === 0) return
-    if (!this._destinationTile) return
+    if (this.targetTileX === 0 && this.targetTileY === 0) return;
+    if (!this._destinationTile) return;
 
-    const directionX = this.targetTileX - this._destinationTile.positionX
-    const directionY = this.targetTileY - this._destinationTile.positionY
+    // Calcula a direção baseada na posição ATUAL da unidade
+    const directionX = this.targetTileX - this.positionX;
+    const directionY = this.targetTileY - this.positionY;
 
-    // Se já está no destino, trava a unidade e zera o alvo
-    if (directionX === 0 && directionY === 0) {
-      this.positionX = this.targetTileX
-      this.positionY = this.targetTileY
-      this._targetTileX = 0
-      this._targetTileY = 0
-      return
+    // Calcula a distância até o destino
+    const distance = Math.sqrt(directionX * directionX + directionY * directionY);
+
+    // Se já está no destino (ou muito próximo), trava a unidade
+    if (distance < 1) {
+      this.positionX = this.targetTileX;
+      this.positionY = this.targetTileY;
+      this._targetTileX = 0;
+      this._targetTileY = 0;
+      return;
     }
 
-    const stepX = Math.sign(directionX) * this._unitSpeed * deltaTime
-    const stepY = Math.sign(directionY) * this._unitSpeed * deltaTime
+    // Normaliza a direção e multiplica pela velocidade e deltaTime
+    const moveX = (directionX / distance) * this._unitSpeed * deltaTime;
+    const moveY = (directionY / distance) * this._unitSpeed * deltaTime;
 
-    console.log(
-      'directionX:',
-      directionX,
-      'directionY:',
-      directionY,
-      'stepX:',
-      stepX,
-      'stepY:',
-      stepY
-    )
+    // Calcula a próxima posição
+    let nextX = this.positionX + moveX;
+    let nextY = this.positionY + moveY;
 
     // Verifica se o próximo passo ultrapassa o destino
-    let nextTileX = this._destinationTile.positionX + stepX
-    let nextTileY = this._destinationTile.positionY + stepY
-
-    // Corrige para não ultrapassar o destino
-    if (
-      (stepX !== 0 &&
-        Math.abs(nextTileX - this.targetTileX) > Math.abs(directionX)) ||
-      (stepY !== 0 &&
-        Math.abs(nextTileY - this.targetTileY) > Math.abs(directionY))
-    ) {
-      nextTileX = this.targetTileX
-      nextTileY = this.targetTileY
+    if (Math.abs(moveX) > Math.abs(directionX) || Math.abs(moveY) > Math.abs(directionY)) {
+      nextX = this.targetTileX;
+      nextY = this.targetTileY;
     }
 
-    const nextTile = tileMap.getTileAtGridPosition(nextTileX, nextTileY, canvas)
-
-    if (
-      nextTile &&
-      ((this._mobileState === UnitMobileState.WALKER && nextTile.isWalkable) ||
-        (this._mobileState === UnitMobileState.NAVIGATOR &&
-          nextTile.isNavigable))
-    ) {
-      this._destinationTile = nextTile
-      this.positionX = nextTile.positionX
-      this.positionY = nextTile.positionY
+    // IMPORTANTE: Verifica se o tile na próxima posição é válido
+    const nextTile = tileMap.getTileAtGridPosition(nextX, nextY, canvas);
+    
+    if (nextTile) {
+      const canMove = 
+        (this._mobileState === UnitMobileState.WALKER && nextTile.isWalkable) ||
+        (this._mobileState === UnitMobileState.NAVIGATOR && nextTile.isNavigable);
+      
+      if (canMove) {
+        // Move para a próxima posição se o tile é válido
+        this.positionX = nextX;
+        this.positionY = nextY;
+        
+        // Se chegou no destino, zera o target
+        if (Math.abs(this.targetTileX - this.positionX) < 1 && 
+            Math.abs(this.targetTileY - this.positionY) < 1) {
+          this.positionX = this.targetTileX;
+          this.positionY = this.targetTileY;
+          this._targetTileX = 0;
+          this._targetTileY = 0;
+        }
+      } else {
+        // Tile não é válido, para o movimento
+        this._targetTileX = 0;
+        this._targetTileY = 0;
+      }
+    } else {
+      // Não encontrou tile, para o movimento
+      this._targetTileX = 0;
+      this._targetTileY = 0;
     }
   }
 

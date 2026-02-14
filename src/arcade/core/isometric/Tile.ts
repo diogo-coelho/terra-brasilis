@@ -297,14 +297,14 @@ export default class Tile extends Sprite {
    */
   public containsPoint(mouseX: number, mouseY: number): boolean {
     // Coordenadas relativas ao centro do tile
-    const relX = mouseX - (this.positionX - this.width / 2)
-    const relY = mouseY - this.positionY
+    const relX = mouseX - (this.positionX + (this.width / 2));
+    const relY = mouseY - (this.positionY + (this.height / 2));
 
     // Verifica se está dentro do diamante isométrico
     return (
       Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <=
       1
-    )
+    );
   }
 
   public clone(): Tile {

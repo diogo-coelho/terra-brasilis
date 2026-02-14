@@ -158,13 +158,6 @@ export default class TileMap {
     for (let row = 0; row < this._tiles.length; row++) {
       for (let col = 0; col < this._tiles[row].length; col++) {
         const tile = this._tiles[row][col]
-
-        console.log(
-          'tile positionX:',
-          tile.positionX,
-          'tile positionY:',
-          tile.positionY
-        )
         // Delega a verificação para o próprio tile
         if (tile.containsPoint(mouseX, mouseY)) {
           console.log('row:', row, 'col:', col)
