@@ -2,6 +2,8 @@ import { SceneEvent } from '@/arcade/core'
 import { GameSessionError, ScenarioError } from '@/arcade/errors'
 import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
+import EventListenerState from '@/arcade/enums/EventListenerState'
+import KeyboardKey from '@/arcade/enums/KeyboardKey'
 
 import { arcadeEngine } from '@/game/system'
 import { Match } from '@/game/isometric/game-world'
@@ -54,4 +56,11 @@ export default class GameScene extends SceneEvent implements Scene {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {}
+
+  public handleMouseEvent?(
+    event: MouseEvent,
+    sceneManager: SceneManager
+  ): void {
+    this._match?.handleMouseEvent(event)
+  }
 }

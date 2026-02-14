@@ -30,7 +30,7 @@ import { Image } from '@/arcade/images'
  */
 export default class OceanTile extends Tile {
   constructor(image: string) {
-    super(128, 64, 4, 60)
+    super(128, 64, 4, 2500) // 2500ms = 2,5 segundos para ciclo completo (animação gradual)
     this.isWalkable = false
     this.isNavigable = true
     this.elevation = 0

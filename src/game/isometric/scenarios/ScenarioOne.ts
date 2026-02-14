@@ -43,7 +43,7 @@ export default class ScenarioOne extends Scenario {
   private createScenario(): void {
     /** Monta o grid do cenário */
     const grid = GridScenarioOne.map((row) =>
-      row.map((key) => this._tileMapper?.get(key))
+      row.map((key) => this._tileMapper?.get(key)?.clone())
     )
     this.worldMap = new TileMap(grid as Tile[][], 128, 64)
 

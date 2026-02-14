@@ -1,5 +1,6 @@
 import Scenario from '@/arcade/core/isometric/Scenario'
 import Unit from '@/arcade/core/isometric/Unit'
+import TileMap from '@/arcade/core/isometric/TileMap'
 
 export default class GameSession {
   protected _scenario: Scenario
@@ -37,7 +38,24 @@ export default class GameSession {
     this._units.sort((a, b) => a.positionY - b.positionY)
 
     for (const unit of this._units) {
+      unit.updateUnit(
+        deltaTime,
+        this._scenario.worldMap as TileMap,
+        this._canvas
+      )
       unit.drawUnit(this._canvas, this._context)
+    }
+  }
+
+  public handleMouseEvent(event: MouseEvent): void {
+    switch (event.type) {
+      case 'click':
+        this._units.forEach((unit) =>
+          unit.onClick(event, this._scenario.worldMap as TileMap, this._canvas)
+        )
+        break
+      default:
+        break
     }
   }
 }

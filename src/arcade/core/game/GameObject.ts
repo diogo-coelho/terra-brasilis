@@ -124,6 +124,22 @@ export default class GameObject {
     return this._frameDelay
   }
 
+  public set currentFrame(frame: number) {
+    this._currentFrame = frame
+  }
+
+  public get currentFrame(): number {
+    return this._currentFrame
+  }
+
+  public set accumulator(value: number) {
+    this._accumulator = value
+  }
+
+  public get accumulator(): number {
+    return this._accumulator
+  }
+
   public initializeFrames(frames: number, totalDuration: number) {
     this._frames = frames
     this._frameDuration =

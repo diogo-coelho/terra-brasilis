@@ -284,13 +284,47 @@ export default class Tile extends Sprite {
     context.restore()
   }
 
+  /**
+   * Verifica se um ponto (mouseX, mouseY) está dentro da área do tile isométrico (diamante).
+   *
+   * @param {number} mouseX - Coordenada X do mouse
+   * @param {number} mouseY - Coordenada Y do mouse
+   * @returns {boolean} true se o ponto está dentro do tile, false caso contrário
+   *
+   * @remarks
+   * Usa a fórmula matemática do diamante isométrico:
+   * |relX / (width/2)| + |relY / (height/2)| <= 1
+   */
+  public containsPoint(mouseX: number, mouseY: number): boolean {
+    // Coordenadas relativas ao centro do tile
+    const relX = mouseX - (this.positionX - this.width / 2)
+    const relY = mouseY - this.positionY
+
+    // Verifica se está dentro do diamante isométrico
+    return (
+      Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <=
+      1
+    )
+  }
+
   public clone(): Tile {
-    return new Tile(
+    const clonedTile = new Tile(
       this.width,
       this.height,
       this._frames,
       this._frameDuration,
       this.spritesheet as Image
     )
+
+    // Copia o estado de animação para manter sincronização
+    clonedTile.currentFrame = this.currentFrame
+    clonedTile.accumulator = this.accumulator
+
+    // Copia propriedades específicas do Tile
+    clonedTile.isWalkable = this.isWalkable
+    clonedTile.isNavigable = this.isNavigable
+    clonedTile.elevation = this.elevation
+
+    return clonedTile
   }
 }

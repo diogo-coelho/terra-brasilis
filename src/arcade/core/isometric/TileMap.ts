@@ -1,4 +1,5 @@
 import Tile from '@/arcade/core/isometric/Tile'
+import Image from '@/arcade/images/Image'
 
 /**
  * Mapa de tiles isométricos para jogos 2D com perspectiva isométrica.
@@ -119,15 +120,59 @@ export default class TileMap {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    // 1. Animar cada instância única de tile apenas uma vez, com variação de delay
-    const uniqueTiles = new Set<Tile>()
+    // 1. Animar apenas um tile por tipo de spritesheet para sincronia
+    const animatedBySource = new Map<string, Tile>()
+
     for (let row = 0; row < this._tiles.length; row++) {
       for (let col = 0; col < this._tiles[row].length; col++) {
-        uniqueTiles.add(this._tiles[row][col])
+        const tile = this._tiles[row][col]
+        const src = tile.spritesheet?.image?.src
+
+        if (!src) continue
+
+        // Anima apenas um tile por tipo (baseado no src da imagem)
+        if (!animatedBySource.has(src)) {
+          tile.animate(deltaTime)
+          animatedBySource.set(src, tile)
+        } else {
+          // Sincroniza o frame com o tile já animado do mesmo tipo
+          const masterTile = animatedBySource.get(src)!
+          tile.currentFrame = masterTile.currentFrame
+          tile.accumulator = masterTile.accumulator
+          // Atualiza o offsetX para refletir o frame correto visualmente
+          tile.setOffset(masterTile.currentFrame * tile.width, 0)
+        }
       }
     }
-    uniqueTiles.forEach((tile) => tile.animate(deltaTime))
+
     // 2. Renderizar cada tile na posição correta
     this.drawWorldMap(canvas, context)
+  }
+
+  public getTileAtGridPosition(
+    mouseX: number,
+    mouseY: number,
+    canvas: HTMLCanvasElement
+  ): Tile | null {
+    // Itera pelos tiles para encontrar qual contém o clique
+    for (let row = 0; row < this._tiles.length; row++) {
+      for (let col = 0; col < this._tiles[row].length; col++) {
+        const tile = this._tiles[row][col]
+
+        console.log(
+          'tile positionX:',
+          tile.positionX,
+          'tile positionY:',
+          tile.positionY
+        )
+        // Delega a verificação para o próprio tile
+        if (tile.containsPoint(mouseX, mouseY)) {
+          console.log('row:', row, 'col:', col)
+          return tile
+        }
+      }
+    }
+
+    return null
   }
 }
