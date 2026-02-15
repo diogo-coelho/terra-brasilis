@@ -117,34 +117,15 @@ export default class Unit extends Sprite {
       nextY = this.targetTileY;
     }
 
-    // IMPORTANTE: Verifica se o tile na próxima posição é válido
-    const nextTile = tileMap.getTileAtGridPosition(nextX, nextY, canvas);
+    // Move para a próxima posição (o destino já foi validado no setUnitDestination)
+    this.positionX = nextX;
+    this.positionY = nextY;
     
-    if (nextTile) {
-      const canMove = 
-        (this._mobileState === UnitMobileState.WALKER && nextTile.isWalkable) ||
-        (this._mobileState === UnitMobileState.NAVIGATOR && nextTile.isNavigable);
-      
-      if (canMove) {
-        // Move para a próxima posição se o tile é válido
-        this.positionX = nextX;
-        this.positionY = nextY;
-        
-        // Se chegou no destino, zera o target
-        if (Math.abs(this.targetTileX - this.positionX) < 1 && 
-            Math.abs(this.targetTileY - this.positionY) < 1) {
-          this.positionX = this.targetTileX;
-          this.positionY = this.targetTileY;
-          this._targetTileX = 0;
-          this._targetTileY = 0;
-        }
-      } else {
-        // Tile não é válido, para o movimento
-        this._targetTileX = 0;
-        this._targetTileY = 0;
-      }
-    } else {
-      // Não encontrou tile, para o movimento
+    // Se chegou no destino, zera o target
+    if (Math.abs(this.targetTileX - this.positionX) < 1 && 
+        Math.abs(this.targetTileY - this.positionY) < 1) {
+      this.positionX = this.targetTileX;
+      this.positionY = this.targetTileY;
       this._targetTileX = 0;
       this._targetTileY = 0;
     }
@@ -186,10 +167,13 @@ export default class Unit extends Sprite {
       (this._mobileState === UnitMobileState.NAVIGATOR &&
         this._destinationTile.isNavigable)
     ) {
-      this.setTarget(
-        this._destinationTile.positionX,
-        this._destinationTile.positionY
-      )
+      // Centraliza a unidade horizontalmente e alinha a base ao tile
+      const targetX = this._destinationTile.positionX + 
+                     (this._destinationTile.width - this.width) / 2
+      const targetY = this._destinationTile.positionY + 
+                     this._destinationTile.height - this.height
+      
+      this.setTarget(targetX, targetY)
     }
   }
 
