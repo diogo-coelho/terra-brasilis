@@ -4,24 +4,6 @@ import Server from '@/server/config/Server'
 import ServerError from './error/ServerError'
 import { SERVER } from './consts/constants'
 
-/**
- * Instância do servidor HTTP.
- *
- * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
- *
- * @description
- * Este módulo inicializa e configura o servidor HTTP, lidando com eventos
- * de erro e de escuta. Utiliza a classe Server para configurar o servidor
- * e gerenciar conexões.
- *
- * @example
- * ```ts
- * import './src/server/index.ts'
- * ```
- *
- */
 const serverInstance: Server = new Server()
 
 serverInstance.server
@@ -36,17 +18,6 @@ serverInstance.server
     )
   })
 
-/**
- * Manipulador de erros do servidor.
- *
- * @param error - O erro ocorrido no servidor.
- * @throws {ServerError} - Lança um ServerError em caso de erro não tratado.
- * @description
- * Esta função lida com erros que ocorrem durante a operação do servidor HTTP.
- * Dependendo do código do erro, ela registra mensagens específicas no console
- * ou lança um ServerError para erros não tratados.
- *
- */
 const onError = (error: NodeJS.ErrnoException): void => {
   if (error.syscall !== 'listen')
     throw new ServerError(`Erro no servidor: ${error.message}`)
@@ -76,16 +47,6 @@ const onError = (error: NodeJS.ErrnoException): void => {
   }
 }
 
-/**
- * Manipulador de evento de escuta do servidor.
- *
- * @param server - A instância do servidor HTTP.
- * @description
- * Esta função é chamada quando o servidor HTTP começa a escutar por conexões.
- * Ela registra uma mensagem no console indicando que o servidor está rodando
- * e em qual porta ou pipe ele está escutando.
- *
- */
 const onListening = (server: http.Server): void => {
   const address = server.address()
   const bind =

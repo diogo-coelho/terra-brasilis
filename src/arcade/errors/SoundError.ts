@@ -1,43 +1,23 @@
 /**
- * Exceção customizada para erros relacionados a operações de áudio.
+ * Erro customizado para erros de som.
  *
  * @class SoundError
- * @extends Error
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe SoundError representa erros específicos que ocorrem durante:
- * - Carregamento de arquivos de áudio
- * - Falhas na reprodução (autoplay bloqueado, formato não suportado)
- * - Erros de decodificação de áudio
- * - Problemas de configuração de áudio
+ * Classe de erro customizada para problemas relacionados ao carregamento
+ * e reprodução de arquivos de áudio.
  *
- * Estende Error nativo do JavaScript adicionando:
- * - Nome específico "SoundError" para identificação no stack trace
- * - Encadeamento de erros originais preservando contexto completo
- * - Mensagens descritivas sobre falhas de áudio
+ * @extends Error
  *
- * Especialmente útil para debugar problemas com políticas de autoplay
- * do navegador e formatos de áudio não suportados.
+ * @remarks
+ * Captura e encadeia erros originais para facilitar o debug de problemas com áudio.
  *
  * @example
  * ```typescript
- * // Erro de carregamento
- * try {
- *   await sound.play();
- * } catch (error) {
- *   throw new SoundError(
- *     'Falha ao reproduzir áudio',
- *     error as Error
- *   );
- * }
- *
- * // Erro de validação
- * if (!audioContext) {
- *   throw new SoundError('AudioContext não disponível');
- * }
+ * throw new SoundError('Falha ao carregar arquivo de áudio');
  * ```
  */
 export default class SoundError extends Error {

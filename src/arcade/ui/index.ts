@@ -8,11 +8,9 @@ import InputStandard from './InputStandard'
 import TextStandard from './TextStandard'
 
 export {
-  /** abstract */
   Button,
   Input,
   Text,
-  /** concrete */
   ButtonStandard,
   ButtonStandardGroup,
   InputStandard,

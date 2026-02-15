@@ -2,57 +2,56 @@ import { EventListenerState } from '@/arcade/enums'
 import { Game, SceneManager } from '@/arcade/core'
 
 /**
- * Gerenciador centralizado de eventos globais do navegador para o sistema de jogo.
+ * Gerenciador global de eventos do jogo.
  *
  * @class GlobalEvents
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe GlobalEvents implementa o padrão Observer/Mediator para gerenciar eventos
- * globais do navegador e distribuí-los para a cena ativa. Responsabilidades:
- * - Configurar listeners globais de eventos (teclado, mouse, resize)
- * - Despachar eventos para métodos handleKeyboardEvent e handleMouseEvent da cena atual
- * - Gerenciar evento de redimensionamento da janela
- * - Centralizar toda a lógica de captura de eventos em um único ponto
- *
- * Esta classe evita que cada cena precise configurar seus próprios listeners,
- * reduzindo duplicação de código e garantindo que eventos sejam sempre
- * direcionados à cena correta.
- *
- * Os eventos capturados incluem:
- * - **Teclado**: KEY_UP, KEY_DOWN
- * - **Mouse**: CLICK, MOUSE_MOVE
- * - **Janela**: RESIZE
+ * Classe responsável por configurar e gerenciar eventos globais de teclado,
+ * mouse e redimensionamento de janela. Despacha eventos para a cena atual
+ * através do SceneManager.
  *
  * @remarks
- * Esta classe usa métodos estáticos, não requer múltiplas instâncias.
- * Os listeners são configurados uma única vez durante a inicialização do jogo.
+ * Utiliza métodos estáticos para centralizar o gerenciamento de eventos.
+ * Garante que eventos sejam direcionados à cena ativa.
  *
  * @example
  * ```typescript
- * // Inicializar eventos globais
  * const globalEvents = new GlobalEvents(sceneManager);
- *
- * // Ou usar método estático diretamente
- * GlobalEvents.initialize(sceneManager);
  * GlobalEvents.resize(gameEngine, sceneManager);
  * ```
- *
- * @see SceneManager
- * @see EventListenerState
  */
 export default class GlobalEvents {
   constructor(sceneManager: SceneManager) {
     GlobalEvents.initialize(sceneManager)
   }
 
+  /**
+   * Inicializa os ouvintes de eventos globais.
+   *
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Configura handlers para eventos de teclado e mouse.
+   */
   public static initialize(sceneManager: SceneManager): void {
     this.handleKeyboardEvent(sceneManager)
     this.handleMouseEvent(sceneManager)
   }
 
+  /**
+   * Configura o evento de redimensionamento de janela.
+   *
+   * @param {Game} gameEngine - Instância do motor do jogo
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Quando a janela é redimensionada, ajusta o canvas e renderiza novamente
+   * a cena atual.
+   */
   public static resize(gameEngine: Game, sceneManager: SceneManager): void {
     window.addEventListener(EventListenerState.RESIZE, (event: UIEvent) => {
       gameEngine.resizeScreen()
@@ -61,8 +60,12 @@ export default class GlobalEvents {
   }
 
   /**
-   * Método para configurar os listeners de eventos de teclado.
-   * @param {SceneManager} sceneManager - Instância do gerenciador de cenas.
+   * Configura ouvintes de eventos de teclado.
+   *
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Registra handlers para key_up e key_down, despachando para a cena atual.
    */
   private static handleKeyboardEvent(sceneManager: SceneManager): void {
     window.addEventListener(
@@ -81,8 +84,12 @@ export default class GlobalEvents {
   }
 
   /**
-   * Método para configurar os listeners de eventos de mouse.
-   * @param {SceneManager} sceneManager - Instância do gerenciador de cenas.
+   * Configura ouvintes de eventos de mouse.
+   *
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Registra handlers para click e mousemove, despachando para a cena atual.
    */
   private static handleMouseEvent(sceneManager: SceneManager): void {
     window.addEventListener(EventListenerState.CLICK, (event: MouseEvent) => {

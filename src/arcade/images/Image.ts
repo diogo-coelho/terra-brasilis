@@ -2,51 +2,29 @@ import ImageError from '../errors/ImageError'
 import { ImageResizePayload, Position } from '../types'
 
 /**
- * Gerenciador de imagens com suporte a carregamento, redimensionamento e animação de posição.
+ * Gerenciador de imagens do jogo.
  *
  * @class Image
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-01-15
+ * @since 2024-06-20
  *
  * @description
- * A classe Image encapsula toda a funcionalidade de manipulação de imagens no jogo:
- * - Carregamento assíncrono de recursos de imagem
- * - Redimensionamento proporcional (cover e contain)
- * - Ajuste automático para cobrir canvas (setImageAsCover)
- * - Sistema de posição com interpolação suave
- * - Animação de movimento entre posições alvo
- * - Validação de carregamento
- *
- * A classe gerencia automaticamente as dimensões naturais da imagem e permite
- * redimensionamento mantendo proporções. Suporta animações de movimento
- * independentes de frame rate através do deltaTime.
+ * Classe responsável por carregar, redimensionar e posicionar imagens.
+ * Oferece funcionalidades para movimento suave, redimensionamento proporcional
+ * e ajuste automático para cobrir canvas.
  *
  * @remarks
- * Sempre verifique se a imagem está carregada com isLoaded() antes de
- * realizar operações de renderização ou manipulação.
+ * Encapsula HTMLImageElement fornecendo controle avançado de posicionamento
+ * e redimensionamento para uso em jogos.
  *
  * @example
  * ```typescript
- * const backgroundImage = new Image('assets/background.png', 800, 600);
- *
- * // Aguardar carregamento
- * if (backgroundImage.isLoaded()) {
- *   backgroundImage.setImageAsCover(canvas);
- *   backgroundImage.initialPosition(0, -100);
- *   backgroundImage.setTargetPosition(0, 0);
- * }
- *
- * // No loop do jogo
- * backgroundImage.updatePosition(deltaTime);
- * context.drawImage(
- *   backgroundImage.image,
- *   backgroundImage.positionX,
- *   backgroundImage.positionY
- * );
+ * const background = new Image('assets/bg.png', 800, 600);
+ * background.initialPosition(0, 0);
+ * background.setTargetPosition(100, 50);
+ * background.updatePosition(deltaTime);
  * ```
- *
- * @see HTMLImageElement
  */
 export default class Image {
   private _image: HTMLImageElement | null = null
@@ -85,26 +63,12 @@ export default class Image {
   }
 
   /**
-   * Verifica se a imagem foi carregada completamente e está pronta para uso.
+   * Verifica se a imagem foi carregada completamente.
    *
-   * @returns {boolean} `true` se a imagem estiver carregada, `false` caso contrário
+   * @returns {boolean} true se carregada, false caso contrário
    *
    * @remarks
-   * Valida múltiplas condições para garantir que a imagem está pronta:
-   * - A referência não é null
-   * - É uma instância válida de HTMLImageElement
-   * - A propriedade complete é true
-   * - A largura natural não é zero (indica erro de carregamento)
-   *
-   * Sempre verifique este método antes de realizar operações que dependem
-   * da imagem estar carregada.
-   *
-   * @example
-   * ```typescript
-   * if (image.isLoaded()) {
-   *   context.drawImage(image.image, 0, 0);
-   * }
-   * ```
+   * Valida se a imagem é um HTMLImageElement, está completa e possui dimensões naturais.
    */
   public isLoaded(): boolean {
     return (
@@ -116,29 +80,18 @@ export default class Image {
   }
 
   /**
-   * Redimensiona a imagem para cobrir todo o canvas mantendo proporções.
+   * Ajusta a imagem para cobrir o canvas mantendo proporções.
    *
-   * @param {HTMLCanvasElement} canvas - Canvas de referência para dimensões
-   *
-   * @returns {void}
+   * @param {HTMLCanvasElement} canvas - Canvas a ser coberto
    *
    * @remarks
-   * Comportamento similar ao CSS `background-size: cover`:
-   * - A imagem cobre completamente o canvas
-   * - Mantém proporções originais (aspect ratio)
-   * - Partes da imagem podem ficar fora do canvas se proporções diferirem
-   *
-   * Calcula a escala necessária comparando as proporções do canvas e da imagem,
-   * usando a maior escala para garantir cobertura total.
-   *
-   * Não executa se a imagem não estiver carregada.
+   * Calcula a escala necessária para cobrir completamente o canvas
+   * sem distorcer a imagem (modo 'cover').
    *
    * @example
    * ```typescript
-   * const background = new Image('background.jpg');
-   * if (background.isLoaded()) {
-   *   background.setImageAsCover(canvas);
-   * }
+   * const canvas = document.getElementById('game-canvas') as HTMLCanvasElement;
+   * background.setImageAsCover(canvas);
    * ```
    */
   public setImageAsCover(canvas: HTMLCanvasElement): void {
@@ -154,35 +107,24 @@ export default class Image {
   }
 
   /**
-   * Redimensiona a imagem proporcionalmente baseado em largura ou altura alvo.
+   * Redimensiona a imagem proporcionalmente.
    *
-   * @param {ImageResizePayload} params - Parâmetros de redimensionamento
-   * @param {number} [params.targetWidth] - Largura alvo (obrigatório para option='cover')
-   * @param {number} [params.targetHeight] - Altura alvo (obrigatório para option='contain')
-   * @param {'cover' | 'contain'} [params.option='cover'] - Modo de redimensionamento
+   * @param {ImageResizePayload} payload - Configuração de redimensionamento
+   * @param {number} [payload.targetWidth] - Largura alvo
+   * @param {number} [payload.targetHeight] - Altura alvo
+   * @param {'cover' | 'contain'} [payload.option='cover'] - Modo de redimensionamento
    *
-   * @returns {void}
-   *
-   * @throws {ImageError} Se parâmetros necessários não forem fornecidos
+   * @throws {ImageError} Quando nenhuma dimensão alvo é fornecida
+   * @throws {ImageError} Quando targetWidth não é fornecido para 'cover'
+   * @throws {ImageError} Quando targetHeight não é fornecido para 'contain'
    *
    * @remarks
-   * **Modo 'cover':**
-   * - Define a largura como targetWidth
-   * - Calcula altura mantendo proporção (ratio = altura/largura)
-   * - Requer targetWidth
-   *
-   * **Modo 'contain':**
-   * - Define a altura como targetHeight
-   * - Calcula largura mantendo proporção (ratio = largura/altura)
-   * - Requer targetHeight
+   * - 'cover': Redimensiona baseado na largura
+   * - 'contain': Redimensiona baseado na altura
    *
    * @example
    * ```typescript
-   * // Redimensionar por largura
-   * image.resizeProportionally({ targetWidth: 500, option: 'cover' });
-   *
-   * // Redimensionar por altura
-   * image.resizeProportionally({ targetHeight: 300, option: 'contain' });
+   * image.resizeProportionally({ targetWidth: 400, option: 'cover' });
    * ```
    */
   public resizeProportionally({
@@ -221,9 +163,22 @@ export default class Image {
 
   /**
    * Define a posição inicial da imagem.
-   * @param {number} positionX - A posição X inicial da imagem.
-   * @param {number} positionY - A posição Y inicial da imagem.
-   * @returns {void}
+   *
+   * @param {number} positionX - Posição X inicial
+   * @param {number} positionY - Posição Y inicial
+   * @returns {Position} Objeto com as coordenadas x e y
+   *
+   * @throws {ImageError} Quando a imagem não foi carregada
+   *
+   * @remarks
+   * Só define a posição na primeira chamada. Chamadas subsequentes
+   * retornam a posição atual sem alterá-la.
+   *
+   * @example
+   * ```typescript
+   * const pos = sprite.initialPosition(100, 200);
+   * console.log(pos.x, pos.y); // 100, 200
+   * ```
    */
   public initialPosition(positionX: number, positionY: number): Position {
     if (!this.isLoaded()) {
@@ -242,10 +197,14 @@ export default class Image {
   }
 
   /**
-   * Define a posição alvo da imagem.
-   * @param {number} positionX - A posição X alvo da imagem.
-   * @param {number} positionY - A posição Y alvo da imagem.
-   * @returns {void}
+   * Define a posição alvo para movimento suave.
+   *
+   * @param {number} positionX - Posição X de destino
+   * @param {number} positionY - Posição Y de destino
+   *
+   * @remarks
+   * A imagem se moverá gradualmente da posição atual para a posição alvo
+   * quando updatePosition() for chamado.
    */
   public setTargetPosition(positionX: number, positionY: number): void {
     this._positionTargetX = positionX
@@ -253,30 +212,20 @@ export default class Image {
   }
 
   /**
-   * Atualiza a posição da imagem movendo-a gradualmente em direção à posição alvo.
+   * Atualiza a posição da imagem em direção à posição alvo.
    *
    * @param {number} deltaTime - Tempo decorrido desde o último frame (em segundos)
-   * @param {number} [speed] - Velocidade opcional (não utilizada atualmente)
-   *
-   * @returns {void}
+   * @param {number} [speed] - Velocidade de movimento (opcional)
    *
    * @remarks
-   * Implementa interpolação linear para movimento suave:
-   * - Calcula direção do movimento usando Math.sign
-   * - Aplica velocidade (speed) multiplicada por deltaTime
-   * - Garante que não ultrapasse a posição alvo
-   *
-   * Fórmula:
-   * ```
-   * nova_posição = posição_atual + (speed * deltaTime * direção)
-   * ```
-   *
-   * Só executa se initialPosition() foi chamado (_initialized = true).
+   * Calcula movimento suave baseado em deltaTime e velocidade configurada.
+   * Para automaticamente quando alcança a posição alvo.
    *
    * @example
    * ```typescript
-   * // No loop do jogo
-   * image.updatePosition(deltaTime);
+   * function gameLoop(deltaTime: number) {
+   *   sprite.updatePosition(deltaTime);
+   * }
    * ```
    */
   public updatePosition(deltaTime: number, speed?: number): void {

@@ -1,42 +1,23 @@
 /**
- * Exceção customizada para erros relacionados a operações de imagem.
+ * Erro customizado para erros de imagem.
  *
  * @class ImageError
- * @extends Error
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe ImageError representa erros específicos que ocorrem durante:
- * - Carregamento de arquivos de imagem
- * - Redimensionamento e transformações
- * - Acesso a propriedades antes do carregamento completo
- * - Parâmetros inválidos em operações de imagem
+ * Classe de erro customizada para problemas relacionados ao carregamento
+ * e manipulação de imagens.
  *
- * Estende Error nativo adicionando:
- * - Nome específico "ImageError" para identificação
- * - Encadeamento de stack trace quando causado por outro erro
- * - Contexto sobre falhas em operações de imagem
+ * @extends Error
+ *
+ * @remarks
+ * Captura erros de carregamento, redimensionamento e renderização de imagens.
  *
  * @example
  * ```typescript
- * // Erro de parâmetros
- * if (!targetWidth && !targetHeight) {
- *   throw new ImageError(
- *     'Largura ou altura alvo devem ser fornecidos'
- *   );
- * }
- *
- * // Erro com causa original
- * try {
- *   image.resizeProportionally({ targetWidth: -100 });
- * } catch (err) {
- *   throw new ImageError(
- *     'Falha no redimensionamento',
- *     err as Error
- *   );
- * }
+ * throw new ImageError('Falha ao carregar imagem');
  * ```
  */
 export default class ImageError extends Error {

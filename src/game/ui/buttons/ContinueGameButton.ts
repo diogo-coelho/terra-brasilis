@@ -4,27 +4,25 @@ import { SceneManager } from '@/arcade/types'
 import { GameSceneState } from '@/game/enums'
 
 /**
- * Classe que representa o botão de continuar jogo.
- * Estende a classe ButtonStandard e implementa o método de clique específico.
+ * Botão para continuar jogo salvo.
  *
+ * @class ContinueGameButton
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe ContinueGameButton é uma implementação concreta
- * da classe ButtonStandard, representando o botão
- * de continuar jogo. Ela define o comportamento
- * específico ao clicar no botão, que é
- * navegar para a cena de inserção de nome.
+ * Botão que permite ao jogador continuar uma partida salva anteriormente.
  *
- * @constructor
- * @param {string} label - O rótulo do botão.
+ * @extends Arcade.Components.ButtonStandard
  *
  * @example
- * const continueButton = new ContinueGameButton(
- * 'Continue Game',
- * );
+ * ```typescript
+ * const continueButton = new ContinueGameButton('Continuar');
+ * ```
+ *
+ * @see ButtonStandard
+ * @see GameSceneState
  */
 export default class ContinueGameButton
   extends Arcade.Components.ButtonStandard
@@ -34,8 +32,12 @@ export default class ContinueGameButton
   }
 
   /**
-   * Método chamado ao clicar no botão.
-   * @param {SceneManager} scene - O gerenciador de cenas.
+   * Ação executada ao clicar no botão.
+   *
+   * @param {SceneManager} scene - Gerenciador de cenas
+   *
+   * @remarks
+   * Carrega a cena de jogo salvo.
    */
   public onClick(scene: SceneManager): void {
     scene?.setCurrentScene(GameSceneState.LOADED_GAME)

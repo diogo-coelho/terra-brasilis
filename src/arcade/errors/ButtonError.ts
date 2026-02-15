@@ -1,41 +1,23 @@
 /**
- * Exceção customizada para erros relacionados a operações de botões.
+ * Erro customizado para erros de botão.
  *
  * @class ButtonError
- * @extends Error
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe ButtonError representa erros específicos que ocorrem durante:
- * - Posicionamento inválido de botões (coordenadas faltando)
- * - Configuração incorreta de propriedades
- * - Falhas em operações de renderização
- * - Problemas com eventos de botão
+ * Classe de erro customizada para problemas relacionados à configuração
+ * e posicionamento de botões.
  *
- * Esta classe estende Error nativo do JavaScript, adicionando:
- * - Nome específico "ButtonError" para identificação
- * - Encadeamento de stack trace quando causado por outro erro
- * - Mensagens personalizadas e descritivas
+ * @extends Error
  *
- * O encadeamento de erros permite rastrear a causa raiz quando um
- * ButtonError é lançado devido a outro erro.
+ * @remarks
+ * Utilizado quando parâmetros necessários para botões não são fornecidos.
  *
  * @example
  * ```typescript
- * // Uso simples
- * throw new ButtonError('Parâmetros de posicionamento inválidos');
- *
- * // Com erro original
- * try {
- *   button.setPosition({ canvas });
- * } catch (originalError) {
- *   throw new ButtonError(
- *     'Falha ao posicionar botão',
- *     originalError as Error
- *   );
- * }
+ * throw new ButtonError('É necessário informar a posição do botão');
  * ```
  */
 export default class ButtonError extends Error {

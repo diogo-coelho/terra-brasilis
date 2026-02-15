@@ -10,51 +10,30 @@ import backgroundImage from '@/arcade/assets/images/tb_intro_background.png'
 import { ContinueGameButton, NewGameButton } from '@/game/ui/buttons'
 
 /**
- * Cena do menu principal com opções de novo jogo e continuar.
+ * Cena do menu principal do jogo.
  *
  * @class MainMenuScene
- * @extends SceneEvent
- * @implements Scene
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A MainMenuScene é o hub central de navegação do jogo, oferecendo:
- * - Interface de menu com botões interativos
- * - Background temático com opacidade de 60%
- * - Grupo de botões estilizados (Novo Jogo, Continuar)
- * - Feedback visual de hover nos botões
- * - Mudança de cursor para pointer ao passar sobre botões
- * - Continuação da música tema iniciada nas cenas anteriores
+ * Menu principal com opções de "Novo jogo" e "Continuar jogo".
+ * Exibe título, imagem de fundo e botões interativos com sons.
  *
- * **Botões Disponíveis:**
- * - **Novo Jogo**: Navega para InsertNameScene
- * - **Continuar Jogo**: (Funcionalidade a ser implementada)
+ * @extends SceneEvent
+ * @implements Scene
  *
- * **Configurações Visuais:**
- * - Botões: 450x60px
- * - Cor de fundo: #84310a (marrom)
- * - Cor hover: #692303 (marrom escuro)
- * - Espaçamento: 25px entre botões
- * - Alinhamento: Vertical centralizado
- *
- * A cena gerencia automaticamente o estado do cursor baseado na posição
- * do mouse sobre os botões.
+ * @remarks
+ * - Música de fundo contínua
+ * - Botões com efeitos de hover
+ * - Navegação para InsertNameScene ou LoadGame
  *
  * @example
  * ```typescript
- * const mainMenu = new MainMenuScene();
- * sceneManager.setScenesMap([{
- *   name: GameSceneState.MAIN_MENU,
- *   scene: mainMenu
- * }]);
+ * const mainMenuScene = new MainMenuScene();
+ * sceneManager.addScene(GameSceneState.MAIN_MENU, mainMenuScene);
  * ```
- *
- * @see Scene
- * @see ButtonStandardGroup
- * @see NewGameButton
- * @see ContinueGameButton
  */
 export default class MainMenuScene extends SceneEvent implements Scene {
   private _title: string
@@ -76,40 +55,32 @@ export default class MainMenuScene extends SceneEvent implements Scene {
     this.initializeButtons()
   }
 
-  /**
-   * Método chamado ao entrar na cena.
-   * Inicia a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onEnter(): void {
     this.startBackgroundSound()
   }
 
-  /**
-   * Método chamado ao sair da cena.
-   * Para a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onExit(): void {
     this._backgroundSound.stop()
   }
 
   /**
-   * Desenha a cena do menu no canvas.
-   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena será desenhada.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
-   * @returns {void}
+   * Renderiza a cena do menu principal.
+   *
+   * @param {HTMLCanvasElement} canvas - Canvas do jogo
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização
+   *
+   * @remarks
+   * Desenha fundo, título e botões do menu.
+   * Gerencia cursor do mouse baseado em hover.
    */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
-    /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
     this._backgroundImage.setImageAsCover(canvas)
     context.save()
     context.globalAlpha = 0.6
-    /** Desenhando a imagem de fundo */
     context.drawImage(
       this._backgroundImage.image as CanvasImageSource,
       0,
@@ -138,19 +109,18 @@ export default class MainMenuScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Manipula eventos de mouse na cena.
-   * @param {MouseEvent} event - O evento de mouse.
-   * @param {SceneManager} scene - O gerenciador de cenas.
+   * Manipula eventos de mouse no menu principal.
+   *
+   * @param {MouseEvent} event - Evento de mouse
+   * @param {SceneManager} [scene] - Gerenciador de cenas
+   *
+   * @remarks
+   * Propaga eventos para o grupo de botões.
    */
   public handleMouseEvent(event: MouseEvent, scene?: SceneManager): void {
     this._listButtons.handleMouseEvent(event, scene as SceneManager)
   }
 
-  /**
-   * Inicializa os botões do menu.
-   * @private
-   * @returns {void}
-   */
   private initializeButtons() {
     this._listButtons.setButtonsConfigurations({
       width: 450,
@@ -168,11 +138,6 @@ export default class MainMenuScene extends SceneEvent implements Scene {
     this._listButtons.addButton(continueGameButton)
   }
 
-  /**
-   * Inicia a reprodução do som de fundo da cena de introdução.
-   * @private
-   * @returns {void}
-   */
   private startBackgroundSound(): void {
     if (this._initializedSoundSetup) return
     this._backgroundSound.loop(true)

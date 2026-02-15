@@ -4,48 +4,31 @@ import FormattedDate from '@/server/utils/FormattedDate'
 import MongoDBError from '@/server/error/MongoDB'
 
 /**
- * Gerenciador de conexão MongoDB usando Mongoose com tratamento de eventos.
+ * Gerenciador de conexão com MongoDB.
  *
  * @class Database
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10
+ * @since 2024-06-20
  *
  * @description
- * A classe Database encapsula toda lógica de conexão com MongoDB:
- * - Estabelece conexão usando Mongoose
- * - Monitora eventos de conexão (connected, disconnected, error)
- * - Fornece logging detalhado com timestamps
- * - Gerencia desconexão graceful (SIGINT)
- * - Utiliza variáveis de ambiente para configuração
+ * Classe responsável por gerenciar a conexão com o banco de dados MongoDB
+ * usando Mongoose. Gerencia ciclo de vida da conexão incluindo abertura,
+ * monitoramento de eventos e fechamento.
  *
- * **Eventos Monitorados:**
- * - **connected**: Conexão estabelecida com sucesso
- * - **disconnected**: Conexão perdida
- * - **error**: Erro durante operações do banco
- *
- * **Variáveis de Ambiente:**
- * - URL_MONGO_DB: URL de conexão do MongoDB
- * - DATABASE: Nome do banco de dados
- *
- * A classe garante que a conexão seja fechada adequadamente quando
- * o processo recebe sinal de interrupção (Ctrl+C), evitando
- * conexões pendentes.
- *
- * @throws {MongoDBError} Lança erro se tentar acessar database antes de conectar
+ * @remarks
+ * Utiliza variáveis de ambiente para configurar URL e nome do banco de dados.
+ * Monitora eventos de conexão, desconexão e erros.
  *
  * @example
  * ```typescript
- * const database = new Database();
- *
- * await database.connection();
- * const db = await database.database;
- *
- * // Configurar graceful shutdown
- * database.closeConnection();
+ * const db = new Database();
+ * await db.connection();
+ * const mongoose = await db.database;
  * ```
  *
- * @see Mongoose
+ * @see FormattedDate
+ * @see MongoDBError
  */
 export default class Database {
   private _database: Promise<Mongoose> | null = null
@@ -67,9 +50,18 @@ export default class Database {
   }
 
   /**
-   * Método assíncrono que estabelece a conexão com o banco de dados
+   * Estabelece conexão com o banco de dados MongoDB.
    *
-   * @async
+   * @returns {Promise<void>} Promise que resolve quando conectado
+   *
+   * @remarks
+   * Configura event listeners para monitorar o estado da conexão.
+   * Utiliza URL e nome do banco de variáveis de ambiente.
+   *
+   * @example
+   * ```typescript
+   * await database.connection();
+   * ```
    */
   public async connection(): Promise<void> {
     console.log(`[ ${this.date} ] : Conectando ao banco de dados...`)
@@ -92,8 +84,11 @@ export default class Database {
   }
 
   /**
-   * Método que desconecta do banco de dados
-   * @returns {void}
+   * Configura o fechamento da conexão ao receber sinal SIGINT.
+   *
+   * @remarks
+   * Garante que a conexão seja fechada corretamente ao encerrar a aplicação.
+   * Escuta o evento SIGINT (Ctrl+C) para fechar gracefully.
    */
   public closeConnection(): void {
     process.on('SIGINT', async () => {

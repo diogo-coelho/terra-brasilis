@@ -1,28 +1,27 @@
 import Text from '@/arcade/ui/abstract/Text'
 
 /**
- * Classe concreta que implementa a renderização de texto padrão.
+ * Implementação padrão de renderização de texto.
  *
  * @class TextStandard
- * @extends Text
- * @param {string} text - O conteúdo do texto a ser exibido.
- * @param {number} fontSize - O tamanho da fonte do texto.
- * @param {string} fontFamily - A família da fonte do texto.
- * @param {string} color - A cor do texto.
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-20
  *
  * @description
- * A classe TextStandard estende a classe abstrata Text,
- * fornecendo uma implementação concreta para renderização de texto
- * em um contexto de canvas 2D. Ela define o método drawText,
- * que desenha o texto na posição especificada com as propriedades
- * de fonte, tamanho e cor definidas.
+ * Classe concreta que implementa renderização de texto no canvas
+ * com suporte a customização de fonte, tamanho e cor.
+ *
+ * @extends Text
+ *
+ * @remarks
+ * Utiliza a API nativa do Canvas 2D para desenhar texto.
  *
  * @example
  * ```typescript
- * const myText = new TextStandard("Hello, Arcade!", 20, "Verdana", "#FF0000");
- * myText.drawText(context, 100, 50);
+ * const title = new TextStandard('Terra Brasilis', 32, 'Arial', '#fff');
+ * title.drawText(context, 400, 100);
  * ```
- *
  */
 export default class TextStandard extends Text {
   constructor(

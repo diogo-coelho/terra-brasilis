@@ -5,28 +5,32 @@ import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
 import { CaravelShip } from '@/game/isometric/units'
 
 /**
- * Implementação de um cenário isométrico 10x10 totalmente preenchido com OceanTile.
+ * Primeiro cenário do jogo.
  *
  * @class ScenarioOne
- * @extends Scenario
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2026-01-29
+ * @since 2024-06-20
  *
  * @description
- * Esta classe representa um cenário de exemplo para o jogo, demonstrando como criar,
- * configurar e renderizar um cenário customizado usando o sistema de TileMap isométrico.
+ * Cenário inicial do jogo Terra Brasilis, representando o oceano Atlântico
+ * com uma caravela portuguesa. Gerencia o mapa de tiles e as unidades presentes.
  *
- * Características:
- * - Cria e armazena uma instância de OceanTile
- * - Gera um TileMap 10x10 usando o mesmo tile de oceano
- * - Renderiza o cenário completo via drawScenario
+ * @extends Scenario
  *
- * @property {Tile | null} _oceanTile - Instância do tile de oceano utilizada no cenário
+ * @remarks
+ * Este cenário utiliza o GridScenarioOne para definir a disposição dos tiles
+ * e coloca uma caravela como unidade inicial do jogador.
  *
  * @example
- * // Criação e renderização do cenário
+ * ```typescript
  * const scenario = new ScenarioOne();
+ * const match = new Match(canvas, context, scenario);
+ * ```
+ *
+ * @see Scenario
+ * @see TileMap
+ * @see CaravelShip
  */
 export default class ScenarioOne extends Scenario {
   private _tileMapper: Map<number, Tile> | null = null
@@ -40,14 +44,19 @@ export default class ScenarioOne extends Scenario {
     this.createScenario()
   }
 
+  /**
+   * Cria o cenário com mapa de tiles e unidades.
+   *
+   * @remarks
+   * Inicializa o mapa de tiles usando GridScenarioOne e posiciona
+   * a caravela na posição inicial (620, 125).
+   */
   private createScenario(): void {
-    /** Monta o grid do cenário */
     const grid = GridScenarioOne.map((row) =>
-      row.map((key) => this._tileMapper?.get(key))
+      row.map((key) => this._tileMapper?.get(key)?.clone())
     )
     this.worldMap = new TileMap(grid as Tile[][], 128, 64)
 
-    /** Adicionando a caravela como unidade no cenário */
     this._caravelShip?.setPosition(620, 125)
     this.units = [this._caravelShip as Unit]
   }

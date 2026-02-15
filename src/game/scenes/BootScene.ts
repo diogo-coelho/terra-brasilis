@@ -10,48 +10,30 @@ import themeSound from '@/arcade/assets/sounds/intro_theme_inspiring.mp3'
 import { GameSceneState } from '@/game/enums'
 
 /**
- * Cena inicial de boot que aguarda interação do usuário para iniciar o jogo.
+ * Cena inicial de boot do jogo.
  *
  * @class BootScene
- * @extends SceneEvent
- * @implements Scene
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A BootScene é a primeira cena apresentada ao jogador, sendo responsável por:
- * - Exibir mensagem inicial "Pressione qualquer tecla"
- * - Iniciar reprodução da música tema em loop
- * - Aguardar qualquer interação (tecla ou clique) para prosseguir
- * - Fazer transição para a IntroScene
- * - Renderizar fundo preto com texto centralizado
+ * Primeira cena exibida ao iniciar o jogo. Mostra mensagem "Pressione qualquer tecla"
+ * e reproduz música de fundo. Aguarda interação do usuário para prosseguir.
  *
- * Esta cena atua como uma tela splash interativa, garantindo que o áudio
- * seja iniciado somente após interação do usuário (requisito de políticas
- * de autoplay dos navegadores modernos).
+ * @extends SceneEvent
+ * @implements Scene
  *
- * **Fluxo:**
- * 1. Jogador inicia o jogo
- * 2. BootScene exibida
- * 3. Música tema começa a tocar
- * 4. Jogador pressiona tecla/clica
- * 5. Transição para IntroScene
- * 6. Música é interrompida
+ * @remarks
+ * - Responde a qualquer tecla ou click do mouse
+ * - Transita automaticamente para IntroScene após interação
+ * - Música de fundo em loop com volume ajustado
  *
  * @example
  * ```typescript
  * const bootScene = new BootScene();
- * sceneManager.setScenesMap([{
- *   name: GameSceneState.BOOT,
- *   scene: bootScene
- * }]);
- * sceneManager.setCurrentScene(GameSceneState.BOOT);
+ * sceneManager.addScene(GameSceneState.BOOT, bootScene);
  * ```
- *
- * @see Scene
- * @see SceneEvent
- * @see GameSceneState
  */
 export default class BootScene extends SceneEvent implements Scene {
   private _backgroundSound: Sound
@@ -63,38 +45,30 @@ export default class BootScene extends SceneEvent implements Scene {
     this._backgroundSound = new Sound(themeSound)
   }
 
-  /**
-   * Método chamado ao entrar na cena.
-   * Inicia a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onEnter(): void {
     this.startBackgroundSound()
   }
 
-  /**
-   * Método chamado ao sair da cena.
-   * Para a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onExit(): void {
     this._backgroundSound.stop()
   }
 
   /**
-   * Desenha a cena no canvas.
-   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena será desenhada.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
+   * Renderiza a cena de boot.
+   *
+   * @param {HTMLCanvasElement} canvas - Canvas do jogo
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização
+   *
+   * @remarks
+   * Desenha um fundo preto com mensagem centralizada em branco.
    */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
-    /** Pinta todo o background preto */
     context.fillStyle = '#000'
     context.fillRect(0, 0, canvas.width, canvas.height)
 
-    /** Escreve a frase centralizada */
     context.fillStyle = '#ffffff'
     context.font = '20px "Jersey 15", sans-serif'
 
@@ -106,9 +80,13 @@ export default class BootScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Lida com eventos de teclado.
-   * @param {KeyboardEvent} event - O evento de teclado a ser manipulado.
-   * @param {SceneManager} sceneManager - O gerenciador de cenas.
+   * Manipula eventos de teclado na cena de boot.
+   *
+   * @param {KeyboardEvent} event - Evento de teclado
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Qualquer tecla pressionada inicia a transição para IntroScene.
    */
   public handleKeyboardEvent?(
     event: KeyboardEvent,
@@ -125,9 +103,13 @@ export default class BootScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Lida com eventos de mouse.
-   * @param {MouseEvent} event - O evento de mouse a ser manipulado.
-   * @param {SceneManager} sceneManager - O gerenciador de cenas.
+   * Manipula eventos de mouse na cena de boot.
+   *
+   * @param {MouseEvent} event - Evento de mouse
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Qualquer click inicia a transição para IntroScene.
    */
   public handleMouseEvent?(
     event: MouseEvent,
@@ -143,11 +125,6 @@ export default class BootScene extends SceneEvent implements Scene {
     })
   }
 
-  /**
-   * Inicia a reprodução do som de fundo da cena de boot.
-   * @private
-   * @returns {void}
-   */
   private startBackgroundSound(): void {
     this._backgroundSound.loop(true)
     this._backgroundSound.setVolume(0.5)

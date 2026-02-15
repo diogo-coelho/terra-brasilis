@@ -1,16 +1,23 @@
 /**
- * Classe responsável por formatar a data atual em uma string legível
+ * Classe para formatação de datas.
  *
+ * @class FormattedDate
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10
+ * @since 2024-06-20
  *
- * A classe FormattedDate pega o valor corrente da classe Date do JavaScript
- * e a transforma em uma string formatada no padrão dd/mm/YYYY - hh:mm:ss
+ * @description
+ * Formata a data e hora atuais no padrão brasileiro (DD/MM/AAAA - HH:MM:SS).
+ * Utilizada principalmente para logs do servidor.
  *
- * @example new FormattedDate().formatted
+ * @remarks
+ * A data é formatada no momento da criação da instância.
  *
- * @returns {string} Data formatada no padrão dd/mm/YYYY - hh:mm:ss *
+ * @example
+ * ```typescript
+ * const formattedDate = new FormattedDate();
+ * console.log(formattedDate.formatted); // "14/02/2026 - 15:30:45"
+ * ```
  */
 export default class FormattedDate {
   private _date: Date
@@ -21,6 +28,14 @@ export default class FormattedDate {
     this._formatted = this.setFormattedDate()
   }
 
+  /**
+   * Formata a data no padrão DD/MM/AAAA - HH:MM:SS.
+   *
+   * @returns {string} Data formatada
+   *
+   * @remarks
+   * Adiciona zeros à esquerda quando necessário para manter dois dígitos.
+   */
   private setFormattedDate(): string {
     const day = ('0' + this._date.getDate()).slice(-2)
     const month = ('0' + (this._date.getMonth() + 1)).slice(-2)
@@ -33,10 +48,6 @@ export default class FormattedDate {
     return `${day}/${month}/${year} - ${hours}:${minutes}:${seconds}`
   }
 
-  /**
-   *
-   * @returns {string} Retorna a data formatada no padrão dd/mm/YYY - hh:mm:ss
-   */
   public get formatted(): string {
     return this._formatted
   }

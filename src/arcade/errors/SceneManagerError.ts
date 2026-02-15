@@ -1,43 +1,23 @@
 /**
- * Exceção customizada para erros no gerenciamento de cenas.
+ * Erro customizado para erros do gerenciador de cenas.
  *
  * @class SceneManagerError
- * @extends Error
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe SceneManagerError representa erros específicos que ocorrem durante:
- * - Tentativa de acessar cena atual quando nenhuma está definida
- * - Tentativa de trocar para cena não mapeada
- * - Acesso a gameSceneState quando não inicializado
- * - Problemas na inicialização do SceneManager
+ * Classe de erro customizada para problemas relacionados ao gerenciamento
+ * e transição de cenas do jogo.
  *
- * Estende Error nativo adicionando:
- * - Nome "SceneManagerError" para identificação clara
- * - Encadeamento de stack trace para rastreamento de causa raiz
- * - Mensagens descritivas sobre o estado inválido do gerenciador
+ * @extends Error
  *
- * Estes erros geralmente indicam problemas na inicialização do jogo
- * ou lógica incorreta de navegação entre cenas.
+ * @remarks
+ * Lançado quando cenas não estão mapeadas ou estados inválidos são acessados.
  *
  * @example
  * ```typescript
- * // Erro ao acessar cena não existente
- * const scene = scenesMap.get('invalid');
- * if (!scene) {
- *   throw new SceneManagerError(
- *     ErrorState.NO_MAPPED_SCENES
- *   );
- * }
- *
- * // Erro com contexto adicional
- * if (!currentScene) {
- *   throw new SceneManagerError(
- *     'Nenhuma cena definida como atual'
- *   );
- * }
+ * throw new SceneManagerError('Nenhuma cena atual definida');
  * ```
  */
 export default class SceneManagerError extends Error {

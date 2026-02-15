@@ -1,45 +1,25 @@
 import { MS_PER_UNIT } from '@/arcade/constants'
 
 /**
- * Classe base que representa qualquer objeto visual renderizável no jogo.
+ * Classe base para todos os objetos do jogo.
  *
  * @class GameObject
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe GameObject serve como entidade fundamental para todos os objetos visuais do jogo,
- * implementando o padrão Entity-Component. Ela encapsula propriedades essenciais:
- * - Posicionamento no espaço 2D (positionX, positionY)
- * - Dimensões (width, height)
- * - Estilização visual (color, backgroundColor)
- * - Controle de cursor (shouldUsePointerCursor)
- *
- * Esta classe é projetada para ser estendida por componentes mais especializados
- * como botões, inputs, sprites e outros elementos do jogo, fornecendo uma base
- * consistente para manipulação de propriedades visuais e espaciais.
+ * Fornece propriedades e métodos fundamentais para objetos de jogo, incluindo
+ * posição, dimensões, cores, e controle de animação por frames.
+ * Serve como classe base para sprites, tiles, unidades e outros elementos visuais.
  *
  * @remarks
- * Todos os getters e setters permitem acesso controlado às propriedades privadas,
- * facilitando futuras validações ou lógica adicional sem quebrar a API pública.
+ * Esta classe gerencia o sistema de animação por frames, incluindo duração,
+ * acumuladores de tempo e delays customizáveis entre frames.
  *
- * @example
- * ```typescript
- * // Uso direto (embora normalmente seja estendida)
- * const gameObject = new GameObject(50, 100);
- * gameObject.positionX = 10;
- * gameObject.positionY = 20;
- * gameObject.color = '#FF0000';
- * gameObject.backgroundColor = '#00FF00';
- *
- * // Uso através de extensão
- * class Player extends GameObject {
- *   constructor() {
- *     super(32, 48);
- *   }
- * }
- * ```
+ * @see Sprite
+ * @see Tile
+ * @see Unit
  */
 export default class GameObject {
   private _positionX: number = 0
@@ -124,6 +104,32 @@ export default class GameObject {
     return this._frameDelay
   }
 
+  public set currentFrame(frame: number) {
+    this._currentFrame = frame
+  }
+
+  public get currentFrame(): number {
+    return this._currentFrame
+  }
+
+  public set accumulator(value: number) {
+    this._accumulator = value
+  }
+
+  public get accumulator(): number {
+    return this._accumulator
+  }
+
+  /**
+   * Inicializa o sistema de animação por frames.
+   *
+   * @param {number} frames - Número total de frames na animação
+   * @param {number} totalDuration - Duração total da animação em milissegundos
+   *
+   * @remarks
+   * Calcula automaticamente a duração de cada frame baseado no total de frames
+   * e na duração total especificada.
+   */
   public initializeFrames(frames: number, totalDuration: number) {
     this._frames = frames
     this._frameDuration =
@@ -132,9 +138,15 @@ export default class GameObject {
   }
 
   /**
-   * Atualiza a animação do objeto, respeitando um pequeno delay entre frames.
-   * @param {number} deltaTime - Tempo decorrido desde o último frame (ms)
-   * @returns {number} Frame atual
+   * Atualiza o frame atual da animação baseado no tempo decorrido.
+   *
+   * @param {number} deltaTime - Tempo decorrido desde a última atualização em segundos
+   *
+   * @returns {number} Índice do frame atual
+   *
+   * @remarks
+   * Utiliza um acumulador para controlar o tempo e avançar os frames.
+   * Considera frameDelay adicional se configurado. Loop automático ao final.
    */
   public update(deltaTime: number): number {
     if (this._frames <= 1 || this._frameDuration <= 0) {

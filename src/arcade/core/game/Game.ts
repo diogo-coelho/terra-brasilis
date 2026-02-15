@@ -2,33 +2,27 @@ import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/core'
 
 /**
- * Classe singleton responsável pelo ciclo principal do jogo (game loop) e gerenciamento do canvas.
+ * Motor principal do jogo.
  *
  * @class Game
  * @author Diogo Coelho
- * @version 1.1.0
- * @since 2026-01-29
+ * @version 1.0.0
+ * @since 2024-06-20
  *
  * @description
- * A classe Game é o núcleo do Arcade Framework, responsável por:
- * - Inicializar e gerenciar o elemento HTMLCanvasElement e seu contexto 2D
- * - Controlar o game loop usando requestAnimationFrame
- * - Calcular e expor o deltaTime para animações fluidas e independentes do frame rate
- * - Delegar a renderização para a cena ativa via SceneManager
- * - Configurar propriedades do canvas (dimensões, suavização de imagem)
+ * Gerencia o loop principal do jogo, controle de canvas, deltaTime e renderização de cenas.
+ * Implementa o padrão Singleton para garantir uma única instância do motor.
  *
- * O Game garante um ciclo de atualização consistente (60 FPS), sincronizando o tempo e a renderização
- * de acordo com o hardware do usuário. É a porta de entrada para inicialização e execução do jogo.
+ * @remarks
+ * Utiliza requestAnimationFrame para criar um loop de jogo suave e eficiente.
+ * Calcula automaticamente o deltaTime para animações independentes da taxa de quadros.
  *
  * @example
- * // Inicialização típica:
- * const canvas = document.querySelector('canvas');
- * const game = Game.getInstance(canvas);
- * const sceneManager = SceneManager.getInstance();
- *
- * game.resizeScreen();
- * game.setImageSmoothingEnabled(false);
+ * ```typescript
+ * const game = Game.getInstance('gameCanvas');
+ * game.resizeScreen(800, 600);
  * game.startGame(sceneManager);
+ * ```
  */
 export default class Game {
   private static _canvas: HTMLCanvasElement
@@ -58,6 +52,18 @@ export default class Game {
     return Game._deltaTime
   }
 
+  /**
+   * Obtém ou cria a instância única do Game.
+   *
+   * @param {string} canvasId - ID do elemento canvas HTML
+   *
+   * @returns {Game} Instância única do Game
+   *
+   * @example
+   * ```typescript
+   * const game = Game.getInstance('myCanvas');
+   * ```
+   */
   public static getInstance(canvasId: string): Game {
     if (!Game._canvas || !Game._context) {
       this._instance = new Game()
@@ -69,25 +75,10 @@ export default class Game {
   }
 
   /**
-   * Redimensiona o canvas do jogo para as dimensões especificadas ou para o tamanho da janela.
+   * Redimensiona o canvas do jogo.
    *
-   * @param {number} [width] - Nova largura do canvas em pixels. Se omitido, usa a largura do documento
-   * @param {number} [height] - Nova altura do canvas em pixels. Se omitido, usa a altura do documento
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Este método é útil para adaptar o jogo a diferentes resoluções de tela ou para implementar
-   * responsividade. Quando width e height são omitidos, o canvas ocupa toda a área disponível
-   * do documento (document.body.clientWidth e clientHeight).
-   *
-   * @example
-   * // Redimensionar para tamanho customizado
-   * game.resizeScreen(1920, 1080);
-   *
-   * @example
-   * // Redimensionar para tamanho da janela
-   * game.resizeScreen();
+   * @param {number} [width] - Largura do canvas (usa largura do body se não especificada)
+   * @param {number} [height] - Altura do canvas (usa altura do body se não especificada)
    */
   public resizeScreen(width?: number, height?: number): void {
     Game._canvas.width = width || document.body.clientWidth
@@ -95,43 +86,24 @@ export default class Game {
   }
 
   /**
-   * Controla a suavização (anti-aliasing) de imagens renderizadas no canvas.
+   * Configura a suavização de imagem no contexto de renderização.
    *
-   * @param {boolean} value - `true` para habilitar suavização, `false` para pixel art nítido
-   *
-   * @returns {void}
+   * @param {boolean} value - true para habilitar, false para desabilitar
    *
    * @remarks
-   * Quando desabilitada (false), as imagens mantêm bordas nítidas e definidas, ideal para
-   * jogos de pixel art. Quando habilitada (true), aplica anti-aliasing, suavizando as bordas
-   * das imagens, adequado para gráficos de alta resolução.
-   *
-   * @example
-   * // Para jogos pixel art
-   * game.setImageSmoothingEnabled(false);
-   *
-   * @example
-   * // Para gráficos suavizados
-   * game.setImageSmoothingEnabled(true);
+   * Desabilitar pode ser útil para jogos pixel art para manter bordas nítidas.
    */
   public setImageSmoothingEnabled(value: boolean): void {
     Game._context.imageSmoothingEnabled = value
   }
 
   /**
-   * Método principal do loop de jogo que limpa o canvas e renderiza a cena atual.
+   * Executa um ciclo do loop principal do jogo.
    *
-   * @param {Scene} scene - Cena ativa que será renderizada no frame atual
-   *
-   * @returns {void}
+   * @param {Scene} scene - Cena a ser renderizada
    *
    * @remarks
-   * Este método é chamado a cada frame pelo loop do jogo (via requestAnimationFrame).
-   * Ele executa duas operações fundamentais:
-   * 1. Limpa todo o canvas usando clearRect
-   * 2. Delega a renderização para o método drawScene da cena ativa
-   *
-   * O deltaTime é passado para a cena permitindo animações independentes da taxa de frames.
+   * Limpa o canvas, desenha a cena atual e executa atualizações.
    */
   public main(scene: Scene): void {
     Game._context.clearRect(0, 0, Game._canvas.width, Game._canvas.height)
@@ -140,26 +112,16 @@ export default class Game {
   }
 
   /**
-   * Inicia o loop principal do jogo usando requestAnimationFrame.
+   * Inicia o loop principal do jogo.
    *
-   * @param {SceneManager} sceneManager - Gerenciador que controla as cenas do jogo
-   *
-   * @returns {void}
+   * @param {SceneManager} sceneManager - Gerenciador de cenas do jogo
    *
    * @remarks
-   * Este método inicializa o game loop recursivo que:
-   * 1. Atualiza o tempo e calcula o deltaTime
-   * 2. Renderiza a cena atual do SceneManager
-   * 3. Agenda o próximo frame via requestAnimationFrame
-   *
-   * O loop continua executando até que a página seja fechada ou o processo seja interrompido.
-   * A taxa de atualização é sincronizada com a taxa de refresh do monitor (tipicamente 60 FPS).
+   * Cria um loop infinito usando requestAnimationFrame que atualiza o tempo,
+   * renderiza a cena atual e solicita o próximo frame.
    *
    * @example
    * ```typescript
-   * const sceneManager = new SceneManager();
-   * sceneManager.setScenesMap([...]);
-   * sceneManager.setCurrentScene('boot');
    * game.startGame(sceneManager);
    * ```
    */
@@ -172,21 +134,6 @@ export default class Game {
     gameLoop()
   }
 
-  /**
-   * Calcula e atualiza o deltaTime baseado no tempo decorrido desde o último frame.
-   *
-   * @private
-   * @returns {void}
-   *
-   * @remarks
-   * Este método utiliza performance.now() para calcular com precisão o tempo decorrido
-   * entre frames. O deltaTime é convertido para segundos (dividido por 1000) e é usado
-   * para criar animações independentes da taxa de frames, garantindo movimento consistente
-   * mesmo em diferentes velocidades de renderização.
-   *
-   * A fórmula aplicada:
-   * deltaTime = (currentTime - lastTime) / 1000
-   */
   private static updateTime(): void {
     Game._currentTime = performance.now()
     Game._deltaTime = (Game._currentTime - Game._lastTime) / 1000
