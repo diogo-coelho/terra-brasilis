@@ -4,55 +4,24 @@ import { ButtonClickHandle, AlignedPosition, ColorOnHover } from '../../types'
 import { SceneManager } from '@/arcade/core'
 
 /**
- * Classe abstrata que define a estrutura base para botões interativos no jogo.
+ * Classe abstrata base para botões.
  *
- * @abstract
  * @class Button
- * @extends GameObject
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe Button implementa o padrão Template Method, fornecendo a estrutura fundamental
- * para todos os tipos de botões no jogo. Suas responsabilidades incluem:
- * - Gerenciar o texto/label exibido no botão
- * - Controlar estados visuais (cores padrão e hover)
- * - Integrar reprodução de efeitos sonoros
- * - Definir contratos para implementação de renderização e posicionamento
- * - Abstrair comportamento de clique para subclasses
+ * Define a estrutura base para todos os botões do jogo, incluindo
+ * rótulo, comportamento de hover, efeitos sonoros e métodos abstratos
+ * para renderização e posicionamento.
  *
- * Como classe abstrata, ela define métodos que devem ser implementados pelas subclasses:
- * - renderButton: Define como o botão é desenhado
- * - setPosition: Define como o botão é posicionado
- * - handleOnClick: Define o comportamento ao clicar
- *
- * O padrão ColorOnHover permite transições visuais suaves quando o mouse passa sobre o botão.
+ * @extends GameObject
  *
  * @remarks
- * Esta classe não pode ser instanciada diretamente. Use implementações concretas
- * como ButtonStandard ou crie sua própria subclasse.
+ * Classes concretas devem implementar renderButton, setPosition e handleOnClick.
  *
- * @example
- * ```typescript
- * class CustomButton extends Button {
- *   constructor(width: number, height: number, label: string) {
- *     super(width, height, label);
- *   }
- *
- *   renderButton(context: CanvasRenderingContext2D): void {
- *     // Implementação customizada de renderização
- *   }
- *
- *   setPosition({ canvas, x, y, align }: AlignedPosition): void {
- *     // Implementação de posicionamento
- *   }
- *
- *   handleOnClick({ event, scene, callback }: ButtonClickHandle): void {
- *     // Implementação de clique
- *   }
- * }
- * ```
+ * @see ButtonStandard
  */
 export default abstract class Button extends GameObject {
   private _label: string = ''

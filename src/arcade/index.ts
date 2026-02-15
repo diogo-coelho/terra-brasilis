@@ -23,19 +23,6 @@ import {
   InputStandard,
   TextStandard,
 } from './ui'
-
-/**
- * Módulo principal do Arcade, que agrupa as principais classes do motor de jogo.
- *
- * @author Diogo Coelho
- * @version 1.0.0
- * @since 2024-06-15
- *
- * @description
- * O módulo Arcade é o ponto de entrada para o motor de jogo,
- * fornecendo acesso às classes principais, como Game e SceneManager.
- *
- */
 export * as core from './core'
 export * as types from './types'
 export * as interfaces from './interfaces'
@@ -46,28 +33,21 @@ export * as sounds from './sounds'
 export * as images from './images'
 
 export const Arcade = {
-  /** core */
   Game: Game,
   GameObject: GameObject,
   GameSession: GameSession,
   SceneManager: SceneManager,
   Sprite: Sprite,
-  /** timer */
   Timer: Timer,
   GameCalendar: GameCalendar,
-  /** isometric */
   Scenario: Scenario,
   ScenarioMap: ScenarioMap,
   Tile: Tile,
   TileMap: TileMap,
   Unit: Unit,
-  /** events */
   GlobalEvents: GlobalEvents,
-  /** sounds */
   Sound: Sound,
-  /** images */
   Image: Image,
-  /** components ui */
   Components: {
     Button: Button,
     Input: Input,

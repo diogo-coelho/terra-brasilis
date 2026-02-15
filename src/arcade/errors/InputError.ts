@@ -1,15 +1,24 @@
 /**
- * Classe que representa erros relacionados a entradas de usuário.
+ * Erro customizado para erros de entrada.
  *
+ * @class InputError
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe InputError estende a classe Error
- * e representa erros específicos relacionados a
- * entradas de usuário no jogo.
+ * Classe de erro customizada para problemas relacionados a campos de entrada,
+ * validação e posicionamento de inputs.
  *
+ * @extends Error
+ *
+ * @remarks
+ * Utilizado quando parâmetros necessários para inputs não são fornecidos.
+ *
+ * @example
+ * ```typescript
+ * throw new InputError('É necessário informar a coordenada X');
+ * ```
  */
 export default class InputError extends Error {
   private _message: string

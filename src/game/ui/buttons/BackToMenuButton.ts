@@ -4,33 +4,40 @@ import { SceneManager } from '@/arcade/core'
 import { GameSceneState } from '@/game/enums'
 
 /**
- * Classe que representa o botão de voltar ao menu principal.
+ * Botão para retornar ao menu principal.
  *
+ * @class BackToMenuButton
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe BackToMenuButton é uma implementação concreta
- * da classe ButtonStandard, representando o botão
- * de voltar ao menu principal. Ela define o comportamento
- * específico ao clicar no botão, que é
- * navegar para a cena do menu principal.
+ * Botão que permite ao jogador voltar ao menu principal do jogo
+ * a partir de outras telas.
  *
- * @constructor
- * @param {string} label - O rótulo do botão.
+ * @extends Arcade.Components.ButtonStandard
  *
  * @example
- * const backToMenuButton = new BackToMenuButton(
- * 'Back to Menu',
- * );
+ * ```typescript
+ * const backButton = new BackToMenuButton('Voltar');
+ * ```
  *
+ * @see ButtonStandard
+ * @see GameSceneState
  */
 export default class BackToMenuButton extends Arcade.Components.ButtonStandard {
   constructor(label: string) {
     super(0, 0, label)
   }
 
+  /**
+   * Ação executada ao clicar no botão.
+   *
+   * @param {SceneManager} scene - Gerenciador de cenas
+   *
+   * @remarks
+   * Redireciona o jogador para a cena do menu principal.
+   */
   public onClick(scene: SceneManager): void {
     scene?.setCurrentScene(GameSceneState.MAIN_MENU)
   }

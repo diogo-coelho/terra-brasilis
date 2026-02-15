@@ -1,13 +1,24 @@
 /**
- * Classe que representa um erro genérico do servidor
+ * Erro customizado para erros do servidor.
  *
+ * @class ServerError
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10
+ * @since 2024-06-20
  *
- * A classe ServerError estende a classe Error do JavaScript e é usada para
- * representar erros genéricos do servidor.
+ * @description
+ * Classe de erro customizada para erros relacionados ao servidor HTTP
+ * e configurações da aplicação.
  *
+ * @extends Error
+ *
+ * @remarks
+ * Captura e armazena o stack trace para facilitar o debug.
+ *
+ * @example
+ * ```typescript
+ * throw new ServerError('Falha ao iniciar o servidor');
+ * ```
  */
 export default class ServerError extends Error {
   public _stackTrace?: string

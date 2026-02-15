@@ -2,8 +2,33 @@ import Sprite from '@/arcade/core/Sprite'
 import Image from '@/arcade/images/Image'
 import TileMap from '@/arcade/core/isometric/TileMap'
 import Tile from '@/arcade/core/isometric/Tile'
-import { UnitMobileState } from '@/arcade/enums'
+import { UnitMobileState, UnitDirection } from '@/arcade/enums'
 
+/**
+ * Representa uma unidade no jogo isométrico.
+ *
+ * @class Unit
+ * @author Diogo Coelho
+ * @version 1.0.0
+ * @since 2024-06-20
+ *
+ * @description
+ * Classe base para unidades móveis no jogo, incluindo navios, soldados, etc.
+ * Gerencia movimentação, direção, seleção e interação com o mapa de tiles.
+ *
+ * @extends Sprite
+ *
+ * @remarks
+ * Suporta 8 direções de movimento (N, NE, E, SE, S, SW, W, NW) e dois modos
+ * de mobilidade: caminhante (terrestre) e navegador (marítimo).
+ *
+ * @example
+ * ```typescript
+ * const ship = new Unit(64, 64, 4, 200, shipImage);
+ * ship.unitSpeed = 100;
+ * ship.mobileState = UnitMobileState.NAVIGATOR;
+ * ```
+ */
 export default class Unit extends Sprite {
   protected _unitSpeed: number = 0
   protected _hasShadow: boolean = true
@@ -12,6 +37,7 @@ export default class Unit extends Sprite {
   protected _mobileState: UnitMobileState = UnitMobileState.NONE
   protected _destinationTile: Tile | null = null
   protected _isSelected: boolean = false
+  protected _currentDirection: UnitDirection = UnitDirection.SOUTHWEST
 
   constructor(
     width: number,
@@ -71,6 +97,16 @@ export default class Unit extends Sprite {
     return this._mobileState
   }
 
+  public get currentDirection(): UnitDirection {
+    return this._currentDirection
+  }
+
+  /**
+   * Renderiza a unidade no canvas.
+   *
+   * @param {HTMLCanvasElement} canvas - Elemento canvas
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização 2D
+   */
   public drawUnit(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
@@ -78,10 +114,18 @@ export default class Unit extends Sprite {
     this.draw(context, this._hasShadow)
   }
 
+  /**
+   * Atualiza o estado da unidade incluindo movimentação.
+   *
+   * @param {number} deltaTime - Tempo decorrido desde a última atualização em segundos
+   *
+   * @remarks
+   * Calcula direção do movimento, atualiza posição baseado em velocidade e deltaTime,
+   * e verifica se a unidade chegou ao destino. Atualiza automaticamente a direção
+   * do sprite para corresponder à direção do movimento.
+   */
   public updateUnit(
     deltaTime: number,
-    tileMap: TileMap,
-    canvas: HTMLCanvasElement
   ): void {
     // Lógica de movimentação e atualização do estado da unidade
     if (this.targetTileX === 0 && this.targetTileY === 0) return;
@@ -102,6 +146,10 @@ export default class Unit extends Sprite {
       this._targetTileY = 0;
       return;
     }
+
+    // Atualiza a direção da unidade baseada no vetor de movimento
+    this._currentDirection = this.calculateDirection(directionX, directionY);
+    this.updateSpriteDirection();
 
     // Normaliza a direção e multiplica pela velocidade e deltaTime
     const moveX = (directionX / distance) * this._unitSpeed * deltaTime;
@@ -131,6 +179,17 @@ export default class Unit extends Sprite {
     }
   }
 
+  /**
+   * Gerencia evento de click na unidade.
+   *
+   * @param {MouseEvent} event - Evento de mouse
+   * @param {TileMap} tileMap - Mapa de tiles do cenário
+   * @param {HTMLCanvasElement} canvas - Elemento canvas
+   *
+   * @remarks
+   * Se a unidade está selecionada e o click não é sobre ela, define o destino.
+   * Caso contrário, altera o estado de seleção.
+   */
   public onClick(
     event: MouseEvent,
     tileMap: TileMap,
@@ -148,6 +207,74 @@ export default class Unit extends Sprite {
     this._targetTileY = tileY
   }
 
+  /**
+   * Calcula a direção baseada no vetor de movimento.
+   *
+   * @param {number} directionX - Componente X da direção
+   * @param {number} directionY - Componente Y da direção
+   *
+   * @returns {UnitDirection} Uma das 8 direções possíveis
+   *
+   * @remarks
+   * Converte o ângulo do vetor de movimento em uma das 8 direções discretas.
+   */
+  protected calculateDirection(directionX: number, directionY: number): UnitDirection {
+    // Calcula o ângulo em radianos (-PI a PI)
+    const angle = Math.atan2(directionY, directionX);
+    
+    // Converte para graus (0 a 360)
+    let degrees = (angle * 180) / Math.PI;
+    if (degrees < 0) degrees += 360;
+    
+    // Ajusta para que 0° seja o Norte (em vez de Leste)
+    // Subtrai 90° e normaliza
+    degrees = (degrees + 90) % 360;
+    
+    // Divide em 8 setores de 45° cada
+    // Adiciona 22.5° para centralizar os setores
+    const sector = Math.round((degrees + 22.5) / 45) % 8;
+    
+    return sector as UnitDirection;
+  }
+
+  /**
+   * Atualiza o offset do sprite para corresponder à direção atual.
+   *
+   * @remarks
+   * Ajusta qual linha da spritesheet deve ser usada baseado na direção.
+   */
+  protected updateSpriteDirection(): void {
+    const offsetY = this.getOffsetYForDirection(this._currentDirection);
+    this.setOffset(this.currentFrame * this.width, offsetY);
+  }
+
+  /**
+   * Calcula o offset Y na spritesheet para uma direção específica.
+   *
+   * @param {UnitDirection} direction - Direção da unidade
+   *
+   * @returns {number} Offset Y em pixels
+   *
+   * @remarks
+   * Assume que a spritesheet tem uma linha por direção na ordem: N, NE, E, SE, S, SW, W, NW.
+   */
+  protected getOffsetYForDirection(direction: UnitDirection): number {
+    // Por padrão, cada direção ocupa uma linha no spritesheet
+    // A ordem esperada é: N, NE, E, SE, S, SW, W, NW
+    return direction * this.height;
+  }
+
+  /**
+   * Define o tile de destino para a unidade.
+   *
+   * @param {MouseEvent} event - Evento de mouse
+   * @param {TileMap} tileMap - Mapa de tiles
+   * @param {HTMLCanvasElement} canvas - Elemento canvas
+   *
+   * @remarks
+   * Valida se o tile é transitável baseado no modo de mobilidade da unidade
+   * (walker para tiles walkable, navigator para tiles navigable).
+   */
   private setUnitDestination(
     event: MouseEvent,
     tileMap: TileMap,

@@ -11,56 +11,30 @@ import { GovernorGeneralNameInput } from '@/game/ui/inputs'
 import { BackToMenuButton, GoToGameButton } from '@/game/ui/buttons'
 
 /**
- * Cena de inserção do nome do Governador-Geral com campo de entrada interativo.
+ * Cena de inserção do nome do Governador-Geral.
  *
  * @class InsertNameScene
- * @extends SceneEvent
- * @implements Scene
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A InsertNameScene permite ao jogador personalizar sua experiência inserindo
- * o nome do Governador-Geral. Suas responsabilidades incluem:
- * - Exibir campo de entrada de texto interativo
- * - Renderizar background temático com 80% de opacidade
- * - Gerenciar estado de foco do campo de entrada
- * - Validar e armazenar nome digitado
- * - Fornecer botões de navegação (Voltar ao Menu, Iniciar Jogo)
- * - Atualizar botão "Iniciar Jogo" com o nome digitado
+ * Cena onde o jogador insere o nome do seu personagem (Governador-Geral).
+ * Exibe campo de input, imagem de fundo e botões de navegação.
  *
- * **Fluxo de Interação:**
- * 1. Jogador clica no campo de entrada
- * 2. Campo ativa com cursor piscante
- * 3. Jogador digita o nome
- * 4. Nome é automaticamente sincronizado com GoToGameButton
- * 5. Pressiona Enter ou clica em "Iniciar Jogo"
- * 6. Nome é enviado ao servidor e jogo inicia
+ * @extends SceneEvent
+ * @implements Scene
  *
- * **Componentes:**
- * - Campo de entrada: 450x40px, estilizado com tema do jogo
- * - Botões: 210x50px, alinhamento horizontal
- * - Background: Imagem temática com overlay
- *
- * **Eventos Tratados:**
- * - Mouse Move: Atualiza hover de input e botões
- * - Mouse Click: Ativa/desativa campo, clica em botões
- * - Keyboard: Digitação no campo de entrada
+ * @remarks
+ * - Valida entrada de texto com limite de caracteres
+ * - Permite voltar ao menu ou iniciar o jogo
+ * - Armazena nome do usuário no botão de iniciar
  *
  * @example
  * ```typescript
  * const insertNameScene = new InsertNameScene();
- * sceneManager.setScenesMap([{
- *   name: GameSceneState.INSERT_NAME,
- *   scene: insertNameScene
- * }]);
+ * sceneManager.addScene(GameSceneState.INSERT_NAME, insertNameScene);
  * ```
- *
- * @see Scene
- * @see GovernorGeneralNameInput
- * @see BackToMenuButton
- * @see GoToGameButton
  */
 export default class InsertNameScene extends SceneEvent implements Scene {
   private _title: string
@@ -84,22 +58,23 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Desenha a cena de inserção de nome.
-   * @param {HTMLCanvasElement} canvas - O canvas onde a cena será desenhada.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização do canvas.
-   * @param {number} deltaTime - O tempo decorrido desde o último frame.
-   * @returns {void}
+   * Renderiza a cena de inserção de nome.
+   *
+   * @param {HTMLCanvasElement} canvas - Canvas do jogo
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização
+   *
+   * @remarks
+   * Desenha fundo, título, campo de input e botões.
+   * Gerencia cursor do mouse baseado em hover.
    */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
-    /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
     this._backgroundImage.setImageAsCover(canvas)
     context.save()
     context.globalAlpha = 0.8
-    /** Desenhando a imagem de fundo */
     context.drawImage(
       this._backgroundImage.image as CanvasImageSource,
       0,
@@ -109,7 +84,6 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     )
     context.restore()
 
-    /** Escreve a frase centralizada */
     context.fillStyle = '#FFFFFF'
     context.font = '30px "Jersey 15", sans-serif'
     context.textAlign = 'center'
@@ -120,13 +94,11 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     context.strokeText(this._title, canvas.width / 2, 130)
     context.fillText(this._title, canvas.width / 2, 130)
 
-    /** Ajusta a posição do campo de entrada */
     this._input.setPosition({
       canvas,
       align: PositionState.VERTICAL,
       y: this._input.height + 150,
     })
-    /** Renderiza o campo de entrada */
     this._input.renderInputBox(context)
     this._shouldUsePointerCursor ||= this._input.shouldUsePointerCursor
     this._shouldUsePointerCursor ||= this._listButtons.buttons.some(
@@ -141,9 +113,13 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Manipula eventos de teclado.
-   * @param event - O evento de teclado.
-   * @param sceneManager - O gerenciador de cenas.
+   * Manipula eventos de teclado na cena.
+   *
+   * @param {KeyboardEvent} event - Evento de teclado
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Captura entrada de texto e atualiza o nome do usuário no botão.
    */
   public handleKeyboardEvent?(
     event: KeyboardEvent,
@@ -158,9 +134,13 @@ export default class InsertNameScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Manipula eventos de mouse.
-   * @param { MouseEvent } event - O evento de mouse.
-   * @param { SceneManager } scene - O gerenciador de cenas.
+   * Manipula eventos de mouse na cena.
+   *
+   * @param {MouseEvent} event - Evento de mouse
+   * @param {SceneManager} scene - Gerenciador de cenas
+   *
+   * @remarks
+   * Gerencia hover e click no input e nos botões.
    */
   public handleMouseEvent?(event: MouseEvent, scene: SceneManager): void {
     const canvas = this._canvas
@@ -185,10 +165,6 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     }
   }
 
-  /**
-   * Inicializa os botões da cena.
-   * @returns {void}
-   */
   private initializeButtons(): void {
     this._listButtons.setButtonsConfigurations({
       width: 210,
@@ -206,12 +182,7 @@ export default class InsertNameScene extends SceneEvent implements Scene {
     this._listButtons.addButton(goToGameButton)
   }
 
-  /**
-   * Define o nome do usuário no botão GoToGameButton.
-   * @returns {void}
-   */
   private setUserNameInButton(): void {
-    /** Atualiza o nome do usuário no botão GoToGameButton */
     const goToGameButton = this._listButtons.buttons.find(
       (btn) => btn instanceof GoToGameButton
     )

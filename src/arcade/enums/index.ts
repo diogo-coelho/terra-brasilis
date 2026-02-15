@@ -4,6 +4,7 @@ import KeyboardKey from './KeyboardKey'
 import KeyCodeState from './KeyCodeState'
 import PositionState from './PositionState'
 import UnitMobileState from './UnitMobileState'
+import UnitDirection from './UnitDirection'
 
 export {
   ErrorState,
@@ -12,4 +13,5 @@ export {
   KeyCodeState,
   PositionState,
   UnitMobileState,
+  UnitDirection,
 }

@@ -2,54 +2,30 @@ import { Image } from '@/arcade/images'
 import GameObject from '@/arcade/core/game/GameObject'
 
 /**
- * Componente visual avançado para sprites animados com suporte a spritesheets, animação automática e renderização otimizada.
+ * Representa um sprite animado do jogo.
  *
  * @class Sprite
- * @extends GameObject
  * @author Diogo Coelho
- * @version 1.1.0
- * @since 2026-01-29
+ * @version 1.0.0
+ * @since 2024-06-20
  *
  * @description
- * A classe Sprite gerencia:
- * - Carregamento e renderização de spritesheets
- * - Animação frame-by-frame automática (usando Frame)
- * - Sistema de offset para múltiplas animações no mesmo spritesheet
- * - Geração e cache de sombras dinâmicas
- * - Controle de visibilidade e escala (zoom)
- * - Posicionamento preciso no canvas
+ * Classe que gerencia sprites animados, incluindo animação de frames,
+ * renderização com sombra e controle de visibilidade. Extende GameObject
+ * para herdar propriedades básicas de objetos do jogo.
  *
- * Estende GameObject, herdando propriedades de posição e dimensão.
+ * @extends GameObject
  *
- * @param {Image} source - Imagem do spritesheet carregada
- * @param {number} width - Largura de cada frame em pixels
- * @param {number} height - Altura de cada frame em pixels
- * @param {number} frames - Número total de frames na animação
- * @param {number} offsetX - Posição X inicial no spritesheet
- * @param {number} offsetY - Posição Y inicial no spritesheet
- * @param {number} durationPerFrame - Duração total da animação em ms
+ * @remarks
+ * Sprites podem ter spritesheets associadas, animações baseadas em frames,
+ * e suporte a renderização de sombras dinâmicas.
  *
  * @example
- * // Sprite de personagem com 8 frames de animação
- * const playerSheet = new Image('assets/player-walk.png');
- * const player = new Sprite(playerSheet, 64, 64, 8, 0, 0, 800);
- * player.setPosition(100, 200);
- *
- * // No game loop
- * function update(time: number) {
- *   player.animate(time);
- *   player.draw(context, true); // Com sombra
- * }
- *
- * @example
- * // Múltiplas animações no mesmo spritesheet
- * const enemy = new Sprite(enemySheet, 48, 48, 4, 0, 0, 400);
- * enemy.setOffset(0, 48); // Troca para linha de ataque
- * enemy.shown = false; // Esconde
- * enemy.shown = true;  // Mostra
- *
- * @see GameObject
- * @see Image
+ * ```typescript
+ * const sprite = new Sprite(image, 64, 64, 4, 0, 0, 1000);
+ * sprite.setPosition(100, 200);
+ * sprite.draw(context, true);
+ * ```
  */
 export default class Sprite extends GameObject {
   private _spritesheet: Image | null = null
@@ -88,53 +64,19 @@ export default class Sprite extends GameObject {
   }
 
   /**
-   * Substitui a imagem do spritesheet por uma nova.
+   * Define a spritesheet do sprite.
    *
-   * @param {Image} source - Nova imagem do spritesheet
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Útil para trocar completamente o visual do sprite ou
-   * alternar entre diferentes spritesheets (ex: diferentes skins).
-   * A animação atual continua, mas usando a nova imagem.
-   *
-   * @example
-   * ```typescript
-   * const normalSkin = new Image('player-normal.png');
-   * const powerUpSkin = new Image('player-powered.png');
-   *
-   * sprite.setSpritesheet(normalSkin);
-   * // ... ao pegar power-up
-   * sprite.setSpritesheet(powerUpSkin);
-   * ```
+   * @param {Image} source - Imagem da spritesheet a ser utilizada
    */
   public setSpritesheet(source: Image): void {
     this._spritesheet = source
   }
 
   /**
-   * Define a posição de renderização do sprite no canvas.
+   * Define a posição do sprite no canvas.
    *
-   * @param {number} x - Coordenada X no canvas (em pixels)
-   * @param {number} y - Coordenada Y no canvas (em pixels)
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Define onde o sprite será desenhado no canvas.
-   * As coordenadas representam o canto superior esquerdo do sprite.
-   *
-   * @example
-   * ```typescript
-   * sprite.setPosition(100, 150);
-   * // Sprite renderizado em x=100, y=150
-   *
-   * // Centralizar no canvas
-   * const centerX = (canvas.width - sprite.width) / 2;
-   * const centerY = (canvas.height - sprite.height) / 2;
-   * sprite.setPosition(centerX, centerY);
-   * ```
+   * @param {number} x - Coordenada X
+   * @param {number} y - Coordenada Y
    */
   public setPosition(x: number, y: number): void {
     this.positionX = x
@@ -142,38 +84,10 @@ export default class Sprite extends GameObject {
   }
 
   /**
-   * Define o deslocamento (offset) dentro do spritesheet.
+   * Define o deslocamento (offset) na spritesheet.
    *
-   * @param {number} offsetX - Posição X no spritesheet (em pixels)
-   * @param {number} offsetY - Posição Y no spritesheet (em pixels)
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Permite navegar para diferentes regiões do spritesheet,
-   * essencial para trocar entre diferentes animações.
-   *
-   * **Importante:**
-   * - offsetX é sobrescrito pela animação frame-by-frame
-   * - offsetY normalmente define qual "linha" de animação usar
-   * - Use múltiplos de width/height para alinhamento perfeito
-   *
-   * @example
-   * ```typescript
-   * // Spritesheet organizado:
-   * // Linha 0 (Y=0):  Walk animation (4 frames)
-   * // Linha 1 (Y=64): Jump animation (3 frames)
-   * // Linha 2 (Y=128): Attack animation (5 frames)
-   *
-   * // Selecionar animação de walk
-   * sprite.setOffset(0, 0);
-   *
-   * // Selecionar animação de jump
-   * sprite.setOffset(0, 64);
-   *
-   * // Selecionar animação de attack
-   * sprite.setOffset(0, 128);
-   * ```
+   * @param {number} offsetX - Deslocamento horizontal em pixels
+   * @param {number} offsetY - Deslocamento vertical em pixels
    */
   public setOffset(offsetX: number, offsetY: number): void {
     this._offsetX = offsetX
@@ -181,37 +95,12 @@ export default class Sprite extends GameObject {
   }
 
   /**
-   * Atualiza a animação do sprite baseado no tempo decorrido.
+   * Anima o sprite atualizando o frame baseado no deltaTime.
    *
-   * @param {number} elapsedTime - Timestamp atual em milissegundos
-   *
-   * @returns {void}
+   * @param {number} deltaTime - Tempo decorrido desde o último frame em segundos
    *
    * @remarks
-   * Este método deve ser chamado a cada frame do game loop.
-   * Compara o tempo atual com o timer interno do Frame para
-   * determinar quando avançar para o próximo quadro da animação.
-   *
-   * **Como Funciona:**
-   * 1. Verifica se o tempo atual >= frameTimer
-   * 2. Se sim, avança para o próximo frame
-   * 3. Atualiza offsetX automaticamente
-   * 4. Reinicia do primeiro frame ao chegar no último
-   *
-   * **Importante:**
-   * - Passe o deltaTime (tempo decorrido desde o último frame) como parâmetro
-   * - Chamadas frequentes garantem animação suave
-   * - Não anima se frames <= 1
-   *
-   * @example
-   * ```typescript
-   * // No game loop
-   * function gameLoop(deltaTime: number) {
-   *   sprite.animate(deltaTime);
-   *   sprite.draw(context, true);
-   *   requestAnimationFrame(gameLoop);
-   * }
-   * ```
+   * Calcula qual frame deve ser exibido e atualiza o offset X na spritesheet.
    */
   public animate(deltaTime: number): void {
     if (!this._frames) return
@@ -221,48 +110,19 @@ export default class Sprite extends GameObject {
   }
 
   /**
-   * Renderiza o sprite (e opcionalmente sua sombra) no canvas.
+   * Renderiza o sprite no canvas.
    *
-   * @param {CanvasRenderingContext2D} context - Contexto 2D do canvas
-   * @param {boolean} drawShadow - Se `true`, renderiza sombra abaixo do sprite
-   *
-   * @returns {void}
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização 2D do canvas
+   * @param {boolean} drawShadow - Define se deve desenhar a sombra do sprite
    *
    * @remarks
-   * Este é o método principal de renderização que:
-   * - Verifica se o sprite está visível (shown = true)
-   * - Gera sombra se solicitado (apenas uma vez, depois usa cache)
-   * - Desenha a sombra com 10% de opacidade
-   * - Renderiza o sprite na posição atual
-   *
-   * **Geração de Sombra:**
-   * - Cria canvas temporário do tamanho do frame
-   * - Copia o sprite e converte para preto
-   * - Preserva canal alpha para transparência
-   * - Cache da sombra para performance
-   *
-   * **Performance:**
-   * - Sombra gerada apenas uma vez
-   * - Usa drawImage otimizado do canvas
-   * - Respeita zoomLevel para escala
+   * A sombra é gerada dinamicamente convertendo a imagem para preto e aplicando
+   * transparência. A sombra é cache para melhorar a performance.
    *
    * @example
    * ```typescript
-   * // Renderização básica sem sombra
-   * sprite.draw(context, false);
-   *
-   * // Renderização com sombra
-   * sprite.draw(context, true);
-   *
-   * // No game loop completo
-   * function render() {
-   *   context.clearRect(0, 0, canvas.width, canvas.height);
-   *
-   *   // Renderizar múltiplos sprites
-   *   player.draw(context, true);
-   *   enemies.forEach(e => e.draw(context, true));
-   *   items.forEach(i => i.draw(context, false));
-   * }
+   * sprite.draw(context, true); // Com sombra
+   * sprite.draw(context, false); // Sem sombra
    * ```
    */
   public draw(context: CanvasRenderingContext2D, drawShadow: boolean): void {

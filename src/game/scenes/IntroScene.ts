@@ -12,46 +12,30 @@ import logoImage from '@/arcade/assets/images/tb_logo.png'
 import { GameSceneState } from '@/game/enums'
 
 /**
- * Cena de introdução com animação do logo e transição para o menu principal.
+ * Cena de introdução do jogo.
  *
  * @class IntroScene
- * @extends SceneEvent
- * @implements Scene
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A IntroScene apresenta a identidade visual do jogo Terra Brasilis, sendo responsável por:
- * - Exibir imagem de fundo temática com opacidade reduzida (0.6)
- * - Animar o logo descendo suavemente de fora da tela até posição centralizada
- * - Manter reprodução da música tema em loop
- * - Aguardar tecla Enter para prosseguir ao menu principal
- * - Exibir mensagem "Pressione Enter para iniciar"
+ * Cena de introdução que exibe o logo do jogo com animação de entrada,
+ * imagem de fundo e música temática. Aguarda Enter para prosseguir.
  *
- * **Animação do Logo:**
- * - Posição inicial: Acima da tela (Y negativo)
- * - Posição final: Centralizado com offset -100px
- * - Velocidade: 100 pixels/segundo
- * - Interpolação suave usando deltaTime
+ * @extends SceneEvent
+ * @implements Scene
  *
- * **Elementos Visuais:**
- * - Background: Imagem temática com 60% de opacidade
- * - Logo: Redimensionado para 500px de largura mantendo proporção
- * - Texto: Fonte Jersey 15, 30px, com outline preto
+ * @remarks
+ * - Logo desce suavemente do topo da tela
+ * - Música de fundo em loop
+ * - Transita para MainMenuScene ao pressionar Enter
  *
  * @example
  * ```typescript
  * const introScene = new IntroScene();
- * sceneManager.setScenesMap([{
- *   name: GameSceneState.INTRO,
- *   scene: introScene
- * }]);
+ * sceneManager.addScene(GameSceneState.INTRO, introScene);
  * ```
- *
- * @see Scene
- * @see SceneEvent
- * @see GameSceneState
  */
 export default class IntroScene extends SceneEvent implements Scene {
   private _phrase: string
@@ -69,42 +53,33 @@ export default class IntroScene extends SceneEvent implements Scene {
     this._logoImage = new Image(logoImage)
   }
 
-  /**
-   * Método chamado ao entrar na cena.
-   * Inicia a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onEnter(): void {
-    /** Inicia a reprodução do som de fundo */
     this.startBackgroundSound()
   }
 
-  /**
-   * Método chamado ao sair da cena.
-   * Para a reprodução do som de fundo.
-   * @returns {void}
-   */
   public onExit(): void {
-    /** Para a reprodução do som de fundo */
     this._backgroundSound.stop()
   }
 
   /**
-   * Desenha a cena de introdução no canvas.
-   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena será desenhada.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
+   * Renderiza a cena de introdução.
+   *
+   * @param {HTMLCanvasElement} canvas - Canvas do jogo
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização
+   * @param {number} deltaTime - Tempo decorrido desde o último frame
+   *
+   * @remarks
+   * Desenha fundo semitransparente, logo animado e texto de instrução.
    */
   public drawScene(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    /** Ajusta a imagem de fundo para cobrir todo o canvas */
     if (!this._backgroundImage.isLoaded()) return
     this._backgroundImage.setImageAsCover(canvas)
     context.save()
     context.globalAlpha = 0.6
-    /** Desenhando a imagem de fundo */
     context.drawImage(
       this._backgroundImage.image as CanvasImageSource,
       0,
@@ -114,11 +89,9 @@ export default class IntroScene extends SceneEvent implements Scene {
     )
     context.restore()
 
-    /** Ajusta a imagem do logo */
     if (!this._logoImage.isLoaded()) return
     this.setImageLogoSetup(canvas)
     this._logoImage.updatePosition(deltaTime)
-    /** Desenhando a imagem do logo */
     context.drawImage(
       this._logoImage.image as CanvasImageSource,
       this._logoImage.positionX,
@@ -127,7 +100,6 @@ export default class IntroScene extends SceneEvent implements Scene {
       this._logoImage.image!.height
     )
 
-    /** Escreve a frase centralizada */
     context.fillStyle = '#ffffff'
     context.font = '30px "Jersey 15", sans-serif'
     context.lineWidth = 3
@@ -142,9 +114,13 @@ export default class IntroScene extends SceneEvent implements Scene {
   }
 
   /**
-   * Lida com eventos de teclado na cena de introdução.
-   * @param {KeyboardEvent} event - Evento de teclado capturado.
-   * @param {SceneManager} sceneManager - Gerenciador de cenas.
+   * Manipula eventos de teclado na cena de introdução.
+   *
+   * @param {KeyboardEvent} event - Evento de teclado
+   * @param {SceneManager} sceneManager - Gerenciador de cenas
+   *
+   * @remarks
+   * Pressionar Enter inicia a transição para MainMenuScene.
    */
   public handleKeyboardEvent(
     event: KeyboardEvent,
@@ -156,11 +132,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     this.onKeyboardEvent(event, this.getEventPayload(payload))
   }
 
-  /**
-   * Lida com eventos de mouse na cena de introdução.
-   * @param {(...args: any[]) => any} payload - Função callback a ser associada à ação nomeada.
-   * @returns {EventPayload} Mapa contendo a ação nomeada associada ao payload.
-   */
   private getEventPayload(payload: (...args: any[]) => any): EventPayload {
     return {
       eventType: EventListenerState.KEY_DOWN,
@@ -169,11 +140,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     }
   }
 
-  /**
-   * Inicia a reprodução do som de fundo da cena de introdução.
-   * @private
-   * @returns {void}
-   */
   private startBackgroundSound(): void {
     if (this._initializedSoundSetup) return
     this._backgroundSound.loop(true)
@@ -182,12 +148,6 @@ export default class IntroScene extends SceneEvent implements Scene {
     this._initializedSoundSetup = true
   }
 
-  /**
-   * Configura a imagem do logo na cena de introdução.
-   * @param {HTMLCanvasElement} canvas - O elemento HTMLCanvasElement onde a cena é desenhada.
-   * @private
-   * @returns {void}
-   */
   private setImageLogoSetup(canvas: HTMLCanvasElement): void {
     if (!this._initializedLogoSetup) {
       this._logoImage.resizeProportionally({ targetWidth: 500 })

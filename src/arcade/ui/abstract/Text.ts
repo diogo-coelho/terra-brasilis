@@ -2,29 +2,21 @@ import { Game } from '@/arcade/core'
 import GameObject from '../../core/game/GameObject'
 
 /**
- * Classe representando um objeto de texto renderizável.
+ * Classe abstrata base para elementos de texto.
  *
  * @class Text
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe Text encapsula funcionalidades básicas para criação e renderização de texto
- * em um contexto de canvas 2D. Permite definir o conteúdo do texto, estilo de fonte,
- * tamanho e cor, e fornece um método para desenhar o texto na tela.
- *
- * @param {string} text - O conteúdo do texto a ser exibido.
- *
- * @example
- * // Criação e renderização de texto
- * const myText = new Text("Hello, Arcade!");
- * myText.drawText(context, 100, 50);
+ * Define a estrutura base para renderização de texto no jogo,
+ * gerenciando conteúdo, fonte, tamanho e cor.
  *
  * @remarks
- * Esta classe pode ser expandida para incluir mais funcionalidades,
- * como alinhamento de texto, múltiplas linhas, sombras, etc.
+ * Classes concretas devem implementar o método drawText para renderização.
  *
+ * @see TextStandard
  */
 export default abstract class Text {
   protected _text: string = ''

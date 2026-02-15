@@ -9,49 +9,32 @@ import { SoundError } from '../errors'
 import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
 
 /**
- * Implementação concreta de campo de entrada de texto com cursor piscante e validação.
+ * Implementação padrão de campo de entrada de texto.
  *
  * @class InputStandard
- * @extends Input
- * @implements InputEvent
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
  *
  * @description
- * A classe InputStandard fornece uma implementação completa de campo de entrada de texto com:
- * - Cursor piscante animado quando em foco
- * - Limitação automática de caracteres baseada na largura
- * - Feedback sonoro ao digitar
- * - Suporte a teclas especiais (Backspace, Enter)
- * - Estados visuais (hover, foco)
- * - Renderização com fonte e estilo personalizados
- * - Bordas estilizadas
+ * Classe que implementa um campo de entrada de texto interativo com
+ * cursor piscante, som de digitação, efeitos de hover e validação
+ * de tamanho máximo.
  *
- * O campo calcula automaticamente o número máximo de caracteres que cabem
- * baseado na largura fornecida (aprox. 11.25 pixels por caractere).
- *
- * Possui som padrão de digitação pré-carregado que toca a cada tecla pressionada.
+ * @extends Input
  *
  * @remarks
- * O cursor pisca a cada 500ms quando o campo está em foco.
- * Pressionar Enter desativa o campo e executa callback opcional.
+ * - Suporta limitação automática de caracteres baseada na largura
+ * - Cursor piscante quando o campo está ativo
+ * - Feedback sonoro ao digitar
+ * - Alinhamento automático vertical ou horizontal
  *
  * @example
  * ```typescript
- * const input = new InputStandard(300, 40);
- * input.backgroundColor = '#1a1a1a';
- * input.backgroundColorOnHover = '#2a2a2a';
- * input.color = '#FFFFFF';
- * input.borderColor = '#555';
- * input.fontSize = 18;
- * input.font = 'Arial';
- *
- * input.setPosition({
- *   canvas: myCanvas,
- *   align: PositionState.VERTICAL,
- *   y: 200
- * });
+ * const nameInput = new InputStandard(300, 50);
+ * nameInput.setPosition({ canvas, y: 200, align: PositionState.VERTICAL });
+ * nameInput.renderInputBox(context);
+ * nameInput.handleKeyboardEvent(event);
  * ```
  */
 export default class InputStandard extends Input implements InputEvent {
@@ -115,8 +98,12 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Renderiza o campo de entrada na tela.
-   * @param {CanvasRenderingContext2D} context - O contexto de renderização 2D do canvas.
+   * Renderiza o campo de entrada no canvas.
+   *
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização
+   *
+   * @remarks
+   * Desenha o retângulo de fundo, borda, texto e cursor piscante quando ativo.
    */
   public renderInputBox(context: CanvasRenderingContext2D): void {
     context.fillStyle = this.backgroundColor || '#000'
@@ -134,7 +121,6 @@ export default class InputStandard extends Input implements InputEvent {
       this.positionY + this.height / 2
     )
 
-    /** Desenha o cursor piscante */
     if (this.isTyping && this.cursorVisible) {
       const textWidth = context.measureText(this.inputText).width
       const cursorX = this.positionX + this.width / 2 + textWidth / 2
@@ -147,9 +133,17 @@ export default class InputStandard extends Input implements InputEvent {
   }
 
   /**
-   * Define a posição do campo de entrada na tela.
-   * @param {AlignedPosition} param0 - Objeto contendo as propriedades para posicionamento alinhado.
-   * @returns {void}
+   * Define a posição do campo de entrada.
+   *
+   * @param {AlignedPosition} options - Configuração de posicionamento
+   * @param {HTMLCanvasElement} options.canvas - Canvas de referência
+   * @param {number} [options.x] - Coordenada X
+   * @param {number} [options.y] - Coordenada Y
+   * @param {PositionState} [options.align] - Tipo de alinhamento
+   *
+   * @throws {InputError} Quando nenhuma coordenada é fornecida sem alinhamento
+   * @throws {InputError} Quando alinhamento vertical é usado sem Y
+   * @throws {InputError} Quando alinhamento horizontal é usado sem X
    */
   public setPosition({ canvas, x, y, align }: AlignedPosition): void {
     if (align) {
@@ -176,12 +170,6 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
-  /**
-   * Verifica se o mouse está sobre o campo de entrada.
-   * @param {number} xCoords - Coordenada X do mouse.
-   * @param {number} yCoords - Coordenada Y do mouse.
-   * @returns {boolean} - Retorna true se o mouse estiver sobre o campo de entrada, caso contrário, false.
-   */
   public isMouseOverInput(xCoords: number, yCoords: number): boolean {
     return (
       xCoords >= this.positionX &&
@@ -190,47 +178,19 @@ export default class InputStandard extends Input implements InputEvent {
       yCoords <= this.positionY + this.height
     )
   }
-
   /**
-   * Manipula o evento de movimento do mouse.
-   * @param {MouseEvent} event - O evento de movimento do mouse.
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o evento ocorreu.
-   * @param {Callback} [callback] - Função de retorno de chamada opcional a ser executada após o tratamento do evento.
-   */
-  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
+   * Manipula eventos de click no campo de entrada.
+   *
+   * @param {MouseEvent} event - Evento de click
+   * @param {Callback} [callback] - Função opcional a executar
+   *
+   * @remarks
+   * Ativa/desativa o modo de digitação e cursor piscante conforme o click.
+   */  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
     callback?.()
   }
 
-  /**
-   * Manipula evento de clique do mouse para ativar/desativar o campo de entrada.
-   *
-   * @param {MouseEvent} event - Evento de clique do mouse
-   * @param {Callback} [callback] - Função executada ao ativar o campo
-   *
-   * @returns {void}
-   *
-   * @remarks
-   * Comportamento baseado na posição do clique:
-   *
-   * **Clique DENTRO do campo:**
-   * - Ativa o estado de digitação (isTyping = true)
-   * - Torna o cursor visível (cursorVisible = true)
-   * - Inicia animação de cursor piscante
-   * - Executa callback opcional
-   *
-   * **Clique FORA do campo:**
-   * - Desativa o estado de digitação (isTyping = false)
-   * - Oculta o cursor (cursorVisible = false)
-   * - Para animação de cursor piscante
-   *
-   * @example
-   * ```typescript
-   * input.handleMouseClick(event, () => {
-   *   console.log('Campo ativado para digitação');
-   * });
-   * ```
-   */
   public handleMouseClick(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
     const isOnHover = this.isMouseOverInput(event.x, event.y)
@@ -250,28 +210,12 @@ export default class InputStandard extends Input implements InputEvent {
    * Manipula eventos de teclado para entrada de texto.
    *
    * @param {KeyboardEvent} event - Evento de teclado
-   * @param {Callback} [callback] - Função opcional executada ao pressionar Enter
-   *
-   * @returns {void}
+   * @param {Callback} [callback] - Função a executar ao pressionar Enter
    *
    * @remarks
-   * Este método processa diferentes tipos de teclas:
-   *
-   * **Backspace**: Remove o último caractere do texto
-   * **Enter**: Desativa o campo e executa callback
-   * **Caracteres (length === 1)**:
-   * - Adiciona ao texto se não exceder máximo de caracteres
-   * - Toca som de digitação
-   *
-   * Só processa eventos se o campo estiver ativo (isTyping = true).
-   * O limite de caracteres é calculado automaticamente baseado na largura.
-   *
-   * @example
-   * ```typescript
-   * input.handleKeyboardEvent(event, () => {
-   *   console.log('Enter pressionado com texto:', input.inputText);
-   * });
-   * ```
+   * - Backspace: remove último caractere
+   * - Caracteres normais: adicionados ao texto (até o limite)
+   * - Enter: desativa digitação e executa callback
    */
   public handleKeyboardEvent(event: KeyboardEvent, callback?: Callback): void {
     if (!this.isTyping) return
@@ -288,31 +232,16 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
-  /**
-   * Define o alinhamento vertical do campo de entrada.
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o campo de entrada está sendo posicionado.
-   * @param {number} y - A coordenada Y para o alinhamento vertical.
-   */
   private setVerticalAlign(canvas: HTMLCanvasElement, y: number): void {
     this.positionX = canvas.width / 2 - this.width / 2
     this.positionY = y
   }
 
-  /**
-   * Define o alinhamento horizontal do campo de entrada.
-   * @param {HTMLCanvasElement} canvas - O elemento canvas onde o campo de entrada está sendo posicionado.
-   * @param {number} x - A coordenada X para o alinhamento horizontal.
-   */
   private setHorizontalAlign(canvas: HTMLCanvasElement, x: number): void {
     this.positionY = canvas.height / 2 - this.height / 2
     this.positionX = x
   }
 
-  /**
-   * Aplica o efeito de hover no campo de entrada.
-   * @param {MouseEvent} event - O evento de mouse.
-   *
-   */
   private applyHoverOnInput(event: MouseEvent): void {
     const hovering = this.isMouseOverInput(event.x, event.y)
     if (hovering) {
@@ -326,41 +255,16 @@ export default class InputStandard extends Input implements InputEvent {
     }
   }
 
-  /**
-   * Inicia a animação de cursor piscante.
-   *
-   * @private
-   * @returns {void}
-   *
-   * @remarks
-   * Cria um intervalo que alterna a visibilidade do cursor a cada 500ms,
-   * criando o efeito visual de piscar. O intervalo é armazenado em blinkingTimer
-   * para poder ser cancelado posteriormente.
-   */
   private blinkingCursor(): void {
     this.blinkingTimer = setInterval(() => {
       this.cursorVisible = !this.cursorVisible
     }, 500)
   }
 
-  /**
-   * Para a animação de cursor piscante.
-   *
-   * @private
-   * @returns {void}
-   *
-   * @remarks
-   * Limpa o intervalo criado por blinkingCursor(), interrompendo a animação.
-   * Deve ser chamado quando o campo perde o foco ou é desativado.
-   */
   private disableBlinkingCursor(): void {
     clearInterval(this.blinkingTimer)
   }
 
-  /**
-   * Toca um som, se não estiver já tocando.
-   * @param {Sound} sound - O objeto de som a ser reproduzido.
-   */
   private playSound(sound: Sound): void {
     if (!sound.isPlaying()) {
       sound.play().catch((error) => {

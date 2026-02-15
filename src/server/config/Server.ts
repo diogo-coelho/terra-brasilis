@@ -7,44 +7,26 @@ import ServerError from '@/server/error/ServerError'
 import { SERVER } from '@/server/consts/constants'
 
 /**
- * Servidor HTTP principal que integra Express, MongoDB e configurações da aplicação.
+ * Servidor HTTP principal da aplicação.
  *
  * @class Server
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10
+ * @since 2024-06-20
  *
  * @description
- * A classe Server orquestra a inicialização completa do servidor do jogo:
- * - Configura aplicação Express com middlewares e rotas
- * - Estabelece conexão com banco de dados MongoDB
- * - Cria servidor HTTP
- * - Normaliza e valida porta de execução
- * - Gerencia ciclo de vida do servidor e banco de dados
+ * Gerencia o servidor HTTP do jogo, incluindo configuração da aplicação Express,
+ * conexão com banco de dados e inicialização do servidor.
  *
- * **Processo de Inicialização:**
- * 1. Carrega variáveis de ambiente (.env)
- * 2. Inicializa aplicação Express (MainApplication)
- * 3. Cria instância de Database
- * 4. Normaliza porta (padrão: 3000)
- * 5. Conecta ao MongoDB
- * 6. Configura aplicação Express com porta e database
- * 7. Cria servidor HTTP
- *
- * A configuração é assíncrona para garantir que o banco de dados
- * esteja conectado antes de aceitar requisições.
- *
- * @throws {ServerError} Lança erro se falhar ao conectar com o banco de dados
+ * @remarks
+ * Esta classe integra a aplicação Express com o banco de dados MongoDB
+ * e configura o servidor HTTP na porta especificada.
  *
  * @example
  * ```typescript
  * const server = new Server();
- *
- * server.server.then(httpServer => {
- *   httpServer.listen(server.port, () => {
- *     console.log(`Servidor rodando na porta ${server.port}`);
- *   });
- * });
+ * const httpServer = await server.server;
+ * httpServer.listen(server.port);
  * ```
  *
  * @see MainApplication
@@ -72,18 +54,25 @@ export default class Server {
   }
 
   /**
-   * Método que fecha a conexão com o banco de dados
+   * Fecha a conexão com o banco de dados.
    *
+   * @remarks
+   * Deve ser chamado ao encerrar o servidor para garantir
+   * que as conexões sejam fechadas adequadamente.
    */
   public closeDatabase(): void {
     this._application.get('database').closeConnection()
   }
 
   /**
-   *  Método privado que normaliza a porta do servidor
+   * Normaliza o valor da porta para um formato válido.
    *
-   * @param {string, boolean, number} val - A porta a ser normalizada
-   * @returns {string, boolean, number} A porta normalizada
+   * @param {string} val - Valor da porta a ser normalizado
+   *
+   * @returns {string | number | boolean} Porta normalizada
+   *
+   * @remarks
+   * Converte string para número, valida se é uma porta válida (>= 0).
    */
   private normalizePort(val: string): string | number | boolean {
     const port: number = typeof val === 'string' ? parseInt(val, 10) : val
@@ -93,9 +82,15 @@ export default class Server {
   }
 
   /**
-   *  Método privado que configura a aplicação principal do servidor
+   * Configura a aplicação principal conectando ao banco de dados.
    *
-   * @returns {Promise<http.Server>} O servidor HTTP configurado
+   * @returns {Promise<http.Server>} Servidor HTTP configurado
+   *
+   * @throws {ServerError} Quando falha ao conectar ao banco de dados
+   *
+   * @remarks
+   * Estabelece conexão com MongoDB antes de criar o servidor HTTP.
+   * Define configurações da aplicação como porta e referência ao banco.
    */
   private async configureMainApplication(): Promise<http.Server> {
     return new Promise((resolve, reject) => {

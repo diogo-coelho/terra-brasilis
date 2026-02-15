@@ -6,60 +6,42 @@ import User from '@/server/model/UserModel'
 import MongoDBError from '@/server/error/MongoDB'
 
 /**
- * Controlador HTTP para operações relacionadas ao jogo.
+ * Controlador de rotas do jogo.
  *
  * @class GameController
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe GameController gerencia requisições HTTP relacionadas ao jogo:
- * - Iniciar novo jogo (servir interface HTML)
- * - Salvar nome do usuário no MongoDB
- * - Logging de operações com timestamps
- * - Tratamento de erros de banco de dados
+ * Gerencia as requisições HTTP relacionadas ao jogo, incluindo
+ * inicialização de novas partidas e cadastro de jogadores.
  *
- * **Endpoints Implementados:**
- *
- * **startNewGame (GET /):**
- * - Serve arquivo index.html do cliente
- * - Inicia interface do jogo no navegador
- * - Loga início de nova partida
- *
- * **insertUserName (POST /insert-username):**
- * - Recebe nome do usuário via JSON
- * - Cria documento no MongoDB
- * - Retorna confirmação ou erro
- * - Loga operação com timestamp
- *
- * Todos os métodos utilizam FormattedDate para logging consistente
- * e tratam erros de forma apropriada com mensagens descritivas.
- *
- * @throws {MongoDBError} Lança erro se falhar ao salvar no banco de dados
+ * @remarks
+ * Este controlador processa as requisições de início de jogo e
+ * persistência de dados de usuários no MongoDB.
  *
  * @example
  * ```typescript
  * const controller = new GameController();
- *
- * // Em uma rota Express
- * router.get('/', (req, res) => {
- *   controller.startNewGame(req, res);
- * });
- *
- * router.post('/insert-username', (req, res) => {
- *   controller.insertUserName(req, res);
- * });
+ * app.get('/new-game', controller.startNewGame);
  * ```
  *
  * @see User
- * @see FormattedDate
+ * @see GameRouter
  */
 export default class GameController {
+
   /**
    * Inicia um novo jogo.
-   * @param {Request} req - Solicitação HTTP
-   * @param {Response} res - Resposta HTTP
+   *
+   * @param {Request} req - Objeto de requisição Express
+   * @param {Response} res - Objeto de resposta Express
+   *
+   * @returns {Promise<void>}
+   *
+   * @remarks
+   * Envia o arquivo HTML principal do jogo para o cliente.
    */
   public async startNewGame(req: Request, res: Response): Promise<void> {
     console.log(`[ ${new FormattedDate().formatted} ] : Novo jogo iniciado`)
@@ -69,9 +51,24 @@ export default class GameController {
   }
 
   /**
-   * Insere o nome de usuário no banco de dados.
-   * @param {Request} req - Solicitação HTTP
-   * @param {Response} res - Resposta HTTP
+   * Salva o nome do usuário no banco de dados.
+   *
+   * @param {Request} req - Objeto de requisição Express contendo userName no body
+   * @param {Response} res - Objeto de resposta Express
+   *
+   * @returns {Promise<void>}
+   *
+   * @throws {MongoDBError} Quando falha ao salvar no banco de dados
+   *
+   * @remarks
+   * Recebe o nome do usuário via POST, cria um novo documento no MongoDB
+   * e retorna status 200 em caso de sucesso.
+   *
+   * @example
+   * ```typescript
+   * // POST /insert-username
+   * // Body: { userName: "Dom Pedro II" }
+   * ```
    */
   public async insertUserName(req: Request, res: Response): Promise<void> {
     try {

@@ -4,26 +4,32 @@ import { SceneManager } from '@/arcade/core'
 import GameSceneState from '@/game/enums/GameSceneState'
 
 /**
- * Classe que representa o botão de ir para o jogo.
+ * Botão para iniciar o jogo após inserir nome.
  *
+ * @class GoToGameButton
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-15
+ * @since 2024-06-20
  *
  * @description
- * A classe GoToGameButton é uma implementação concreta
- * da classe ButtonStandard, representando o botão
- * de ir para o jogo. Ela define o comportamento
- * específico ao clicar no botão, que é
- * navegar para a cena de novo jogo.
+ * Botão que salva o nome do jogador no banco de dados e inicia o jogo.
+ * Responsável por fazer a transição da tela de inserção de nome
+ * para a cena principal do jogo.
  *
- * @constructor
- * @param {string} label - O rótulo do botão.
+ * @extends Arcade.Components.ButtonStandard
+ *
+ * @remarks
+ * Realiza uma requisição HTTP POST para salvar o nome do usuário
+ * antes de iniciar o jogo.
  *
  * @example
- * const goToGameButton = new GoToGameButton(
- * 'Go to Game',
- * );
+ * ```typescript
+ * const goButton = new GoToGameButton('Iniciar Jogo');
+ * goButton.userName = 'Dom Pedro II';
+ * ```
+ *
+ * @see ButtonStandard
+ * @see GameSceneState
  */
 export default class GoToGameButton extends Arcade.Components.ButtonStandard {
   private _userName: string = ''
@@ -41,8 +47,12 @@ export default class GoToGameButton extends Arcade.Components.ButtonStandard {
   }
 
   /**
-   * Método chamado ao clicar no botão.
+   * Ação executada ao clicar no botão.
+   *
    * @param {SceneManager} scene - Gerenciador de cenas
+   *
+   * @remarks
+   * Salva o nome do usuário no banco de dados antes de iniciar o jogo.
    */
   public onClick(scene: SceneManager): void {
     this.saveUserNameInDataBase().then(() => {
@@ -51,8 +61,12 @@ export default class GoToGameButton extends Arcade.Components.ButtonStandard {
   }
 
   /**
-   * Salva o nome de usuário no banco de dados.
-   * @returns {Promise<void>} Promessa que resolve quando o nome é salvo
+   * Salva o nome do usuário no banco de dados.
+   *
+   * @returns {Promise<void>} Promise que resolve quando o nome é salvo
+   *
+   * @remarks
+   * Realiza uma requisição POST para o endpoint /insert-username.
    */
   private saveUserNameInDataBase(): Promise<void> {
     return new Promise((resolve) => {

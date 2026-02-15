@@ -6,45 +6,27 @@ import { ExpressApplication, IMainApplication } from '@/server/types/types'
 import GameRouter from '@/server/routes/GameRouter'
 
 /**
- * Configuração principal da aplicação Express com middlewares, rotas e arquivos estáticos.
+ * Aplicação Express principal.
  *
  * @class MainApplication
- * @implements IMainApplication
  * @author Diogo Coelho
  * @version 1.0.0
- * @since 2024-06-10
+ * @since 2024-06-20
  *
  * @description
- * A classe MainApplication centraliza toda configuração do Express:
- * - Inicializa instância do Express
- * - Configura middlewares (body-parser para JSON e URL-encoded)
- * - Define diretório de arquivos estáticos (cliente do jogo)
- * - Registra rotas da aplicação (GameRouter)
+ * Configura e gerencia a aplicação Express, incluindo middlewares,
+ * arquivos estáticos e rotas da API.
  *
- * **Middlewares Configurados:**
- * - body-parser.json(): Parse de requisições JSON
- * - body-parser.urlencoded(): Parse de formulários
- * - express.static(): Servir arquivos estáticos do cliente
+ * @implements IMainApplication
  *
- * **Arquivos Estáticos:**
- * O diretório configurado via EXPRESS_STATIC_FILES contém:
- * - HTML do cliente do jogo
- * - JavaScript bundled (Webpack)
- * - Assets (imagens, sons)
- *
- * **Rotas:**
- * Todas as rotas são gerenciadas por GameRouter:
- * - GET /: Inicia jogo
- * - POST /insert-username: Salva nome do jogador
+ * @remarks
+ * Esta classe centraliza toda a configuração do servidor Express,
+ * incluindo body-parser para processar requisições e servir arquivos estáticos.
  *
  * @example
  * ```typescript
  * const app = new MainApplication();
  * const expressApp = app.mainApplication;
- *
- * expressApp.listen(3000, () => {
- *   console.log('Servidor rodando!');
- * });
  * ```
  *
  * @see GameRouter
@@ -59,19 +41,15 @@ export default class MainApplication implements IMainApplication {
     this.routes()
   }
 
-  /**
-   * Método que retorna a aplicação
-   *
-   * @returns {express.Application} A aplicação Express configurada
-   *
-   */
   public get mainApplication(): ExpressApplication {
     return this._express
   }
 
   /**
-   * Método privado que configura os middlewares da aplicação
+   * Configura os middlewares da aplicação.
    *
+   * @remarks
+   * Adiciona body-parser para processar JSON e URL-encoded data.
    */
   private middlewares(): void {
     this._express.use(bodyParser.json())
@@ -79,8 +57,10 @@ export default class MainApplication implements IMainApplication {
   }
 
   /**
-   * Método privado que configura os arquivos estáticos da aplicação
+   * Configura o diretório de arquivos estáticos.
    *
+   * @remarks
+   * Serve arquivos estáticos do diretório especificado em variáveis de ambiente.
    */
   private staticFiles(): void {
     this._express.use(
@@ -89,8 +69,10 @@ export default class MainApplication implements IMainApplication {
   }
 
   /**
-   * Método privado que configura as rotas da aplicação
+   * Configura as rotas da aplicação.
    *
+   * @remarks
+   * Adiciona o roteador do jogo na raiz da aplicação.
    */
   private routes(): void {
     this._express.use('/', new GameRouter().router)
