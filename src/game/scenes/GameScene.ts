@@ -60,7 +60,7 @@ export default class GameScene extends SceneEvent implements Scene {
   public onEnter(): void {
     const gameEngine = arcadeEngine
 
-    this._scenarioOne = new ScenarioOne()
+    this._scenarioOne = new ScenarioOne(gameEngine.canvas, gameEngine.context)
     if (!this._scenarioOne) {
       throw new ScenarioError('ScenarioOne is not initialized.')
     }

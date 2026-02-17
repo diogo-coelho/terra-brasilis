@@ -106,14 +106,31 @@ export default class Tile extends Sprite {
    */
   public containsPoint(mouseX: number, mouseY: number): boolean {
     // Coordenadas relativas ao centro do tile
-    const relX = mouseX - (this.positionX + (this.width / 2));
-    const relY = mouseY - (this.positionY + (this.height / 2));
+    const centerX = this.positionX + (this.width / 2)
+    const centerY = this.positionY + (this.height / 2)
+    const relX = mouseX - centerX
+    const relY = mouseY - centerY
 
     // Verifica se está dentro do diamante isométrico
-    return (
-      Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <=
-      1
-    );
+    const result = (
+      Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <= 1
+    )
+    
+    // Debug: mostra quando um ponto está próximo mas não dentro
+    if (!result) {
+      const distance = Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2))
+      if (distance <= 1.2) {
+        console.log('Perto do tile:', {
+          tilePos: [this.positionX, this.positionY],
+          center: [centerX, centerY],
+          click: [mouseX, mouseY],
+          rel: [relX, relY],
+          distance
+        })
+      }
+    }
+    
+    return result
   }
 
   /**

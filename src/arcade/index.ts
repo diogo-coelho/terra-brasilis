@@ -11,6 +11,7 @@ import {
   Scenario,
   ScenarioMap,
   Unit,
+  Camera,
 } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
@@ -48,6 +49,7 @@ export const Arcade = {
   GlobalEvents: GlobalEvents,
   Sound: Sound,
   Image: Image,
+  Camera: Camera,
   Components: {
     Button: Button,
     Input: Input,

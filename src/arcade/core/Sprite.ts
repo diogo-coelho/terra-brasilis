@@ -34,6 +34,7 @@ export default class Sprite extends GameObject {
   private _shadow: CanvasRenderingContext2D | null = null
   private _zoomLevel: number = 1
   private _shown: boolean = true
+  private _isSelected: boolean = false
 
   constructor(
     source: Image,
@@ -92,6 +93,15 @@ export default class Sprite extends GameObject {
   public setOffset(offsetX: number, offsetY: number): void {
     this._offsetX = offsetX
     this._offsetY = offsetY
+  }
+
+
+  public set selected(value: boolean) {
+    this._isSelected = value
+  }
+
+  public get selected(): boolean {
+    return this._isSelected
   }
 
   /**
@@ -196,6 +206,63 @@ export default class Sprite extends GameObject {
         this.width * this._zoomLevel,
         this.height * this._zoomLevel
       )
+    }
+  }
+
+  public drawWithOutline(
+    context: CanvasRenderingContext2D, 
+    outlineColor: string, 
+    outlineWidth: number = 2
+  ): void {
+    if (this._shown && this.selected) {
+      // Cria canvas temporário para gerar silhueta colorida
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = this.width * this._zoomLevel;
+      tempCanvas.height = this.height * this._zoomLevel;
+      const tempContext = tempCanvas.getContext('2d');
+
+      if (!tempContext || !this._spritesheet) return;
+
+      // Desenha o sprite no canvas temporário
+      tempContext.drawImage(
+        this._spritesheet.image as HTMLImageElement,
+        this._offsetX,
+        this._offsetY,
+        this.width,
+        this.height,
+        0,
+        0,
+        this.width * this._zoomLevel,
+        this.height * this._zoomLevel
+      );
+
+      // Preenche com a cor mantendo apenas o canal alpha (transparência)
+      tempContext.globalCompositeOperation = 'source-in';
+      tempContext.fillStyle = outlineColor;
+      tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+      context.save();
+
+      // Gera offsets circulares baseados na largura do outline
+      const offsets: [number, number][] = [];
+      const steps = 8; // Número de pontos ao redor do círculo
+      
+      for (let angle = 0; angle < Math.PI * 2; angle += (Math.PI * 2) / steps) {
+        const dx = Math.round(Math.cos(angle) * outlineWidth);
+        const dy = Math.round(Math.sin(angle) * outlineWidth);
+        offsets.push([dx, dy]);
+      }
+
+      // Desenha a silhueta colorida em cada offset para criar o contorno
+      offsets.forEach(([dx, dy]) => {
+        context.drawImage(
+          tempCanvas,
+          this.positionX + dx,
+          this.positionY + dy
+        );
+      });
+
+      context.restore();
     }
   }
 }

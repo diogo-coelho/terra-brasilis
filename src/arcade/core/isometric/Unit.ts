@@ -36,7 +36,6 @@ export default class Unit extends Sprite {
   protected _targetTileY: number = 0
   protected _mobileState: UnitMobileState = UnitMobileState.NONE
   protected _destinationTile: Tile | null = null
-  protected _isSelected: boolean = false
   protected _currentDirection: UnitDirection = UnitDirection.SOUTHWEST
 
   constructor(
@@ -111,6 +110,9 @@ export default class Unit extends Sprite {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
+    if (this.selected) {
+      this.drawWithOutline(context, 'white')
+    }
     this.draw(context, this._hasShadow)
   }
 
@@ -195,7 +197,7 @@ export default class Unit extends Sprite {
     tileMap: TileMap,
     canvas: HTMLCanvasElement
   ): void {
-    if (this._isSelected && !this.isClickingOnUnit(event)) {
+    if (this.selected && !this.isClickingOnUnit(event)) {
       this.setUnitDestination(event, tileMap, canvas)
     } else {
       this.setSelected(event)
@@ -280,11 +282,13 @@ export default class Unit extends Sprite {
     tileMap: TileMap,
     canvas: HTMLCanvasElement
   ): void {
+    console.log('event.x', event.x, 'event.y', event.y)
     this._destinationTile = tileMap.getTileAtGridPosition(
       event.x,
       event.y,
       canvas
     )
+    console.log('Destino selecionado:', this._destinationTile)
     if (!this._destinationTile) return
 
     if (this._mobileState === UnitMobileState.NONE) return
@@ -305,10 +309,10 @@ export default class Unit extends Sprite {
   }
 
   private setSelected(event: MouseEvent): void {
-    if (this.isClickingOnUnit(event) && !this._isSelected) {
-      this._isSelected = true
+    if (this.isClickingOnUnit(event) && !this.selected) {
+      this.selected = true
     } else {
-      this._isSelected = false
+      this.selected = false
     }
   }
 

@@ -1,4 +1,4 @@
-import { Scenario, Tile, TileMap, Unit } from '@/arcade/core'
+import { Camera, Scenario, Tile, TileMap, Unit } from '@/arcade/core'
 import CaravelShipSpritesheet from '@/arcade/assets/images/tb_caravel_spritesheet.png'
 
 import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
@@ -36,12 +36,12 @@ export default class ScenarioOne extends Scenario {
   private _tileMapper: Map<number, Tile> | null = null
   private _caravelShip: Unit | null = null
 
-  constructor() {
+  constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     super()
     this._name = 'Scenario One'
     this._tileMapper = new TileMapper().mapper
     this._caravelShip = new CaravelShip(CaravelShipSpritesheet)
-    this.createScenario()
+    this.createScenario(canvas)
   }
 
   /**
@@ -51,11 +51,18 @@ export default class ScenarioOne extends Scenario {
    * Inicializa o mapa de tiles usando GridScenarioOne e posiciona
    * a caravela na posição inicial (620, 125).
    */
-  private createScenario(): void {
+  private createScenario(
+    canvas: HTMLCanvasElement, 
+  ): void {
+    const camera = new Camera(canvas.width, canvas.height);
+
     const grid = GridScenarioOne.map((row) =>
       row.map((key) => this._tileMapper?.get(key)?.clone())
     )
     this.worldMap = new TileMap(grid as Tile[][], 128, 64)
+    this.worldMap.renderOnlyInnerSquare = false
+    this.worldMap.camera = camera;
+    this.worldMap.setMinAndMaxWorldXAndY(canvas);
 
     this._caravelShip?.setPosition(620, 125)
     this.units = [this._caravelShip as Unit]
