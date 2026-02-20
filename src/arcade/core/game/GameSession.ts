@@ -1,6 +1,7 @@
 import Scenario from '@/arcade/core/isometric/Scenario'
 import Unit from '@/arcade/core/isometric/Unit'
 import TileMap from '@/arcade/core/isometric/TileMap'
+import Camera from '@/arcade/core/Camera'
 
 /**
  * Gerencia uma sessão de jogo.
@@ -29,17 +30,25 @@ export default class GameSession {
   protected _scenario: Scenario
   protected _canvas!: HTMLCanvasElement
   protected _context!: CanvasRenderingContext2D
+  protected _camera!: Camera
   protected _units: Unit[]
 
   constructor(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
-    scenario: Scenario
+    scenario: Scenario,
+    camera: Camera
   ) {
     this._canvas = canvas
     this._context = context
+    this._camera = camera
     this._scenario = scenario
     this._units = scenario.units
+    
+    // Atribui a câmera ao TileMap para que ambos usem a mesma instância
+    if (scenario.worldMap) {
+      scenario.worldMap.camera = camera
+    }
   }
 
   public get scenario(): Scenario {
@@ -51,11 +60,27 @@ export default class GameSession {
     this._units = scenario.units
   }
 
+  public set camera(camera: Camera) {
+    this._camera = camera
+    if (this._scenario.worldMap) {
+      this._scenario.worldMap.camera = camera
+    } 
+  }
+
+  public get camera(): Camera {
+    return this._camera
+  }
+
   /**
    * Inicia a sessão de jogo renderizando o cenário inicial.
    */
   public startGameSession(): void {
     this._scenario.drawScenario(this._canvas, this._context)
+    
+    // Configura os limites do mundo na câmera
+    if (this._scenario.worldMap) {
+      this._scenario.worldMap.setMinAndMaxWorldXAndY(this._canvas)
+    }
   }
 
   /**
@@ -65,17 +90,30 @@ export default class GameSession {
    *
    * @remarks
    * Atualiza o cenário, ordena unidades por profundidade, e atualiza/renderiza cada unidade.
+   * Aplica a transformação da câmera para que as unidades sejam desenhadas no mesmo
+   * sistema de coordenadas que os tiles.
    */
   public updateGameSession(deltaTime: number): void {
     this._scenario.updateScenario(this._canvas, this._context, deltaTime)
 
     this._units.sort((a, b) => a.positionY - b.positionY)
 
+    // Aplica a transformação da câmera antes de desenhar as unidades
+    if (this._camera) {
+      this._context.save()
+      this._camera.applyTransform(this._context)
+    }
+
     for (const unit of this._units) {
       unit.updateUnit(
         deltaTime,
       )
       unit.drawUnit(this._canvas, this._context)
+    }
+
+    // Restaura o contexto após desenhar as unidades
+    if (this._camera) {
+      this._context.restore()
     }
   }
 

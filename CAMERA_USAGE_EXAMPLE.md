@@ -95,39 +95,7 @@ export default class GameScene extends SceneEvent implements Scene {
     context?: CanvasRenderingContext2D,
     deltaTime?: number
   ): void {
-    if (!this._match || !canvas || !context || deltaTime === undefined) return
-
-    const camera = this._scenarioOne?.camera
-    if (camera) {
-      // Controles com setas ou WASD
-      let dx = 0
-      let dy = 0
-
-      // Setas / WASD
-      if (this._keysPressed.has('ArrowLeft') || this._keysPressed.has('a')) {
-        dx = -1
-      }
-      if (this._keysPressed.has('ArrowRight') || this._keysPressed.has('d')) {
-        dx = 1
-      }
-      if (this._keysPressed.has('ArrowUp') || this._keysPressed.has('w')) {
-        dy = -1
-      }
-      if (this._keysPressed.has('ArrowDown') || this._keysPressed.has('s')) {
-        dy = 1
-      }
-
-      // Aplicar movimento (normalizar diagonal)
-      if (dx !== 0 && dy !== 0) {
-        dx *= 0.707 // Aproximadamente 1/sqrt(2)
-        dy *= 0.707
-      }
-
-      camera.move(dx, dy)
-    }
-
-    // Atualizar jogo normalmente
-    this._match.updateGameSession(deltaTime)
+    
   }
 
   public handleMouseEvent(

@@ -282,13 +282,13 @@ export default class Unit extends Sprite {
     tileMap: TileMap,
     canvas: HTMLCanvasElement
   ): void {
-    console.log('event.x', event.x, 'event.y', event.y)
+    console.log('event.offsetX', event.offsetX, 'event.offsetY', event.offsetY)
     this._destinationTile = tileMap.getTileAtGridPosition(
-      event.x,
-      event.y,
+      event.offsetX,
+      event.offsetY,
       canvas
     )
-    console.log('Destino selecionado:', this._destinationTile)
+    console.log('Destino X:', this._destinationTile?.positionX, 'Destino Y:', this._destinationTile?.positionY)
     if (!this._destinationTile) return
 
     if (this._mobileState === UnitMobileState.NONE) return
@@ -318,10 +318,10 @@ export default class Unit extends Sprite {
 
   private isClickingOnUnit(event: MouseEvent): boolean {
     return (
-      event.x >= this.positionX &&
-      event.x <= this.positionX + this.width &&
-      event.y >= this.positionY &&
-      event.y <= this.positionY + this.height
+      event.offsetX >= this.positionX &&
+      event.offsetX <= this.positionX + this.width &&
+      event.offsetY >= this.positionY &&
+      event.offsetY <= this.positionY + this.height
     )
   }
 }

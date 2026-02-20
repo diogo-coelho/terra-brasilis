@@ -116,20 +116,6 @@ export default class Tile extends Sprite {
       Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <= 1
     )
     
-    // Debug: mostra quando um ponto está próximo mas não dentro
-    if (!result) {
-      const distance = Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2))
-      if (distance <= 1.2) {
-        console.log('Perto do tile:', {
-          tilePos: [this.positionX, this.positionY],
-          center: [centerX, centerY],
-          click: [mouseX, mouseY],
-          rel: [relX, relY],
-          distance
-        })
-      }
-    }
-    
     return result
   }
 

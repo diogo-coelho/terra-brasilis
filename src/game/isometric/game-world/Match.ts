@@ -1,4 +1,4 @@
-import { GameSession, Scenario } from '@/arcade/core'
+import { Camera, GameSession, Scenario } from '@/arcade/core'
 
 /**
  * Representa uma partida do jogo.
@@ -31,8 +31,9 @@ export default class Match extends GameSession {
   constructor(
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
-    scenario: Scenario
+    scenario: Scenario,
+    camera: Camera
   ) {
-    super(canvas, context, scenario)
+    super(canvas, context, scenario, camera)
   }
 }

@@ -47,14 +47,6 @@ export default class TileMap {
     this._tileHeight = tileHeight
   }
 
-  public set camera(value: Camera | null) {
-    this._camera = value
-  }
-
-  public get camera(): Camera | null {
-    return this._camera
-  }
-
   public set tiles(value: Tile[][]) {
     this._tiles = value
   }
@@ -87,6 +79,14 @@ export default class TileMap {
     return this._frameDelay
   }
 
+  public set camera(camera: Camera | null) {
+    this._camera = camera
+  }
+
+  public get camera(): Camera | null {
+    return this._camera
+  }
+
   public set renderOnlyInnerSquare(value: boolean) {
     this._renderOnlyInnerSquare = value
   }
@@ -109,8 +109,6 @@ export default class TileMap {
    * mantendo apenas o quadrado interno.
    */
   protected isInInnerSquare(row: number, col: number): boolean {
-    if (!this._renderOnlyInnerSquare) return true
-
     const rows = this._tiles.length
     const cols = this._tiles[0].length
     
@@ -158,7 +156,7 @@ export default class TileMap {
     canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D
   ): void {
-    // Salva o estado do contexto
+    // Aplica a transformação da câmera antes de desenhar
     if (this._camera) {
       context.save()
       this._camera.applyTransform(context)
@@ -166,13 +164,7 @@ export default class TileMap {
 
     for (var col = 0; col < this._tiles[0].length; col++) {
       for (var row = 0; row < this._tiles.length; row++) {
-        // Verifica se o tile está no quadrado interno (se habilitado)
-        if (!this.isInInnerSquare(row, col)) continue
-
-        let tilePositionX = (row - col) * this._tileHeight
-        // Centraliza o grid de forma horizontal no canvas
-        tilePositionX += canvas.width / 2 - this._tileWidth / 2
-        const tilePositionY = (row + col) * (this._tileHeight / 2)
+        const { x: tilePositionX, y: tilePositionY } = this.getTilePositionXAndY(col, row, canvas)
 
         // Culling: verifica se o tile está visível pela câmera
         if (this._camera) {
@@ -231,7 +223,7 @@ export default class TileMap {
     for (let row = 0; row < this._tiles.length; row++) {
       for (let col = 0; col < this._tiles[row].length; col++) {
         // Verifica se o tile está no quadrado interno (se habilitado)
-        if (!this.isInInnerSquare(row, col)) continue
+        //if (!this.isInInnerSquare(row, col)) continue
 
         const tile = this._tiles[row][col]
         const src = tile.spritesheet?.image?.src
@@ -294,31 +286,19 @@ export default class TileMap {
     if (this._camera) {
       const worldCoords = this._camera.screenToWorld(mouseX, mouseY)
       worldX = worldCoords.x
-      worldY = worldCoords.y
+      worldY = worldCoords.y     
     }
 
-    console.log(`Mouse coordinates: mouseX: ${mouseX}, mouseY: ${mouseY}`)
-    console.log(`World coordinates for mouse click: worldX: ${worldX}, worldY: ${worldY}`)
-
-    // Itera pelos tiles na ordem inversa de renderização (front-to-back)
-    // para pegar o tile visual mais próximo (desenhado por último)
-    for (let col = this._tiles[0].length - 1; col >= 0; col--) {
-      for (let row = this._tiles.length - 1; row >= 0; row--) {
-        // Verifica se o tile está no quadrado interno (se habilitado)
-        if (!this.isInInnerSquare(row, col)) continue
-        
+    for (var col = 0; col < this._tiles[0].length; col++) {
+      for (var row = 0; row < this._tiles.length; row++) {      
         const tile = this._tiles[row][col]
-        
-        // Calcula a posição do tile (mesma fórmula do drawWorldMap)
-        let tilePositionX = (row - col) * this._tileHeight
-        tilePositionX += canvas.width / 2 - this._tileWidth / 2
-        const tilePositionY = (row + col) * (this._tileHeight / 2)
+        const { x: tilePositionX, y: tilePositionY } = this.getTilePositionXAndY(col, row, canvas)
         
         // Atualiza a posição do tile para garantir que containsPoint funcione corretamente
         tile.setPosition(tilePositionX, tilePositionY)
         
         // Delega a verificação para o próprio tile
-        if (tile.containsPoint(mouseX, mouseY)) {
+        if (tile.containsPoint(worldX, worldY)) {
           return tile
         }
       }
@@ -360,9 +340,6 @@ export default class TileMap {
     
     if (rows === 0 || cols === 0) return
     
-    // Calcula o offset de centralização (mesmo usado no drawWorldMap)
-    const centerOffsetX = canvas.width / 2 - this._tileWidth / 2
-    
     let minX = Infinity
     let minY = Infinity
     let maxX = -Infinity
@@ -372,12 +349,7 @@ export default class TileMap {
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         // Verifica se o tile está no quadrado interno (se habilitado)
-        if (!this.isInInnerSquare(row, col)) continue
-        
-        // Calcula a posição isométrica do tile (mesma fórmula do drawWorldMap)
-        let tileX = (row - col) * this._tileHeight
-        tileX += centerOffsetX
-        const tileY = (row + col) * (this._tileHeight / 2)
+        const { x: tileX, y: tileY } = this.getTilePositionXAndY(col, row, canvas)
         
         // Atualiza os limites considerando a largura e altura do tile
         minX = Math.min(minX, tileX)
@@ -387,18 +359,34 @@ export default class TileMap {
       }
     }
     
-    // Ajusta os limites para pegar a metade dos losangos nas bordas
-    // Isso limita a câmera para criar ilusão de continuidade
-    minX += this._tileWidth / 2
-    maxX -= this._tileWidth / 2
-    minY += this._tileHeight / 2
-    maxY -= this._tileHeight / 2
-
-    // Configura os limites ajustados na câmera
+    // Configura os limites na câmera
     this._camera.setWorldBounds(minX, minY, maxX, maxY)
     
-    // Posiciona a câmera no limite superior ajustado
+    // Posiciona a câmera centralizada horizontalmente no topo do mapa
     const centerX = (minX + maxX) / 2
     this._camera.centerOn(centerX, minY)
+  }
+
+  /**
+   * Calcula a posição X e Y de um tile baseado em sua coluna e linha no grid isométrico.
+   * @param {number} col - Coluna do tile no grid isométrico
+   * @param {number} row - Linha do tile no grid isométrico
+   * @param {HTMLCanvasElement} canvas - Elemento canvas para calcular a centralização
+   * @returns {{ x: number, y: number }} - Posição X e Y do tile no canvas  
+   */
+  private getTilePositionXAndY(
+    col: number, 
+    row: number, 
+    canvas: HTMLCanvasElement
+  ): { x: number, y: number } {
+    let tilePositionX = (col - row) * this._tileHeight
+    // Centraliza o grid de forma horizontal no canvas
+    tilePositionX += canvas.width / 2 - this._tileWidth / 2
+    const tilePositionY = (row + col) * (this._tileHeight / 2)
+
+    return { 
+      x: tilePositionX, 
+      y: tilePositionY 
+    }
   }
 }

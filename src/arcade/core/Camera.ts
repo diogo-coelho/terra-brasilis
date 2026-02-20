@@ -83,6 +83,22 @@ export default class Camera {
     this._speed = value
   }
 
+  public get worldMinX(): number {
+    return this._worldMinX
+  }
+
+  public get worldMinY(): number {
+    return this._worldMinY
+  }
+
+  public get worldMaxX(): number {
+    return this._worldMaxX
+  }
+
+  public get worldMaxY(): number {
+    return this._worldMaxY
+  }
+
   /**
    * Define os limites do mundo para a câmera.
    *
