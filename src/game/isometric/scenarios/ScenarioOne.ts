@@ -51,9 +51,7 @@ export default class ScenarioOne extends Scenario {
    * Inicializa o mapa de tiles usando GridScenarioOne e posiciona
    * a caravela na posição inicial (560, 120).
    */
-  private createScenario(
-    canvas: HTMLCanvasElement, 
-  ): void {
+  private createScenario(canvas: HTMLCanvasElement): void {
     const grid = GridScenarioOne.map((row) =>
       row.map((key) => this._tileMapper?.get(key)?.clone())
     )

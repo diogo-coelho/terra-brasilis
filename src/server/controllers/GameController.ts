@@ -31,7 +31,6 @@ import MongoDBError from '@/server/error/MongoDB'
  * @see GameRouter
  */
 export default class GameController {
-
   /**
    * Inicia um novo jogo.
    *

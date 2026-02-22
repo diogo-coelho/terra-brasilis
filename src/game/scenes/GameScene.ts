@@ -132,9 +132,10 @@ export default class GameScene extends SceneEvent implements Scene {
     event: KeyboardEvent,
     sceneManager: SceneManager
   ): void {
-    const eventType = event.type === 'keydown' 
-      ? EventListenerState.KEY_DOWN 
-      : EventListenerState.KEY_UP
+    const eventType =
+      event.type === 'keydown'
+        ? EventListenerState.KEY_DOWN
+        : EventListenerState.KEY_UP
 
     if (eventType === EventListenerState.KEY_DOWN) {
       this._keysPressed.add(event.key)
@@ -151,16 +152,28 @@ export default class GameScene extends SceneEvent implements Scene {
       let directionY = 0
 
       // Setas / WASD
-      if (this._keysPressed.has(KeyboardKey.ARROW_LEFT) || this._keysPressed.has(KeyboardKey.A)) {
+      if (
+        this._keysPressed.has(KeyboardKey.ARROW_LEFT) ||
+        this._keysPressed.has(KeyboardKey.A)
+      ) {
         directionX = -1
       }
-      if (this._keysPressed.has(KeyboardKey.ARROW_RIGHT) || this._keysPressed.has(KeyboardKey.D)) {
+      if (
+        this._keysPressed.has(KeyboardKey.ARROW_RIGHT) ||
+        this._keysPressed.has(KeyboardKey.D)
+      ) {
         directionX = 1
       }
-      if (this._keysPressed.has(KeyboardKey.ARROW_UP) || this._keysPressed.has(KeyboardKey.W)) {
+      if (
+        this._keysPressed.has(KeyboardKey.ARROW_UP) ||
+        this._keysPressed.has(KeyboardKey.W)
+      ) {
         directionY = -1
       }
-      if (this._keysPressed.has(KeyboardKey.ARROW_DOWN) || this._keysPressed.has(KeyboardKey.S)) {
+      if (
+        this._keysPressed.has(KeyboardKey.ARROW_DOWN) ||
+        this._keysPressed.has(KeyboardKey.S)
+      ) {
         directionY = 1
       }
 

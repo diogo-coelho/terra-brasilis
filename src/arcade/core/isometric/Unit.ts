@@ -111,7 +111,7 @@ export default class Unit extends Sprite {
     context: CanvasRenderingContext2D
   ): void {
     if (this.selected) {
-      this.drawWithOutline(context, 'white')
+      this.drawWithOutline(context, '#FFFFFF80')
     }
     this.draw(context, this._hasShadow)
   }
@@ -126,58 +126,63 @@ export default class Unit extends Sprite {
    * e verifica se a unidade chegou ao destino. Atualiza automaticamente a direção
    * do sprite para corresponder à direção do movimento.
    */
-  public updateUnit(
-    deltaTime: number,
-  ): void {
+  public updateUnit(deltaTime: number): void {
     // Lógica de movimentação e atualização do estado da unidade
-    if (this.targetTileX === 0 && this.targetTileY === 0) return;
-    if (!this._destinationTile) return;
+    if (this.targetTileX === 0 && this.targetTileY === 0) return
+    if (!this._destinationTile) return
 
     // Calcula a direção baseada na posição ATUAL da unidade
-    const directionX = this.targetTileX - this.positionX;
-    const directionY = this.targetTileY - this.positionY;
+    const directionX = this.targetTileX - this.positionX
+    const directionY = this.targetTileY - this.positionY
 
     // Calcula a distância até o destino
-    const distance = Math.sqrt(directionX * directionX + directionY * directionY);
+    const distance = Math.sqrt(
+      directionX * directionX + directionY * directionY
+    )
 
     // Se já está no destino (ou muito próximo), trava a unidade
     if (distance < 1) {
-      this.positionX = this.targetTileX;
-      this.positionY = this.targetTileY;
-      this._targetTileX = 0;
-      this._targetTileY = 0;
-      return;
+      this.positionX = this.targetTileX
+      this.positionY = this.targetTileY
+      this._targetTileX = 0
+      this._targetTileY = 0
+      return
     }
 
     // Atualiza a direção da unidade baseada no vetor de movimento
-    this._currentDirection = this.calculateDirection(directionX, directionY);
-    this.updateSpriteDirection();
+    this._currentDirection = this.calculateDirection(directionX, directionY)
+    this.updateSpriteDirection()
 
     // Normaliza a direção e multiplica pela velocidade e deltaTime
-    const moveX = (directionX / distance) * this._unitSpeed * deltaTime;
-    const moveY = (directionY / distance) * this._unitSpeed * deltaTime;
+    const moveX = (directionX / distance) * this._unitSpeed * deltaTime
+    const moveY = (directionY / distance) * this._unitSpeed * deltaTime
 
     // Calcula a próxima posição
-    let nextX = this.positionX + moveX;
-    let nextY = this.positionY + moveY;
+    let nextX = this.positionX + moveX
+    let nextY = this.positionY + moveY
 
     // Verifica se o próximo passo ultrapassa o destino
-    if (Math.abs(moveX) > Math.abs(directionX) || Math.abs(moveY) > Math.abs(directionY)) {
-      nextX = this.targetTileX;
-      nextY = this.targetTileY;
+    if (
+      Math.abs(moveX) > Math.abs(directionX) ||
+      Math.abs(moveY) > Math.abs(directionY)
+    ) {
+      nextX = this.targetTileX
+      nextY = this.targetTileY
     }
 
     // Move para a próxima posição (o destino já foi validado no setUnitDestination)
-    this.positionX = nextX;
-    this.positionY = nextY;
-    
+    this.positionX = nextX
+    this.positionY = nextY
+
     // Se chegou no destino, zera o target
-    if (Math.abs(this.targetTileX - this.positionX) < 1 && 
-        Math.abs(this.targetTileY - this.positionY) < 1) {
-      this.positionX = this.targetTileX;
-      this.positionY = this.targetTileY;
-      this._targetTileX = 0;
-      this._targetTileY = 0;
+    if (
+      Math.abs(this.targetTileX - this.positionX) < 1 &&
+      Math.abs(this.targetTileY - this.positionY) < 1
+    ) {
+      this.positionX = this.targetTileX
+      this.positionY = this.targetTileY
+      this._targetTileX = 0
+      this._targetTileY = 0
     }
   }
 
@@ -197,10 +202,10 @@ export default class Unit extends Sprite {
     tileMap: TileMap,
     canvas: HTMLCanvasElement
   ): void {
-    if (this.selected && !this.isClickingOnUnit(event)) {
+    if (this.selected && !this.isClickingOnUnit(event, tileMap, canvas)) {
       this.setUnitDestination(event, tileMap, canvas)
     } else {
-      this.setSelected(event)
+      this.setSelected(event, tileMap, canvas)
     }
   }
 
@@ -220,23 +225,26 @@ export default class Unit extends Sprite {
    * @remarks
    * Converte o ângulo do vetor de movimento em uma das 8 direções discretas.
    */
-  protected calculateDirection(directionX: number, directionY: number): UnitDirection {
+  protected calculateDirection(
+    directionX: number,
+    directionY: number
+  ): UnitDirection {
     // Calcula o ângulo em radianos (-PI a PI)
-    const angle = Math.atan2(directionY, directionX);
-    
+    const angle = Math.atan2(directionY, directionX)
+
     // Converte para graus (0 a 360)
-    let degrees = (angle * 180) / Math.PI;
-    if (degrees < 0) degrees += 360;
-    
+    let degrees = (angle * 180) / Math.PI
+    if (degrees < 0) degrees += 360
+
     // Ajusta para que 0° seja o Norte (em vez de Leste)
     // Subtrai 90° e normaliza
-    degrees = (degrees + 90) % 360;
-    
+    degrees = (degrees + 90) % 360
+
     // Divide em 8 setores de 45° cada
     // Adiciona 22.5° para centralizar os setores
-    const sector = Math.round((degrees + 22.5) / 45) % 8;
-    
-    return sector as UnitDirection;
+    const sector = Math.round((degrees + 22.5) / 45) % 8
+
+    return sector as UnitDirection
   }
 
   /**
@@ -244,10 +252,12 @@ export default class Unit extends Sprite {
    *
    * @remarks
    * Ajusta qual linha da spritesheet deve ser usada baseado na direção.
+   * Não altera o offsetX (frames horizontais) que é gerenciado por animate().
    */
   protected updateSpriteDirection(): void {
-    const offsetY = this.getOffsetYForDirection(this._currentDirection);
-    this.setOffset(this.currentFrame * this.width, offsetY);
+    const offsetY = this.getOffsetYForDirection(this._currentDirection)
+    // Atualiza apenas offsetY, mantendo offsetX inalterado (gerenciado por animate)
+    this.setOffsetY(offsetY)
   }
 
   /**
@@ -263,7 +273,7 @@ export default class Unit extends Sprite {
   protected getOffsetYForDirection(direction: UnitDirection): number {
     // Por padrão, cada direção ocupa uma linha no spritesheet
     // A ordem esperada é: N, NE, E, SE, S, SW, W, NW
-    return direction * this.height;
+    return direction * this.height
   }
 
   /**
@@ -282,13 +292,11 @@ export default class Unit extends Sprite {
     tileMap: TileMap,
     canvas: HTMLCanvasElement
   ): void {
-    console.log('event.offsetX', event.offsetX, 'event.offsetY', event.offsetY)
     this._destinationTile = tileMap.getTileAtGridPosition(
-      event.offsetX,
-      event.offsetY,
+      event.x,
+      event.y,
       canvas
     )
-    console.log('Destino X:', this._destinationTile?.positionX, 'Destino Y:', this._destinationTile?.positionY)
     if (!this._destinationTile) return
 
     if (this._mobileState === UnitMobileState.NONE) return
@@ -299,29 +307,62 @@ export default class Unit extends Sprite {
         this._destinationTile.isNavigable)
     ) {
       // Centraliza a unidade horizontalmente e alinha a base ao tile
-      const targetX = this._destinationTile.positionX + 
-                     (this._destinationTile.width - this.width) / 2
-      const targetY = this._destinationTile.positionY + 
-                     this._destinationTile.height - this.height
-      
+      const targetX =
+        this._destinationTile.positionX +
+        (this._destinationTile.width - this.width) / 2
+      const targetY =
+        this._destinationTile.positionY +
+        this._destinationTile.height -
+        this.height
+
       this.setTarget(targetX, targetY)
     }
   }
 
-  private setSelected(event: MouseEvent): void {
-    if (this.isClickingOnUnit(event) && !this.selected) {
+  private setSelected(
+    event: MouseEvent,
+    tileMap: TileMap,
+    canvas: HTMLCanvasElement
+  ): void {
+    if (this.isClickingOnUnit(event, tileMap, canvas) && !this.selected) {
       this.selected = true
     } else {
       this.selected = false
     }
   }
 
-  private isClickingOnUnit(event: MouseEvent): boolean {
+  private getWorldClickPosition(
+    event: MouseEvent,
+    tileMap: TileMap,
+    canvas: HTMLCanvasElement
+  ): { x: number; y: number } {
+    const rect = canvas.getBoundingClientRect()
+    const screenX = event.clientX - rect.left
+    const screenY = event.clientY - rect.top
+
+    if (tileMap.camera) {
+      return tileMap.camera.screenToWorld(screenX, screenY)
+    }
+
+    return { x: screenX, y: screenY }
+  }
+
+  private isClickingOnUnit(
+    event: MouseEvent,
+    tileMap: TileMap,
+    canvas: HTMLCanvasElement
+  ): boolean {
+    const { x: clickX, y: clickY } = this.getWorldClickPosition(
+      event,
+      tileMap,
+      canvas
+    )
+
     return (
-      event.offsetX >= this.positionX &&
-      event.offsetX <= this.positionX + this.width &&
-      event.offsetY >= this.positionY &&
-      event.offsetY <= this.positionY + this.height
+      clickX >= this.positionX &&
+      clickX <= this.positionX + this.width &&
+      clickY >= this.positionY &&
+      clickY <= this.positionY + this.height
     )
   }
 }

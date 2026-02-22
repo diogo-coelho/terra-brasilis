@@ -186,7 +186,7 @@ export default class InputStandard extends Input implements InputEvent {
    *
    * @remarks
    * Ativa/desativa o modo de digitação e cursor piscante conforme o click.
-   */  public handleMouseMove(event: MouseEvent, callback?: Callback): void {
+   */ public handleMouseMove(event: MouseEvent, callback?: Callback): void {
     this.applyHoverOnInput(event)
     callback?.()
   }

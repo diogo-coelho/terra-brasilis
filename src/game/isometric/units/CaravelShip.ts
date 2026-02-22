@@ -33,7 +33,7 @@ import UnitDirection from '@/arcade/enums/UnitDirection'
  */
 export default class CaravelShip extends Unit {
   constructor(image: string) {
-    super(124, 128, 8, 0)
+    super(124, 128, 1, 16) // 16ms para ciclo completo de animação (4 frames)
     this.unitSpeed = 50
     this.hasShadow = true
     this.mobileState = UnitMobileState.NAVIGATOR
@@ -79,6 +79,6 @@ export default class CaravelShip extends Unit {
   protected getOffsetYForDirection(direction: UnitDirection): number {
     // Cada direção ocupa uma linha no spritesheet
     // A ordem esperada é: N, NE, E, SE, S, SW, W, NW
-    return direction * this.height;
+    return direction * this.height
   }
 }

@@ -36,7 +36,7 @@ export default class Scenario {
   protected _updateDate: Date | null = null
   protected _duration: number = 0
   protected _units: Unit[] | null = null
-  
+
   public get name(): string {
     return this._name
   }

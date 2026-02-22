@@ -97,12 +97,12 @@ export default class TileMap {
 
   /**
    * Verifica se um tile está dentro do quadrado interno do grid isométrico.
-   * 
+   *
    * @param {number} row - Linha do tile
    * @param {number} col - Coluna do tile
-   * 
+   *
    * @returns {boolean} True se o tile está dentro do quadrado interno
-   * 
+   *
    * @remarks
    * Em um grid isométrico em formato de diamante, os triângulos nas bordas
    * são formados pelos tiles nos cantos. Este método exclui esses triângulos,
@@ -111,24 +111,24 @@ export default class TileMap {
   protected isInInnerSquare(row: number, col: number): boolean {
     const rows = this._tiles.length
     const cols = this._tiles[0].length
-    
+
     // Para formar um quadrado interno em um diamante isométrico,
     // excluímos tiles onde a soma row+col está fora de um intervalo
     // que representa os triângulos superiores e inferiores
     const sum = row + col
     const diff = row - col
-    
+
     // Dimensão mínima determina o tamanho do quadrado interno
-    const minDim = Math.min(rows, cols)    
+    const minDim = Math.min(rows, cols)
     const cutSize = Math.floor(minDim / 2)
-    
-    // Limites para o quadrado interno  
+
+    // Limites para o quadrado interno
     const minSum = cutSize
     const maxSum = rows + cols - cutSize - 1
-    
+
     // Para grids retangulares, também limitar pela diferença
     const maxDiff = Math.abs(rows - cols) / 2 + minDim / 2
-    
+
     return sum >= minSum && sum <= maxSum && Math.abs(diff) <= maxDiff
   }
 
@@ -164,7 +164,8 @@ export default class TileMap {
 
     for (var col = 0; col < this._tiles[0].length; col++) {
       for (var row = 0; row < this._tiles.length; row++) {
-        const { x: tilePositionX, y: tilePositionY } = this.getTilePositionXAndY(col, row, canvas)
+        const { x: tilePositionX, y: tilePositionY } =
+          this.getTilePositionXAndY(col, row, canvas)
 
         // Culling: verifica se o tile está visível pela câmera
         if (this._camera) {
@@ -282,21 +283,22 @@ export default class TileMap {
     // Converte coordenadas de tela para coordenadas do mundo se a câmera existir
     let worldX = mouseX
     let worldY = mouseY
-    
+
     if (this._camera) {
       const worldCoords = this._camera.screenToWorld(mouseX, mouseY)
       worldX = worldCoords.x
-      worldY = worldCoords.y     
+      worldY = worldCoords.y
     }
 
     for (var col = 0; col < this._tiles[0].length; col++) {
-      for (var row = 0; row < this._tiles.length; row++) {      
+      for (var row = 0; row < this._tiles.length; row++) {
         const tile = this._tiles[row][col]
-        const { x: tilePositionX, y: tilePositionY } = this.getTilePositionXAndY(col, row, canvas)
-        
+        const { x: tilePositionX, y: tilePositionY } =
+          this.getTilePositionXAndY(col, row, canvas)
+
         // Atualiza a posição do tile para garantir que containsPoint funcione corretamente
         tile.setPosition(tilePositionX, tilePositionY)
-        
+
         // Delega a verificação para o próprio tile
         if (tile.containsPoint(worldX, worldY)) {
           return tile
@@ -310,19 +312,19 @@ export default class TileMap {
   /**
    * Calcula os limites do mundo baseado nos tiles das extremidades do grid isométrico
    * e configura os limites na câmera.
-   * 
+   *
    * @param {HTMLCanvasElement} canvas - Elemento canvas para calcular a centralização
-   * 
+   *
    * @remarks
    * Em um grid isométrico em formato de diamante, os triângulos nas pontas são formados por:
    * - Triângulo superior (topo): row=0, col=0 (menor Y)
    * - Triângulo esquerdo: row=0, col=cols-1 (menor X)
    * - Triângulo direito: row=rows-1, col=0 (maior X)
    * - Triângulo inferior (base): row=rows-1, col=cols-1 (maior Y)
-   * 
+   *
    * Este método percorre todos os tiles, identifica os extremos do diamante
    * e configura esses limites na câmera usando setWorldBounds.
-   * 
+   *
    * @example
    * ```typescript
    * tileMap.camera = new Camera(800, 600);
@@ -331,26 +333,32 @@ export default class TileMap {
    */
   public setMinAndMaxWorldXAndY(canvas: HTMLCanvasElement): void {
     if (!this._camera) {
-      console.warn('Câmera não configurada. Configure a câmera antes de definir os limites do mundo.')
+      console.warn(
+        'Câmera não configurada. Configure a câmera antes de definir os limites do mundo.'
+      )
       return
     }
 
     const rows = this._tiles.length
     const cols = this._tiles[0].length
-    
+
     if (rows === 0 || cols === 0) return
-    
+
     let minX = Infinity
     let minY = Infinity
     let maxX = -Infinity
     let maxY = -Infinity
-    
+
     // Percorre apenas os tiles do quadrado interno para encontrar os extremos
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
         // Verifica se o tile está no quadrado interno (se habilitado)
-        const { x: tileX, y: tileY } = this.getTilePositionXAndY(col, row, canvas)
-        
+        const { x: tileX, y: tileY } = this.getTilePositionXAndY(
+          col,
+          row,
+          canvas
+        )
+
         // Atualiza os limites considerando a largura e altura do tile
         minX = Math.min(minX, tileX)
         minY = Math.min(minY, tileY)
@@ -358,10 +366,10 @@ export default class TileMap {
         maxY = Math.max(maxY, tileY + this._tileHeight)
       }
     }
-    
+
     // Configura os limites na câmera
     this._camera.setWorldBounds(minX, minY, maxX, maxY)
-    
+
     // Posiciona a câmera centralizada horizontalmente no topo do mapa
     const centerX = (minX + maxX) / 2
     this._camera.centerOn(centerX, minY)
@@ -372,21 +380,21 @@ export default class TileMap {
    * @param {number} col - Coluna do tile no grid isométrico
    * @param {number} row - Linha do tile no grid isométrico
    * @param {HTMLCanvasElement} canvas - Elemento canvas para calcular a centralização
-   * @returns {{ x: number, y: number }} - Posição X e Y do tile no canvas  
+   * @returns {{ x: number, y: number }} - Posição X e Y do tile no canvas
    */
   private getTilePositionXAndY(
-    col: number, 
-    row: number, 
+    col: number,
+    row: number,
     canvas: HTMLCanvasElement
-  ): { x: number, y: number } {
+  ): { x: number; y: number } {
     let tilePositionX = (col - row) * this._tileHeight
     // Centraliza o grid de forma horizontal no canvas
     tilePositionX += canvas.width / 2 - this._tileWidth / 2
     const tilePositionY = (row + col) * (this._tileHeight / 2)
 
-    return { 
-      x: tilePositionX, 
-      y: tilePositionY 
+    return {
+      x: tilePositionX,
+      y: tilePositionY,
     }
   }
 }

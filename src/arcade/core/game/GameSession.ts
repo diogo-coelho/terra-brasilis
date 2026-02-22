@@ -44,7 +44,7 @@ export default class GameSession {
     this._camera = camera
     this._scenario = scenario
     this._units = scenario.units
-    
+
     // Atribui a câmera ao TileMap para que ambos usem a mesma instância
     if (scenario.worldMap) {
       scenario.worldMap.camera = camera
@@ -64,7 +64,7 @@ export default class GameSession {
     this._camera = camera
     if (this._scenario.worldMap) {
       this._scenario.worldMap.camera = camera
-    } 
+    }
   }
 
   public get camera(): Camera {
@@ -76,7 +76,7 @@ export default class GameSession {
    */
   public startGameSession(): void {
     this._scenario.drawScenario(this._canvas, this._context)
-    
+
     // Configura os limites do mundo na câmera
     if (this._scenario.worldMap) {
       this._scenario.worldMap.setMinAndMaxWorldXAndY(this._canvas)
@@ -105,9 +105,8 @@ export default class GameSession {
     }
 
     for (const unit of this._units) {
-      unit.updateUnit(
-        deltaTime,
-      )
+      unit.animate(deltaTime)
+      unit.updateUnit(deltaTime)
       unit.drawUnit(this._canvas, this._context)
     }
 

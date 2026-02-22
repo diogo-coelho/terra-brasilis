@@ -107,7 +107,12 @@ export default class Camera {
    * @param {number} maxX - Coordenada X máxima
    * @param {number} maxY - Coordenada Y máxima
    */
-  public setWorldBounds(minX: number, minY: number, maxX: number, maxY: number): void {
+  public setWorldBounds(
+    minX: number,
+    minY: number,
+    maxX: number,
+    maxY: number
+  ): void {
     this._worldMinX = minX
     this._worldMinY = minY
     this._worldMaxX = maxX
@@ -169,10 +174,13 @@ export default class Camera {
    * @param {number} screenY - Coordenada Y na tela
    * @returns {{x: number, y: number}} Coordenadas no mundo
    */
-  public screenToWorld(screenX: number, screenY: number): { x: number; y: number } {
+  public screenToWorld(
+    screenX: number,
+    screenY: number
+  ): { x: number; y: number } {
     return {
       x: screenX + this._x,
-      y: screenY + this._y
+      y: screenY + this._y,
     }
   }
 
@@ -183,10 +191,13 @@ export default class Camera {
    * @param {number} worldY - Coordenada Y no mundo
    * @returns {{x: number, y: number}} Coordenadas na tela
    */
-  public worldToScreen(worldX: number, worldY: number): { x: number; y: number } {
+  public worldToScreen(
+    worldX: number,
+    worldY: number
+  ): { x: number; y: number } {
     return {
       x: worldX - this._x,
-      y: worldY - this._y
+      y: worldY - this._y,
     }
   }
 
@@ -199,7 +210,12 @@ export default class Camera {
    * @param {number} height - Altura do retângulo
    * @returns {boolean} True se visível
    */
-  public isVisible(x: number, y: number, width: number, height: number): boolean {
+  public isVisible(
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): boolean {
     return !(
       x + width < this._x ||
       x > this._x + this._width ||

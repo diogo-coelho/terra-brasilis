@@ -95,6 +95,17 @@ export default class Sprite extends GameObject {
     this._offsetY = offsetY
   }
 
+  /**
+   * Define apenas o deslocamento vertical (offsetY) na spritesheet.
+   *
+   * @param {number} offsetY - Deslocamento vertical em pixels
+   *
+   * @remarks
+   * Útil para alterar a linha da spritesheet sem afetar o frame atual (offsetX).
+   */
+  public setOffsetY(offsetY: number): void {
+    this._offsetY = offsetY
+  }
 
   public set selected(value: boolean) {
     this._isSelected = value
@@ -210,18 +221,18 @@ export default class Sprite extends GameObject {
   }
 
   public drawWithOutline(
-    context: CanvasRenderingContext2D, 
-    outlineColor: string, 
+    context: CanvasRenderingContext2D,
+    outlineColor: string,
     outlineWidth: number = 2
   ): void {
     if (this._shown && this.selected) {
       // Cria canvas temporário para gerar silhueta colorida
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = this.width * this._zoomLevel;
-      tempCanvas.height = this.height * this._zoomLevel;
-      const tempContext = tempCanvas.getContext('2d');
+      const tempCanvas = document.createElement('canvas')
+      tempCanvas.width = this.width * this._zoomLevel
+      tempCanvas.height = this.height * this._zoomLevel
+      const tempContext = tempCanvas.getContext('2d')
 
-      if (!tempContext || !this._spritesheet) return;
+      if (!tempContext || !this._spritesheet) return
 
       // Desenha o sprite no canvas temporário
       tempContext.drawImage(
@@ -234,35 +245,31 @@ export default class Sprite extends GameObject {
         0,
         this.width * this._zoomLevel,
         this.height * this._zoomLevel
-      );
+      )
 
       // Preenche com a cor mantendo apenas o canal alpha (transparência)
-      tempContext.globalCompositeOperation = 'source-in';
-      tempContext.fillStyle = outlineColor;
-      tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+      tempContext.globalCompositeOperation = 'source-in'
+      tempContext.fillStyle = outlineColor
+      tempContext.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
 
-      context.save();
+      context.save()
 
       // Gera offsets circulares baseados na largura do outline
-      const offsets: [number, number][] = [];
-      const steps = 8; // Número de pontos ao redor do círculo
-      
+      const offsets: [number, number][] = []
+      const steps = 8 // Número de pontos ao redor do círculo
+
       for (let angle = 0; angle < Math.PI * 2; angle += (Math.PI * 2) / steps) {
-        const dx = Math.round(Math.cos(angle) * outlineWidth);
-        const dy = Math.round(Math.sin(angle) * outlineWidth);
-        offsets.push([dx, dy]);
+        const dx = Math.round(Math.cos(angle) * outlineWidth)
+        const dy = Math.round(Math.sin(angle) * outlineWidth)
+        offsets.push([dx, dy])
       }
 
       // Desenha a silhueta colorida em cada offset para criar o contorno
       offsets.forEach(([dx, dy]) => {
-        context.drawImage(
-          tempCanvas,
-          this.positionX + dx,
-          this.positionY + dy
-        );
-      });
+        context.drawImage(tempCanvas, this.positionX + dx, this.positionY + dy)
+      })
 
-      context.restore();
+      context.restore()
     }
   }
 }
