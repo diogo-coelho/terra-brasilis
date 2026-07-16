@@ -128,6 +128,16 @@ export default class Tile extends Sprite {
     return result
   }
 
+  protected createClone(): Tile {
+    return new Tile(
+      this.width,
+      this.height,
+      this._frames,
+      this._frameDuration,
+      this.spritesheet as Image
+    )
+  }
+
   /**
    * Cria uma cópia profunda do tile.
    *
@@ -144,17 +154,12 @@ export default class Tile extends Sprite {
    * ```
    */
   public clone(): Tile {
-    const clonedTile = new Tile(
-      this.width,
-      this.height,
-      this._frames,
-      this._frameDuration,
-      this.spritesheet as Image
-    )
+    const clonedTile = this.createClone()
 
     // Copia o estado de animação para manter sincronização
     clonedTile.currentFrame = this.currentFrame
     clonedTile.accumulator = this.accumulator
+    clonedTile.setOffset(this.offsetX, this.offsetY)
 
     // Copia propriedades específicas do Tile
     clonedTile.isWalkable = this.isWalkable

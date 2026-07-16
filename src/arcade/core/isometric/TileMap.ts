@@ -218,8 +218,8 @@ export default class TileMap {
     context: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    // 1. Animar apenas um tile por tipo de spritesheet para sincronia
-    const animatedBySource = new Map<string, Tile>()
+    // 1. Animar apenas um tile por tipo de tile para sincronia
+    const animatedByTileType = new Map<Function, Tile>()
 
     for (let row = 0; row < this._tiles.length; row++) {
       for (let col = 0; col < this._tiles[row].length; col++) {
@@ -227,21 +227,19 @@ export default class TileMap {
         //if (!this.isInInnerSquare(row, col)) continue
 
         const tile = this._tiles[row][col]
-        const src = tile.spritesheet?.image?.src
+        const tileType = tile.constructor
 
-        if (!src) continue
-
-        // Anima apenas um tile por tipo (baseado no src da imagem)
-        if (!animatedBySource.has(src)) {
+        // Anima apenas um tile por tipo (baseado na classe da instância)
+        if (!animatedByTileType.has(tileType)) {
           tile.animate(deltaTime)
-          animatedBySource.set(src, tile)
+          animatedByTileType.set(tileType, tile)
         } else {
           // Sincroniza o frame com o tile já animado do mesmo tipo
-          const masterTile = animatedBySource.get(src)!
+          const masterTile = animatedByTileType.get(tileType)!
           tile.currentFrame = masterTile.currentFrame
           tile.accumulator = masterTile.accumulator
           // Atualiza o offsetX para refletir o frame correto visualmente
-          tile.setOffset(masterTile.currentFrame * tile.width, 0)
+          tile.setOffset(masterTile.currentFrame * tile.width, tile.offsetY)
         }
       }
     }

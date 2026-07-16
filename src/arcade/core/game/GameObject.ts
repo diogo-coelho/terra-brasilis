@@ -1,5 +1,3 @@
-import { MS_PER_UNIT } from '@/arcade/constants'
-
 /**
  * Classe base para todos os objetos do jogo.
  *
@@ -132,8 +130,7 @@ export default class GameObject {
    */
   public initializeFrames(frames: number, totalDuration: number) {
     this._frames = frames
-    this._frameDuration =
-      frames > 0 ? (totalDuration * MS_PER_UNIT) / frames / 1000 : 0
+    this._frameDuration = frames > 0 ? totalDuration / frames / 1000 : 0
     this._accumulator = 0
   }
 

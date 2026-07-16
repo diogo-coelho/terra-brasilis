@@ -32,6 +32,7 @@ export * as enums from './enums'
 export * as events from './events'
 export * as sounds from './sounds'
 export * as images from './images'
+export * as webAssembly from './web-assembly'
 
 export const Arcade = {
   Game: Game,

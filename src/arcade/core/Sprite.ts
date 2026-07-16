@@ -28,13 +28,13 @@ import GameObject from '@/arcade/core/game/GameObject'
  * ```
  */
 export default class Sprite extends GameObject {
-  private _spritesheet: Image | null = null
-  private _offsetX: number = 0
-  private _offsetY: number = 0
-  private _shadow: CanvasRenderingContext2D | null = null
-  private _zoomLevel: number = 1
-  private _shown: boolean = true
-  private _isSelected: boolean = false
+  protected _spritesheet: Image | null = null
+  protected _offsetX: number = 0
+  protected _offsetY: number = 0
+  protected _shadow: CanvasRenderingContext2D | null = null
+  protected _zoomLevel: number = 1
+  protected _shown: boolean = true
+  protected _isSelected: boolean = false
 
   constructor(
     source: Image,
@@ -105,6 +105,14 @@ export default class Sprite extends GameObject {
    */
   public setOffsetY(offsetY: number): void {
     this._offsetY = offsetY
+  }
+
+  public get offsetX(): number {
+    return this._offsetX
+  }
+
+  public get offsetY(): number {
+    return this._offsetY
   }
 
   public set selected(value: boolean) {

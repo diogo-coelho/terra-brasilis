@@ -32,13 +32,24 @@ import UnitDirection from '@/arcade/enums/UnitDirection'
  * @see UnitDirection
  */
 export default class CaravelShip extends Unit {
+  private _maxTraversableCost: number = 0
+
   constructor(image: string) {
     super(124, 128, 1, 16) // 16ms para ciclo completo de animação (4 frames)
     this.unitSpeed = 50
     this.hasShadow = true
     this.mobileState = UnitMobileState.NAVIGATOR
+    this.maxTraversableCost = 1
     this.initializeSpritesheet(image)
     this.setInitialDirection()
+  }
+
+  public get maxTraversableCost(): number {
+    return this._maxTraversableCost
+  }
+
+  public set maxTraversableCost(cost: number) {
+    this._maxTraversableCost = cost
   }
 
   /**

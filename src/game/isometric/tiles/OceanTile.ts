@@ -11,7 +11,7 @@ import { Image } from '@/arcade/images'
  *
  * @description
  * Tile que representa água/oceano no mapa isométrico.
- * Não é caminhvel mas é navegável, permitindo que navios se movam sobre ele.
+ * Não é caminhável mas é navegável, permitindo que navios se movam sobre ele.
  * Possui animação de ondas.
  *
  * @extends Tile
@@ -29,11 +29,15 @@ import { Image } from '@/arcade/images'
  * @see Tile
  */
 export default class OceanTile extends Tile {
+  private _imagePath: string
+
   constructor(image: string) {
     super(128, 64, 4, 2500) // 2500ms = 2,5 segundos para ciclo completo (animação gradual)
+    this._imagePath = image
     this.isWalkable = false
     this.isNavigable = true
     this.elevation = 0
+    this.cost = 1
     this.initializeSpritesheet(image)
   }
 
@@ -48,5 +52,9 @@ export default class OceanTile extends Tile {
   private initializeSpritesheet(image: string): void {
     const spritesheetImage = new Image(image)
     this.setSpritesheet(spritesheetImage)
+  }
+
+  protected createClone(): Tile {
+    return new OceanTile(this._imagePath)
   }
 }

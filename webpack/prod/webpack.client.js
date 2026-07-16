@@ -58,6 +58,9 @@ const commonGameConfig = {
     ]
   },
   target: 'web',
+  experiments: {
+    syncWebAssembly: true
+  },
   optimization: {
     minimize: true,
     minimizer: [

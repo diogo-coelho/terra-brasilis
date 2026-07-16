@@ -43,3 +43,4 @@ export type ButtonStandardGroupConfig = {
   backgroundColorOnHover: string
   colorOnHover: string
 }
+export type WasmModuleImporter<TModule extends object> = () => Promise<TModule>
