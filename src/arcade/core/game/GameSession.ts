@@ -1,6 +1,6 @@
-import Scenario from '@/arcade/core/isometric/Scenario'
-import Unit from '@/arcade/core/isometric/Unit'
-import TileMap from '@/arcade/core/isometric/TileMap'
+import Scenario from '@/arcade/core/isometric/scenario/Scenario'
+import Unit from '@/arcade/core/isometric/units/Unit'
+import TileMap from '@/arcade/core/isometric/tiles/TileMap'
 import Camera from '@/arcade/core/Camera'
 
 /**

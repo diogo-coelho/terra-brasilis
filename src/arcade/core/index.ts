@@ -2,11 +2,13 @@ import Game from './game/Game'
 import GameObject from './game/GameObject'
 import GameSession from './game/GameSession'
 import GameCalendar from './timer/GameCalendar'
-import Tile from './isometric/Tile'
-import TileMap from './isometric/TileMap'
-import Scenario from './isometric/Scenario'
-import ScenarioMap from './isometric/ScenarioMap'
-import Unit from './isometric/Unit'
+import FogOfWar from './isometric/fog/FogOfWar'
+import { FogState } from './isometric/fog/FogState'
+import Tile from './isometric/tiles/Tile'
+import TileMap from './isometric/tiles/TileMap'
+import Scenario from './isometric/scenario/Scenario'
+import ScenarioMap from './isometric/scenario/ScenarioMap'
+import Unit from './isometric/units/Unit'
 import SceneManager from './SceneManager'
 import SceneEvent from './SceneEvent'
 import Sprite from './Sprite'
@@ -28,4 +30,6 @@ export {
   GameCalendar,
   Unit,
   Camera,
+  FogOfWar,
+  FogState,
 }

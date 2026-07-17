@@ -1,7 +1,7 @@
 import Sprite from '@/arcade/core/Sprite'
 import Image from '@/arcade/images/Image'
-import TileMap from '@/arcade/core/isometric/TileMap'
-import Tile from '@/arcade/core/isometric/Tile'
+import TileMap from '@/arcade/core/isometric/tiles/TileMap'
+import Tile from '@/arcade/core/isometric/tiles/Tile'
 import { UnitMobileState, UnitDirection } from '@/arcade/enums'
 
 /**

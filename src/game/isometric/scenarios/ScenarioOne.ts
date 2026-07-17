@@ -1,7 +1,7 @@
-import { Camera, Scenario, Tile, TileMap, Unit } from '@/arcade/core'
+import { FogOfWar, Scenario, Tile, TileMap, Unit } from '@/arcade/core'
 import CaravelShipSpritesheet from '@/arcade/assets/images/tb_caravel_spritesheet.png'
 
-import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
+import { TileMapper, GridScenarioOne, FogScenarioOne } from '@/game/isometric/grids'
 import { CaravelShip } from '@/game/isometric/units'
 
 /**
@@ -38,9 +38,11 @@ export default class ScenarioOne extends Scenario {
 
   constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     super()
+    console.log('ScenarioOne constructor executed')
     this._name = 'Scenario One'
     this._tileMapper = new TileMapper().mapper
     this._caravelShip = new CaravelShip(CaravelShipSpritesheet)
+    this.fogOfWar = new FogOfWar()
     this.createScenario(canvas)
   }
 
@@ -62,5 +64,12 @@ export default class ScenarioOne extends Scenario {
 
     this._caravelShip?.setPosition(560, 120)
     this.units = [this._caravelShip as Unit]
+
+    this.fogOfWar?.setStates(
+      FogScenarioOne,
+      this.worldMap?.tileWidth ?? 128,
+      this.worldMap?.tileHeight ?? 64
+    )
+    console.log('Fog of War states set for Scenario One:', this.fogOfWar?.getStates())
   }
 }

@@ -1,4 +1,4 @@
-import Tile from '@/arcade/core/isometric/Tile'
+import Tile from '@/arcade/core/isometric/tiles/Tile'
 import Camera from '@/arcade/core/Camera'
 
 /**
