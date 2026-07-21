@@ -29,7 +29,6 @@ import {
 } from './ui'
 export * as core from './core'
 export * as types from './types'
-export * as interfaces from './interfaces'
 export * as ui from './ui'
 export * as enums from './enums'
 export * as events from './events'
@@ -51,6 +50,7 @@ export const Arcade = {
   TileMap: TileMap,
   Unit: Unit,
   GlobalEvents: GlobalEvents,
+  InputEvent: InputEvent,
   Sound: Sound,
   Image: Image,
   Camera: Camera,

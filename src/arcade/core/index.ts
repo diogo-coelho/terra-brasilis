@@ -7,6 +7,7 @@ import FogCell from './isometric/fog/FogCell'
 import { FogState } from './isometric/fog/FogState'
 import Tile from './isometric/tiles/Tile'
 import TileMap from './isometric/tiles/TileMap'
+import Scene from './scene/Scene'
 import Scenario from './isometric/scenario/Scenario'
 import ScenarioMap from './isometric/scenario/ScenarioMap'
 import Unit from './isometric/units/Unit'
@@ -26,6 +27,7 @@ export {
   Tile,
   Timer,
   TileMap,
+  Scene,
   Scenario,
   ScenarioMap,
   GameCalendar,

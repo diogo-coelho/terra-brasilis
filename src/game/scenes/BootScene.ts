@@ -1,7 +1,7 @@
 import { SceneEvent } from '@/arcade/core'
 import { Sound } from '@/arcade/sounds'
 import { SceneManager } from '@/arcade/types'
-import Scene from '@/arcade/interfaces/Scene'
+import Scene from '@/arcade/core/scene/Scene'
 import EventListenerState from '@/arcade/enums/EventListenerState'
 import KeyboardKey from '@/arcade/enums/KeyboardKey'
 

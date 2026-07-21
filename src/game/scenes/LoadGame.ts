@@ -1,5 +1,5 @@
 import { SceneEvent } from '@/arcade/core'
-import Scene from '@/arcade/interfaces/Scene'
+import Scene from '@/arcade/core/scene/Scene'
 import { SceneManager } from '@/arcade/types'
 
 /**
