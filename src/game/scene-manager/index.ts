@@ -22,6 +22,6 @@ const sceneSettings: NamedScene[] = [
   { name: GameSceneState.GAME, scene: new GameScene() },
 ]
 sceneManager.setScenesMap(sceneSettings)
-sceneManager.setCurrentScene(GameSceneState.GAME)
+sceneManager.setCurrentScene(GameSceneState.BOOT)
 
 export { sceneManager }

@@ -75,7 +75,10 @@ export default class Sound {
     try {
       await this._audio.play()
     } catch (error: unknown | Error) {
-      throw new SoundError(ErrorState.AUDIO_FAILED_TO_LOAD, error instanceof Error ? error : undefined);
+      throw new SoundError(
+        ErrorState.AUDIO_FAILED_TO_LOAD,
+        error instanceof Error ? error : undefined
+      )
     }
   }
 

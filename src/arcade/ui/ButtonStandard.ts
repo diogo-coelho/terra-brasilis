@@ -1,12 +1,12 @@
-import Button from './abstract/Button'
-import { ButtonEvent } from '../interfaces'
-import { Sound } from '../sounds'
-import { ButtonClickHandle, AlignedPosition, Callback } from '../types'
-import { SoundError, ButtonError } from '../errors'
-import { ErrorState, PositionState } from '../enums'
+import Button from '@/arcade/ui/abstract/Button'
+import { ButtonEvent } from '@/arcade/events'
+import { Sound } from '@/arcade/sounds'
+import { ButtonClickHandle, AlignedPosition, Callback } from '@/arcade/types'
+import { SoundError, ButtonError } from '@/arcade/errors'
+import { ErrorState, PositionState } from '@/arcade/enums'
 
-import hoverSound from '../assets/sounds/sfx/btn_hover.ogg'
-import clickSound from '../assets/sounds/sfx/btn_click.wav'
+import hoverSound from '@/arcade/assets/sounds/sfx/btn_hover.ogg'
+import clickSound from '@/arcade/assets/sounds/sfx/btn_click.wav'
 
 /**
  * Implementação padrão de botão para o jogo.

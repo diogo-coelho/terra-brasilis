@@ -1,6 +1,5 @@
-import { SceneEvent } from '@/arcade/core'
+import { SceneEvent, Scene } from '@/arcade/core'
 import { Image } from '@/arcade/images'
-import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 import { ButtonStandardGroup, InputStandard } from '@/arcade/ui'
 import { EventListenerState, PositionState } from '@/arcade/enums'

@@ -14,7 +14,8 @@ const commonGameConfig = {
   output: {
     filename: `[name].js`,
     path: path.resolve(__dirname, `${PATHS.build}`),
-    assetModuleFilename: `src/assets/images/[name].[ext]`
+    assetModuleFilename: `src/assets/images/[name].[ext]`,
+    webassemblyModuleFilename: "[name].wasm"
   },
   module: {
     rules: [
@@ -51,6 +52,9 @@ const commonGameConfig = {
         generator: {
           filename: 'assets/sounds/[name].[ext]'
         }
+      },{
+        test: /\.wasm$/,
+        type: "asset/resource"
       }
     ]
   },
@@ -64,6 +68,9 @@ const commonGameConfig = {
   },
   optimization: {
     moduleIds: 'named'
+  },
+  experiments: {
+    asyncWebAssembly: true
   },
   plugins: [
     new HtmlWebpackPlugin({

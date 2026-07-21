@@ -31,6 +31,7 @@ export default class Tile extends Sprite {
   protected _isWalkable: boolean = true
   protected _isNavigable: boolean = true
   protected _elevation: number = 0
+  protected _cost: number = 0
 
   constructor(
     width: number,
@@ -66,6 +67,14 @@ export default class Tile extends Sprite {
   }
   public set elevation(value: number) {
     this._elevation = value
+  }
+
+  public set cost(value: number) {
+    this._cost = value
+  }
+
+  public get cost(): number {
+    return this._cost
   }
 
   /**
@@ -106,14 +115,27 @@ export default class Tile extends Sprite {
    */
   public containsPoint(mouseX: number, mouseY: number): boolean {
     // Coordenadas relativas ao centro do tile
-    const relX = mouseX - (this.positionX + (this.width / 2));
-    const relY = mouseY - (this.positionY + (this.height / 2));
+    const centerX = this.positionX + this.width / 2
+    const centerY = this.positionY + this.height / 2
+    const relX = mouseX - centerX
+    const relY = mouseY - centerY
 
     // Verifica se está dentro do diamante isométrico
-    return (
+    const result =
       Math.abs(relX / (this.width / 2)) + Math.abs(relY / (this.height / 2)) <=
       1
-    );
+
+    return result
+  }
+
+  protected createClone(): Tile {
+    return new Tile(
+      this.width,
+      this.height,
+      this._frames,
+      this._frameDuration,
+      this.spritesheet as Image
+    )
   }
 
   /**
@@ -132,23 +154,18 @@ export default class Tile extends Sprite {
    * ```
    */
   public clone(): Tile {
-    const clonedTile = new Tile(
-      this.width,
-      this.height,
-      this._frames,
-      this._frameDuration,
-      this.spritesheet as Image
-    )
+    const clonedTile = this.createClone()
 
     // Copia o estado de animação para manter sincronização
     clonedTile.currentFrame = this.currentFrame
     clonedTile.accumulator = this.accumulator
+    clonedTile.setOffset(this.offsetX, this.offsetY)
 
     // Copia propriedades específicas do Tile
     clonedTile.isWalkable = this.isWalkable
     clonedTile.isNavigable = this.isNavigable
     clonedTile.elevation = this.elevation
-
+    clonedTile.cost = this.cost
     return clonedTile
   }
 }

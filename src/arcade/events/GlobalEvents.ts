@@ -25,10 +25,6 @@ import { Game, SceneManager } from '@/arcade/core'
  * ```
  */
 export default class GlobalEvents {
-  constructor(sceneManager: SceneManager) {
-    GlobalEvents.initialize(sceneManager)
-  }
-
   /**
    * Inicializa os ouvintes de eventos globais.
    *

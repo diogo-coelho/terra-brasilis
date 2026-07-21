@@ -9,13 +9,16 @@
     "webpack:prod:game": "webpack --config ./webpack/prod/webpack.client.js --mode production",
     "webpack:prod:server": "webpack --config ./webpack/prod/webpack.server.js --mode production",
     "start": "node dist/server.js",
-    "predev": "npm run webpack:dev:server && npm run webpack:dev:game",
+    "predev": "npm run asbuild && npm run webpack:dev:server && npm run webpack:dev:game",
     "dev": "npm run start",
     "prebuild": "npm run lint:fix && npm run webpack:prod:server && npm run webpack:prod:game",
     "build": "npm run start",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests",
+    "asbuild:debug": "asc assembly/index.ts --target debug",
+    "asbuild:release": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release"
   },
   "keywords": [
     "rts",
@@ -38,6 +41,7 @@
     "@types/node": "^25.0.5",
     "@typescript-eslint/eslint-plugin": "^8.52.0",
     "@typescript-eslint/parser": "^8.52.0",
+    "assemblyscript": "^0.28.9",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
     "eslint": "^9.39.2",
@@ -75,5 +79,11 @@
     "express": "^5.2.1",
     "mongodb": "^7.0.0",
     "mongoose": "^9.1.2"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/build/release.js",
+      "types": "./dist/build/release.d.ts"
+    }
   }
 }

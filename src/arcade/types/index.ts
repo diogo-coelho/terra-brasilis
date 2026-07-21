@@ -1,7 +1,7 @@
-import { Scene } from '@/arcade/interfaces'
+import { Scene } from '@/arcade/core'
 import { PositionState } from '../enums'
 
-export type SceneManager = import('../core/SceneManager').default
+export type SceneManager = import('../core/scene/SceneManager').default
 export type Game = import('../core/game/Game').default
 
 export type NamedScene = { name: string; scene: Scene }
@@ -43,3 +43,4 @@ export type ButtonStandardGroupConfig = {
   backgroundColorOnHover: string
   colorOnHover: string
 }
+export type WasmModuleImporter<TModule extends object> = () => Promise<TModule>

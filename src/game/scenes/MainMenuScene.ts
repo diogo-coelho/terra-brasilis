@@ -1,5 +1,4 @@
-import Scene from '@/arcade/interfaces/Scene'
-import { SceneEvent, SceneManager } from '@/arcade/core'
+import { SceneEvent, SceneManager, Scene } from '@/arcade/core'
 import { ButtonStandardGroup } from '@/arcade/ui'
 import { Sound } from '@/arcade/sounds'
 import { Image } from '@/arcade/images'

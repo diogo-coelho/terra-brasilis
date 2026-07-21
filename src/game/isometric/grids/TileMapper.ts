@@ -1,5 +1,5 @@
 import { Tile } from '@/arcade/core'
-import { OceanTile } from '@/game/isometric/tiles'
+import { OceanTile, ShallowSeaWaterTile } from '@/game/isometric/tiles'
 import oceanTileSpritesheet from '@/arcade/assets/images/tb_ocean_stylesheet.png'
 
 /**
@@ -61,7 +61,11 @@ export default class TileMapper {
 
   private initializeTileMapper(): void {
     const oceanTile: Tile = new OceanTile(oceanTileSpritesheet)
+    const shallowSeaWaterTile: Tile = new ShallowSeaWaterTile(
+      oceanTileSpritesheet
+    )
 
     this._mapper.set(0, oceanTile)
+    this._mapper.set(1, shallowSeaWaterTile)
   }
 }

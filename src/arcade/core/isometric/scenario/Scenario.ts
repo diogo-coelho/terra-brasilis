@@ -1,5 +1,6 @@
-import TileMap from '@/arcade/core/isometric/TileMap'
-import Unit from '@/arcade/core/isometric/Unit'
+import FogOfWar from '@/arcade/core/isometric/fog/FogOfWar'
+import TileMap from '@/arcade/core/isometric/tiles/TileMap'
+import Unit from '@/arcade/core/isometric/units/Unit'
 
 /**
  * Representa um cenário de jogo.
@@ -36,6 +37,8 @@ export default class Scenario {
   protected _updateDate: Date | null = null
   protected _duration: number = 0
   protected _units: Unit[] | null = null
+  protected _fogOfWar: FogOfWar | null = null
+
   public get name(): string {
     return this._name
   }
@@ -59,6 +62,14 @@ export default class Scenario {
     return this._units as Unit[]
   }
 
+  public set fogOfWar(fogOfWar: FogOfWar | null) {
+    this._fogOfWar = fogOfWar
+  }
+
+  public get fogOfWar(): FogOfWar | null {
+    return this._fogOfWar
+  }
+
   /**
    * Renderiza o cenário no canvas.
    *
@@ -70,6 +81,16 @@ export default class Scenario {
     context: CanvasRenderingContext2D
   ): void {
     this.worldMap?.drawWorldMap(canvas, context)
+
+    if (this._fogOfWar) {
+      this._fogOfWar.drawFog(
+        context,
+        this.worldMap?.tileWidth ?? 64,
+        this.worldMap?.tileHeight ?? 32,
+        canvas,
+        this.worldMap?.camera ?? undefined
+      )
+    }
   }
 
   /**
@@ -85,5 +106,15 @@ export default class Scenario {
     deltaTime: number
   ): void {
     this.worldMap?.update(canvas, context, deltaTime)
+
+    if (this._fogOfWar) {
+      this._fogOfWar.drawFog(
+        context,
+        this.worldMap?.tileWidth ?? 64,
+        this.worldMap?.tileHeight ?? 32,
+        canvas,
+        this.worldMap?.camera ?? undefined
+      )
+    }
   }
 }

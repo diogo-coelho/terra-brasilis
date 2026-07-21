@@ -1,5 +1,4 @@
-import { SceneEvent } from '@/arcade/core'
-import Scene from '@/arcade/interfaces/Scene'
+import { SceneEvent, Scene } from '@/arcade/core'
 import { SceneManager } from '@/arcade/types'
 
 /**

@@ -1,7 +1,11 @@
-import { Scenario, Tile, TileMap, Unit } from '@/arcade/core'
+import { FogOfWar, Scenario, Tile, TileMap, Unit } from '@/arcade/core'
 import CaravelShipSpritesheet from '@/arcade/assets/images/tb_caravel_spritesheet.png'
 
-import { TileMapper, GridScenarioOne } from '@/game/isometric/grids'
+import {
+  TileMapper,
+  GridScenarioOne,
+  FogScenarioOne,
+} from '@/game/isometric/grids'
 import { CaravelShip } from '@/game/isometric/units'
 
 /**
@@ -36,12 +40,14 @@ export default class ScenarioOne extends Scenario {
   private _tileMapper: Map<number, Tile> | null = null
   private _caravelShip: Unit | null = null
 
-  constructor() {
+  constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
     super()
+    console.log('ScenarioOne constructor executed')
     this._name = 'Scenario One'
     this._tileMapper = new TileMapper().mapper
     this._caravelShip = new CaravelShip(CaravelShipSpritesheet)
-    this.createScenario()
+    this.fogOfWar = new FogOfWar()
+    this.createScenario(canvas)
   }
 
   /**
@@ -49,15 +55,24 @@ export default class ScenarioOne extends Scenario {
    *
    * @remarks
    * Inicializa o mapa de tiles usando GridScenarioOne e posiciona
-   * a caravela na posição inicial (620, 125).
+   * a caravela na posição inicial (560, 120).
    */
-  private createScenario(): void {
+  private createScenario(canvas: HTMLCanvasElement): void {
     const grid = GridScenarioOne.map((row) =>
       row.map((key) => this._tileMapper?.get(key)?.clone())
     )
     this.worldMap = new TileMap(grid as Tile[][], 128, 64)
+    // TODO: O clique do mouse está direcionando para o tile errado quando esse tributo
+    // está ativo. Verificar o motivo e corrigir para poder usar
+    this.worldMap.renderOnlyInnerSquare = false
 
-    this._caravelShip?.setPosition(620, 125)
+    this._caravelShip?.setPosition(560, 120)
     this.units = [this._caravelShip as Unit]
+
+    this.fogOfWar?.setStates(
+      FogScenarioOne,
+      this.worldMap?.tileWidth ?? 128,
+      this.worldMap?.tileHeight ?? 64
+    )
   }
 }
