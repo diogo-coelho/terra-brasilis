@@ -13,7 +13,8 @@ import {
   Unit,
   Camera,
   FogOfWar,
-  FogState
+  FogState,
+  FogCell
 } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'
@@ -55,6 +56,7 @@ export const Arcade = {
   Camera: Camera,
   FogOfWar: FogOfWar,
   FogState: FogState,
+  Fogcell: FogCell,
   Components: {
     Button: Button,
     Input: Input,

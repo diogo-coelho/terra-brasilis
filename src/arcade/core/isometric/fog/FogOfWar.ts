@@ -16,7 +16,7 @@ import FogCell from './FogCell'
  *
  */
 export default class FogOfWar { 
-  protected states: FogCell[][] = []
+  protected _states: FogCell[][] = []
 
   /**
    * Define os estados da neblina de guerra para cada célula do mapa.
@@ -31,7 +31,7 @@ export default class FogOfWar {
     defaultWidth: number = 64,
     defaultHeight: number = 32
   ): void {
-    this.states = states.map((row) =>
+    this._states = states.map((row) =>
       row.map((cell) => {
         if (typeof cell === 'number') {
           return new FogCell(cell as FogState, defaultWidth, defaultHeight)
@@ -51,7 +51,7 @@ export default class FogOfWar {
    * @returns FogState[][] 
    */
   public getStates(): FogCell[][] {
-    return this.states
+    return this._states
   }
 
   /**
@@ -72,7 +72,7 @@ export default class FogOfWar {
     canvas?: HTMLCanvasElement,
     camera?: Camera
   ): void {
-    if (tileWidth <= 0 || tileHeight <= 0 || this.states.length === 0) {
+    if (tileWidth <= 0 || tileHeight <= 0 || this._states.length === 0) {
       return
     }
 
@@ -84,8 +84,8 @@ export default class FogOfWar {
 
     const originX = canvas ? canvas.width / 2 - tileWidth / 2 : 0
 
-    for (let y = 0; y < this.states.length; y++) {
-      const row = this.states[y]
+    for (let y = 0; y < this._states.length; y++) {
+      const row = this._states[y]
       if (!row) {
         continue
       }
@@ -117,17 +117,6 @@ export default class FogOfWar {
     }
 
     ctx.restore()
-  }
-
-
-  public clearVisible(): void {
-    for (let y = 0; y < this.states.length; y++) {
-      for (let x = 0; x < this.states[y].length; x++) {
-        if (this.states[y][x].state === FogState.VISIBLE) {
-          this.states[y][x].state = FogState.EXPLORED
-        }
-      }
-    }
   }
   
 }

@@ -12,7 +12,7 @@ window.onload = () => {
   const gameEngine: Game = arcadeEngine
 
   const GlobalEvents = Arcade.GlobalEvents
-  new GlobalEvents(sceneManager)
+  GlobalEvents.initialize(sceneManager)
   GlobalEvents.resize(gameEngine, sceneManager)
 
   const gameScenes: SceneManager = sceneManager
