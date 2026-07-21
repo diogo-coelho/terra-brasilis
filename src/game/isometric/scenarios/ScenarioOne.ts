@@ -1,7 +1,11 @@
 import { FogOfWar, Scenario, Tile, TileMap, Unit } from '@/arcade/core'
 import CaravelShipSpritesheet from '@/arcade/assets/images/tb_caravel_spritesheet.png'
 
-import { TileMapper, GridScenarioOne, FogScenarioOne } from '@/game/isometric/grids'
+import {
+  TileMapper,
+  GridScenarioOne,
+  FogScenarioOne,
+} from '@/game/isometric/grids'
 import { CaravelShip } from '@/game/isometric/units'
 
 /**
@@ -70,6 +74,5 @@ export default class ScenarioOne extends Scenario {
       this.worldMap?.tileWidth ?? 128,
       this.worldMap?.tileHeight ?? 64
     )
-    console.log('Fog of War states set for Scenario One:', this.fogOfWar?.getStates())
   }
 }

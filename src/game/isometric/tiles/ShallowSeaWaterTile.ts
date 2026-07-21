@@ -1,5 +1,5 @@
-import { Tile } from "@/arcade/core";
-import { Image } from "@/arcade/images";
+import { Tile } from '@/arcade/core'
+import { Image } from '@/arcade/images'
 
 export default class ShallowSeaWaterTile extends Tile {
   private _imagePath: string

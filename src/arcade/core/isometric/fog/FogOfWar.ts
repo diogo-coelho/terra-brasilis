@@ -1,21 +1,21 @@
-import {Camera} from '@/arcade/core'
-import {FogState} from './FogState'
+import { Camera } from '@/arcade/core'
+import { FogState } from './FogState'
 import FogCell from './FogCell'
 
 /**
  * Classe que representa o sistema de neblina de guerra (Fog of War) em um cenário isométrico.
- * 
+ *
  * @class FogOfWar
  * @author Diogo Coelho
  * @version 1.0.0
  * @since 2024-06-20
- * 
+ *
  * @description
- * Esta classe gerencia a visibilidade do mapa de jogo, 
+ * Esta classe gerencia a visibilidade do mapa de jogo,
  * ocultando áreas que não estão ao alcance das unidades do jogador.
  *
  */
-export default class FogOfWar { 
+export default class FogOfWar {
   protected _states: FogCell[][] = []
 
   /**
@@ -48,7 +48,7 @@ export default class FogOfWar {
 
   /**
    * Retorna os estados da neblina de guerra para cada célula do mapa.
-   * @returns FogState[][] 
+   * @returns FogState[][]
    */
   public getStates(): FogCell[][] {
     return this._states
@@ -58,12 +58,12 @@ export default class FogOfWar {
    * Desenha a neblina de guerra no contexto do canvas, considerando o estado de cada célula do mapa.
    * As células podem estar em três estados: HIDDEN (preto), EXPLORED (cinza) ou VISIBLE (transparente).
    * O método também leva em consideração a posição da câmera para otimizar a renderização.
-   * 
+   *
    * @param {CanvasRenderingContext2D} ctx - Contexto de renderização do canvas
    * @param {number} tileWidth - Largura de cada tile do mapa
    * @param {number} tileHeight - Altura de cada tile do mapa
    * @param {Camera} camera - Câmera do jogo
-   * @returns 
+   * @returns
    */
   public drawFog(
     ctx: CanvasRenderingContext2D,
@@ -98,7 +98,10 @@ export default class FogOfWar {
         const worldX = (x - y) * cellHeight + originX
         const worldY = (x + y) * (cellHeight / 2)
 
-        if (camera && !camera.isVisible(worldX, worldY, cellWidth, cellHeight)) {
+        if (
+          camera &&
+          !camera.isVisible(worldX, worldY, cellWidth, cellHeight)
+        ) {
           continue
         }
 
@@ -118,5 +121,4 @@ export default class FogOfWar {
 
     ctx.restore()
   }
-  
 }

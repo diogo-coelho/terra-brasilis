@@ -219,7 +219,7 @@ export default class TileMap {
     deltaTime: number
   ): void {
     // 1. Animar apenas um tile por tipo de tile para sincronia
-    const animatedByTileType = new Map<Function, Tile>()
+    const animatedByTileType = new Map<string, Tile>()
 
     for (let row = 0; row < this._tiles.length; row++) {
       for (let col = 0; col < this._tiles[row].length; col++) {
@@ -227,7 +227,7 @@ export default class TileMap {
         //if (!this.isInInnerSquare(row, col)) continue
 
         const tile = this._tiles[row][col]
-        const tileType = tile.constructor
+        const tileType = tile.constructor.name
 
         // Anima apenas um tile por tipo (baseado na classe da instância)
         if (!animatedByTileType.has(tileType)) {

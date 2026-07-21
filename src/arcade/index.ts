@@ -14,7 +14,7 @@ import {
   Camera,
   FogOfWar,
   FogState,
-  FogCell
+  FogCell,
 } from './core'
 import { GlobalEvents } from './events'
 import { Sound } from './sounds'

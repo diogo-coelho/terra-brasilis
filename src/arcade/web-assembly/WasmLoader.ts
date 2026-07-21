@@ -1,4 +1,4 @@
-import { WasmModuleImporter } from "@/arcade/types"
+import { WasmModuleImporter } from '@/arcade/types'
 
 export default class WasmLoader<TModule extends object> {
   private modulePromise: Promise<TModule> | null = null

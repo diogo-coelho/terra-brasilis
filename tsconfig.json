@@ -1,12 +1,12 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "outDir": "./",
+    "outDir": "./build",
     "target": "ES2020",
-    "module": "CommonJS",
-    "baseUrl": "./src",
+    "module": "node16",
+    "rootDir": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./src/*"]
     },
     "allowJs": true,
     "sourceMap": true,
@@ -14,7 +14,7 @@
     "forceConsistentCasingInFileNames": true, 
     "strict": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "types": ["node"]
   },
   "include": [

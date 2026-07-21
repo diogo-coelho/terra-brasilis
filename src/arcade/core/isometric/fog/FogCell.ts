@@ -1,12 +1,15 @@
-import {FogState} from './FogState'
+import { FogState } from './FogState'
 
 export default class FogCell {
-
-  protected _state: FogState = FogState.HIDDEN 
+  protected _state: FogState = FogState.HIDDEN
   protected _width: number = 0
   protected _height: number = 0
 
-  constructor(state: FogState = FogState.HIDDEN, width: number = 0, height: number = 0) { 
+  constructor(
+    state: FogState = FogState.HIDDEN,
+    width: number = 0,
+    height: number = 0
+  ) {
     this._state = state
     this._width = width
     this._height = height
@@ -55,6 +58,4 @@ export default class FogCell {
     context.closePath()
     context.fill()
   }
-
-
 }

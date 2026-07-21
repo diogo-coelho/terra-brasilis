@@ -1,12 +1,12 @@
-import Input from './abstract/Input'
-import { InputEvent } from '../interfaces'
-import { AlignedPosition, Callback } from '../types'
-import InputError from '../errors/InputError'
-import { ErrorState, KeyCodeState, PositionState } from '../enums'
-import { Sound } from '../sounds'
-import { SoundError } from '../errors'
+import Input from '@/arcade/ui/abstract/Input'
+import InputError from '@/arcade/errors/InputError'
+import { InputEvent } from '@/arcade/events'
+import { AlignedPosition, Callback } from '@/arcade/types'
+import { ErrorState, KeyCodeState, PositionState } from '@/arcade/enums'
+import { Sound } from '@/arcade/sounds'
+import { SoundError } from '@/arcade/errors'
 
-import inputScribbleSound from '../assets/sounds/sfx/input_scribble.wav'
+import inputScribbleSound from '@/arcade/assets/sounds/sfx/input_scribble.wav'
 
 /**
  * Implementação padrão de campo de entrada de texto.

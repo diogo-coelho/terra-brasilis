@@ -1,4 +1,3 @@
-// @ts-ignore: side-effect import for SCSS asset
 import '@/arcade/assets/sass/styles.scss'
 import { Arcade } from '@/arcade/index'
 import { Game, SceneManager } from '@/arcade/core'

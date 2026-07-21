@@ -61,7 +61,9 @@ export default class TileMapper {
 
   private initializeTileMapper(): void {
     const oceanTile: Tile = new OceanTile(oceanTileSpritesheet)
-    const shallowSeaWaterTile: Tile = new ShallowSeaWaterTile(oceanTileSpritesheet)
+    const shallowSeaWaterTile: Tile = new ShallowSeaWaterTile(
+      oceanTileSpritesheet
+    )
 
     this._mapper.set(0, oceanTile)
     this._mapper.set(1, shallowSeaWaterTile)

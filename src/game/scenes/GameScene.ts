@@ -1,6 +1,5 @@
-import { Camera, SceneEvent } from '@/arcade/core'
+import { Camera, SceneEvent, Scene } from '@/arcade/core'
 import { GameSessionError, ScenarioError } from '@/arcade/errors'
-import { Scene } from '@/arcade/interfaces'
 import { SceneManager } from '@/arcade/types'
 import EventListenerState from '@/arcade/enums/EventListenerState'
 import KeyboardKey from '@/arcade/enums/KeyboardKey'

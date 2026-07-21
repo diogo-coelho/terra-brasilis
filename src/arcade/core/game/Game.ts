@@ -1,5 +1,4 @@
-import { Scene } from '@/arcade/interfaces'
-import { SceneManager } from '@/arcade/core'
+import { Scene, SceneManager } from '@/arcade/core'
 
 /**
  * Motor principal do jogo.

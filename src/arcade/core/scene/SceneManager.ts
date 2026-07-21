@@ -1,4 +1,4 @@
-import { Scene } from '@/arcade/interfaces'
+import { Scene } from '@/arcade/core'
 import { SceneManagerError } from '@/arcade/errors'
 import { ErrorState } from '@/arcade/enums'
 import { NamedScene } from '@/arcade/types'

@@ -7,10 +7,10 @@ import FogCell from './isometric/fog/FogCell'
 import { FogState } from './isometric/fog/FogState'
 import Tile from './isometric/tiles/Tile'
 import TileMap from './isometric/tiles/TileMap'
-import Scene from './scene/Scene'
 import Scenario from './isometric/scenario/Scenario'
 import ScenarioMap from './isometric/scenario/ScenarioMap'
 import Unit from './isometric/units/Unit'
+import Scene from './scene/Scene'
 import SceneManager from './scene/SceneManager'
 import SceneEvent from './scene/SceneEvent'
 import Sprite from './Sprite'
@@ -21,13 +21,13 @@ export {
   Game,
   GameObject,
   GameSession,
+  Scene,
   SceneManager,
   SceneEvent,
   Sprite,
   Tile,
   Timer,
   TileMap,
-  Scene,
   Scenario,
   ScenarioMap,
   GameCalendar,

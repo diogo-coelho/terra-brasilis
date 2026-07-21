@@ -1,5 +1,4 @@
-import { Scene } from '@/arcade/interfaces'
-import { SceneEvent, SceneManager } from '@/arcade/core'
+import { SceneEvent, Scene, SceneManager } from '@/arcade/core'
 import { EventPayload } from '@/arcade/types'
 import { EventListenerState, KeyboardKey } from '@/arcade/enums'
 import { Sound } from '@/arcade/sounds'
