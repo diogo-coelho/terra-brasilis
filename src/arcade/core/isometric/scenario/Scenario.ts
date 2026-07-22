@@ -81,16 +81,7 @@ export default class Scenario {
     context: CanvasRenderingContext2D
   ): void {
     this.worldMap?.drawWorldMap(canvas, context)
-
-    if (this._fogOfWar) {
-      this._fogOfWar.drawFog(
-        context,
-        this.worldMap?.tileWidth ?? 64,
-        this.worldMap?.tileHeight ?? 32,
-        canvas,
-        this.worldMap?.camera ?? undefined
-      )
-    }
+    this.drawFogIfIsNotNull(canvas, context)
   }
 
   /**
@@ -106,7 +97,16 @@ export default class Scenario {
     deltaTime: number
   ): void {
     this.worldMap?.update(canvas, context, deltaTime)
+    this.drawFogIfIsNotNull(canvas, context)
+  }
 
+  /**
+   * Renderiza a névoa de guerra se estiver definida.
+   * 
+   * @param {HTMLCanvasElement} canvas - Elemento canvas
+   * @param {CanvasRenderingContext2D} context - Contexto de renderização 2D
+   */
+  private drawFogIfIsNotNull(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {    
     if (this._fogOfWar) {
       this._fogOfWar.drawFog(
         context,
@@ -117,4 +117,5 @@ export default class Scenario {
       )
     }
   }
+  
 }

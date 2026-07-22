@@ -1,0 +1,32 @@
+services:
+  app:
+    image: terra-brasilis-dev
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+
+    ports:
+      - "${PORT}:8080"
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    environment:
+      URL_MONGO_DB: ${URL_MONGO_DB}
+      DATABASE: ${DATABASE}
+
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
