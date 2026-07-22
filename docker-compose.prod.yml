@@ -1,0 +1,37 @@
+services:
+
+  app:
+    image: terra-brasilis-prod
+    build:
+      context: .
+      dockerfile: docker/prod/Dockerfile
+    container_name: terra-brasilis
+    restart: unless-stopped
+    ports:
+      - "${PORT}:8080"
+    volumes: []
+    depends_on:
+      - mongo
+    environment:
+      URL_MONGO_DB: ${URL_MONGO_DB}
+      DATABASE: ${DATABASE}
+      VIEW_ENGINE: ${VIEW_ENGINE}
+      VIEWS: ${VIEWS}
+      EXPRESS_STATIC_FILES: ${EXPRESS_STATIC_FILES}
+      PORT: ${PORT}
+
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+
+    ports:
+      - "27017:27017"
+
+    environment:
+      MONGO_INITDB_DATABASE: ${DATABASE}
+
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

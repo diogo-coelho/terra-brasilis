@@ -8,11 +8,14 @@
     "webpack:dev:server": "webpack --config ./webpack/dev/webpack.server.js --mode development",
     "webpack:prod:game": "webpack --config ./webpack/prod/webpack.client.js --mode production",
     "webpack:prod:server": "webpack --config ./webpack/prod/webpack.server.js --mode production",
+    
     "start": "node dist/server.js",
-    "predev": "npm run asbuild && npm run webpack:dev:server && npm run webpack:dev:game",
-    "dev": "npm run start",
-    "prebuild": "npm run lint:fix && npm run webpack:prod:server && npm run webpack:prod:game",
-    "build": "npm run start",
+    "build:dev": "npm run asbuild && npm run webpack:dev:server && npm run webpack:dev:game",
+    "build:prod": "npm run lint:fix && npm run webpack:prod:server && npm run webpack:prod:game",
+
+    "dev": "npm run build:dev && npm run start",
+    "build": "npm run build:prod && npm run start",
+    
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
     "test": "node tests",
